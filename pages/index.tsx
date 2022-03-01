@@ -7,14 +7,15 @@ const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Amjad's Portfolio</title>
+        <title>Amjad&apos;s Portfolio</title>
         <meta name='description' content="Amjad's Portfolio" />
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Hello, I'm <a href='https://github.com/AmjadShaaban'>Amjad Shaaban</a>
+          Hello, I&apos;m{' '}
+          <a href='https://github.com/AmjadShaaban'>Amjad Shaaban</a>
         </h1>
 
         <p className={styles.description}>
