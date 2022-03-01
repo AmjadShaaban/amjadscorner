@@ -12,9 +12,9 @@ import { SiSolidity } from 'react-icons/si';
 import abi from '../utils/WavePortal.json';
 
 interface Wave {
-  waver?: string;
   from?: string;
-
+  waver?: string;
+  address?: string;
   message: string;
   timestamp: Date;
 }
@@ -22,7 +22,7 @@ interface Wave {
 const Dapp = () => {
   const [currentAccount, setCurrentAccount] = useState('');
 
-  const [allWaves, setAllWaves] = useState([]);
+  const [allWaves, setAllWaves] = useState<Wave[]>([]);
 
   const [waveMessage, setWaveMessage] = useState('');
 
@@ -44,10 +44,10 @@ const Dapp = () => {
 
         const waves = await wavePortalContract.getAllWaves();
 
-        let wavesCleaned = waves.map((wave) => {
+        let wavesCleaned = waves.map((wave: Wave) => {
           return {
             address: wave.waver,
-            timestamp: new Date(wave.timestamp * 1000),
+            timestamp: new Date(parseInt(wave.timestamp.toString()) * 1000),
             message: wave.message,
           };
         });
@@ -64,7 +64,7 @@ const Dapp = () => {
   useEffect(() => {
     let wavePortalContract: any;
 
-    const onNewWave = (from: any, timestamp: any, message: any) => {
+    const onNewWave = (from: string, timestamp: number, message: string) => {
       console.log('NewWave', from, timestamp, message);
       setAllWaves((prevState) => [
         ...prevState,
@@ -97,7 +97,7 @@ const Dapp = () => {
 
   const checkIfWalletIsConnected = async () => {
     try {
-      const { ethereum } = window;
+      const { ethereum } = window as any;
 
       if (!ethereum) {
         console.log('Make sure you have MetaMask');
