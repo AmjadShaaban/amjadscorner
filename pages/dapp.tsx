@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { NextPage } from 'next';
 import { ethers } from 'ethers';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -21,7 +22,7 @@ interface Wave {
   timestamp: Date;
 }
 
-const Dapp = () => {
+const Dapp: NextPage = () => {
   const [currentAccount, setCurrentAccount] = useState('');
 
   const [allWaves, setAllWaves] = useState<Wave[]>([]);
