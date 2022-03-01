@@ -250,8 +250,8 @@ const Dapp = () => {
       <Row>
         {allWaves.map((wave, index) => {
           return (
-            <Col>
-              <WaveCard key={index} wave={wave} />
+            <Col key={index}>
+              <WaveCard wave={wave} />
             </Col>
           );
         })}
