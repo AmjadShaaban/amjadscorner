@@ -6,10 +6,12 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
-import Card from 'react-bootstrap/Card';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import { FaEthereum, FaReact, FaBootstrap } from 'react-icons/fa';
 import { SiSolidity } from 'react-icons/si';
 import abi from '../utils/WavePortal.json';
+import { WaveCard } from '../components/wave-card';
 
 interface Wave {
   from?: string;
@@ -178,50 +180,46 @@ const Dapp = () => {
 
   return (
     <Container fluid className='bg-dark'>
-      <Navbar bg='dark' variant='dark'>
-        <Container>
-          <Navbar.Brand>DAPP</Navbar.Brand>
-          <Nav className='me-auto'>
-            <Nav.Link href='http://amjadscorner.us'>Home</Nav.Link>
-            <NavDropdown title='Projects' id='navbarScrollingDropdown'>
-              <NavDropdown.Item href='#action1'>
-                [PH]Project 2 name
-              </NavDropdown.Item>
-              <NavDropdown.Item href='#action2'>
-                [PH]Project 3 name
-              </NavDropdown.Item>
-              <NavDropdown.Item href='#action3'>
-                [PH]Project 4 name
-              </NavDropdown.Item>
-              <NavDropdown.Item href='#action4'>
-                [PH]Project 5 name
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href='#action5'>[PH]</NavDropdown.Item>
-            </NavDropdown>
-            <Nav.Link href='#contact'>Contact me!</Nav.Link>
-          </Nav>
-        </Container>
+      <Navbar variant='dark'>
+        <Navbar.Brand>DAPP</Navbar.Brand>
+        <Nav className='me-auto'>
+          <Nav.Link href='http://amjadscorner.us'>Home</Nav.Link>
+          <NavDropdown title='Projects' id='navbarScrollingDropdown'>
+            <NavDropdown.Item href='#action1'>
+              [PH]Project 2 name
+            </NavDropdown.Item>
+            <NavDropdown.Item href='#action2'>
+              [PH]Project 3 name
+            </NavDropdown.Item>
+            <NavDropdown.Item href='#action3'>
+              [PH]Project 4 name
+            </NavDropdown.Item>
+            <NavDropdown.Item href='#action4'>
+              [PH]Project 5 name
+            </NavDropdown.Item>
+            <NavDropdown.Divider />
+            <NavDropdown.Item href='#action5'>[PH]</NavDropdown.Item>
+          </NavDropdown>
+          <Nav.Link href='#contact'>Contact me!</Nav.Link>
+        </Nav>
       </Navbar>
-      <Container className='text-center'>
-        <p className='text-center text-light fs-1'>Welcome to my first DAPP!</p>
-        <p className='text-center text-light fs-3'>
-          A Web3 app with <SiSolidity size={32} />
-          Solidity + <FaEthereum size={32} />
-          Ethereum smart contract built in <FaReact size={32} /> React +{' '}
-          <FaBootstrap size={32} /> Bootstrap
-        </p>
-        <p className='text-body text-muted text-center fs-6'>
-          Deployed on Rinkeby Test Network!. Wave at me, send a message and you
-          might be one of the lucky prize winners!
-        </p>
-        {!currentAccount && (
-          <Button variant='success' onClick={connectWallet}>
-            Connect to Wallet 💰
-          </Button>
-        )}
-      </Container>
-      <Container className='d-flex justify-content-center'>
+      <p className='text-center text-light fs-1'>Welcome to my first DAPP!</p>
+      <p className='text-center text-light fs-3'>
+        A Web3 app with <SiSolidity size={32} />
+        Solidity + <FaEthereum size={32} />
+        Ethereum smart contract built in <FaReact size={32} /> React +{' '}
+        <FaBootstrap size={32} /> Bootstrap
+      </p>
+      <p className='text-body text-muted text-center fs-6'>
+        Deployed on Rinkeby Test Network!. Wave at me, send a message and you
+        might be one of the lucky prize winners!
+      </p>
+      {!currentAccount && (
+        <Button variant='success' onClick={connectWallet}>
+          Connect to Wallet 💰
+        </Button>
+      )}
+      <Container className='d-flex justify-content-center text-center'>
         <Form style={{ width: '24rem' }}>
           <Form.Group className='mb-3' controlId='waveMessageForm'>
             <Form.Label>Message</Form.Label>
@@ -237,33 +235,27 @@ const Dapp = () => {
               Send a message with your Wave.
             </Form.Text>
           </Form.Group>
-          <div className='text-center'>
-            <Button
-              variant='secondary'
-              type='submit'
-              onClick={(e) => {
-                e.preventDefault();
-                wave(waveMessage);
-              }}
-            >
-              Send a Wave 👋
-            </Button>
-          </div>
+          <Button
+            variant='secondary'
+            type='submit'
+            onClick={(e) => {
+              e.preventDefault();
+              wave(waveMessage);
+            }}
+          >
+            Send a Wave 👋
+          </Button>
         </Form>
       </Container>
-      {allWaves.map((wave, index) => {
-        return (
-          <Card bg='dark' key={index} style={{ width: '18rem' }}>
-            <Card.Header>From: {wave.address}</Card.Header>
-            <Card.Body>{wave.message}</Card.Body>
-            <Card.Footer>
-              <small className='text-muted'>
-                On: {wave.timestamp.toString()}
-              </small>
-            </Card.Footer>
-          </Card>
-        );
-      })}
+      <Row>
+        {allWaves.map((wave, index) => {
+          return (
+            <Col>
+              <WaveCard key={index} wave={wave} />
+            </Col>
+          );
+        })}
+      </Row>
     </Container>
   );
 };
