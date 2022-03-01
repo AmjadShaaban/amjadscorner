@@ -94,7 +94,7 @@ const particlesOptions: any = {
 };
 
 const Home: NextPage = () => {
-  const particlesInit = (main) => {
+  const particlesInit = (main: any) => {
     console.log(main);
   };
 
