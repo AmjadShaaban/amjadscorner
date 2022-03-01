@@ -2,6 +2,10 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import styles from '../styles/Home.module.css';
+import { Fade } from 'react-awesome-reveal';
+import Typewriter from 'typewriter-effect';
+import Button from 'react-bootstrap/Button';
+import { JackInTheBox } from 'react-awesome-reveal';
 
 const Home: NextPage = () => {
   return (
@@ -13,16 +17,30 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Hello, I&apos;m{' '}
-          <a href='https://github.com/AmjadShaaban'>Amjad Shaaban</a>
-        </h1>
+        <Fade>
+          <h1 className={styles.title}>
+            Hello, I&apos;m{' '}
+            <a href='https://github.com/AmjadShaaban'>Amjad Shaaban</a>
+          </h1>
+        </Fade>
 
         <p className={styles.description}>
-          <code className={styles.code}>
-            Full stack TypeScript/JavaScript Web/App Developer
-          </code>
+          <p className={styles.code}>
+            <Typewriter
+              onInit={(typewriter) => {
+                typewriter
+                  .typeString(
+                    'Full stack TypeScript/JavaScript Web/App Developer'
+                  )
+                  .changeDelay(20)
+                  .start();
+              }}
+            />
+          </p>
         </p>
+        <JackInTheBox delay={8000}>
+          <Button variant='primary'>[PH]ENTER</Button>
+        </JackInTheBox>
       </main>
 
       <footer className={styles.footer}>
