@@ -94,11 +94,11 @@ const particlesOptions: any = {
 };
 
 const Home: NextPage = () => {
-  const particlesInit = (main: any) => {
+  const particlesInit = async (main: any) => {
     console.log(main);
   };
 
-  const particlesLoaded = (container: any) => {
+  const particlesLoaded = async (container: any) => {
     console.log(container);
   };
   return (
