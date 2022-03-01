@@ -177,77 +177,80 @@ const Dapp = () => {
   }, []);
 
   return (
-    <>
+    <Container fluid className='bg-dark'>
       <Navbar bg='dark' variant='dark'>
         <Container>
           <Navbar.Brand>DAPP</Navbar.Brand>
           <Nav className='me-auto'>
             <Nav.Link href='http://amjadscorner.us'>Home</Nav.Link>
             <NavDropdown title='Projects' id='navbarScrollingDropdown'>
+              <NavDropdown.Item href='#action1'>
+                [PH]Project 2 name
+              </NavDropdown.Item>
+              <NavDropdown.Item href='#action2'>
+                [PH]Project 3 name
+              </NavDropdown.Item>
               <NavDropdown.Item href='#action3'>
-                Project 2 name
+                [PH]Project 4 name
               </NavDropdown.Item>
               <NavDropdown.Item href='#action4'>
-                Project 3 name
-              </NavDropdown.Item>
-              <NavDropdown.Item href='#action4'>
-                Project 4 name
-              </NavDropdown.Item>
-              <NavDropdown.Item href='#action4'>
-                Project 5 name
+                [PH]Project 5 name
               </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href='#action5'>[PH]</NavDropdown.Item>
             </NavDropdown>
-            <Nav.Link href='#pricing'>Contact me!</Nav.Link>
+            <Nav.Link href='#contact'>Contact me!</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
-      <Container fluid>
-        Welcome to my first DAPP!
-        <p>
-          A Web3 app with <SiSolidity size={36} />
-          Solidity + <FaEthereum size={36} />
-          Ethereum smart contract built in <FaReact size={36} />
-          React + <FaBootstrap size={36} />
-          Bootstrap
+      <Container className='text-center'>
+        <p className='text-center text-light fs-1'>Welcome to my first DAPP!</p>
+        <p className='text-center text-light fs-3'>
+          A Web3 app with <SiSolidity size={32} />
+          Solidity + <FaEthereum size={32} />
+          Ethereum smart contract built in <FaReact size={32} /> React +{' '}
+          <FaBootstrap size={32} /> Bootstrap
         </p>
-        <p>
+        <p className='text-body text-muted text-center fs-6'>
           Deployed on Rinkeby Test Network!. Wave at me, send a message and you
           might be one of the lucky prize winners!
         </p>
+        {!currentAccount && (
+          <Button variant='success' onClick={connectWallet}>
+            Connect to Wallet 💰
+          </Button>
+        )}
       </Container>
-      {!currentAccount && (
-        <Button variant='success' onClick={connectWallet}>
-          CONNECT TO ACCOUNT
-        </Button>
-      )}
-      <Form>
-        <Form.Group className='mb-3' controlId='waveMessageForm'>
-          <Form.Label>Message</Form.Label>
-          <Form.Control
-            type='text'
-            placeholder='Enter your message'
-            onChange={(e) => {
-              setWaveMessage(e.target.value);
-            }}
-          />
-          <Form.Text className='text-muted'>
-            Send a message with your Wave.
-          </Form.Text>
-        </Form.Group>
-        <Button
-          variant='secondary'
-          type='submit'
-          onClick={(e) => {
-            e.preventDefault();
-            wave(waveMessage);
-          }}
-        >
-          Submit
-        </Button>
-      </Form>
-
+      <Container className='d-flex justify-content-center'>
+        <Form style={{ width: '24rem' }}>
+          <Form.Group className='mb-3' controlId='waveMessageForm'>
+            <Form.Label>Message</Form.Label>
+            <Form.Control
+              type='text'
+              className='text-info'
+              placeholder='Enter your message'
+              onChange={(e) => {
+                setWaveMessage(e.target.value);
+              }}
+            />
+            <Form.Text className='text-muted'>
+              Send a message with your Wave.
+            </Form.Text>
+          </Form.Group>
+          <div className='text-center'>
+            <Button
+              variant='secondary'
+              type='submit'
+              onClick={(e) => {
+                e.preventDefault();
+                wave(waveMessage);
+              }}
+            >
+              Send a Wave 👋
+            </Button>
+          </div>
+        </Form>
+      </Container>
       {allWaves.map((wave, index) => {
         return (
           <Card bg='dark' key={index} style={{ width: '18rem' }}>
@@ -261,7 +264,7 @@ const Dapp = () => {
           </Card>
         );
       })}
-    </>
+    </Container>
   );
 };
 
