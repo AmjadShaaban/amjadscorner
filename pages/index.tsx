@@ -94,12 +94,12 @@ const Home: NextPage = () => {
         <Image src='/under_construction.png' width={300} height={200} />
         <Fade>
           <div className={styles.code}>
-            Sorry, The page is constantly being updated, I'm doing it solo
-            without a plan so everything ie being improvised and thought about
-            on the spot which is mentally draining! Im a coder not a designer
+            Sorry, The page is constantly being updated, I&apos;m doing it solo
+            without a plan so everything is being improvised and thought of on
+            the spot which is mentally draining! I&apos;m a coder not a designer
             😅😂 here are 2 links <Link href='/dapp'>[Web3 Dapp]</Link> and a
             still WIP link to my <Link href='/projects'>[projects]</Link> page.
-            all this was done Tuesday March 1st 2022.
+            all this was done is a day&apos;s work and more updates coming soon.
           </div>
         </Fade>
       </main>
