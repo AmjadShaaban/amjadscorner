@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { NextPage } from 'next';
 import { ethers } from 'ethers';
 import Button from 'react-bootstrap/Button';

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Card from 'react-bootstrap/Card';
 
 interface Wave {
@@ -7,7 +7,7 @@ interface Wave {
   timestamp: Date;
 }
 
-export const WaveCard = ({ wave }: { wave: Wave }) => {
+export const WaveCard: FC<{ wave: Wave }> = ({ wave }) => {
   return (
     <Card bg='light' style={{ width: '20rem' }} className='text-muted'>
       <Card.Header>From: {wave.address}</Card.Header>

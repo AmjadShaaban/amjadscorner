@@ -3,11 +3,10 @@ import Head from 'next/head';
 import Image from 'next/image';
 import styles from '../styles/Home.module.css';
 import { Fade } from 'react-awesome-reveal';
-import Button from 'react-bootstrap/Button';
 import { JackInTheBox } from 'react-awesome-reveal';
 import Particles from 'react-tsparticles';
-import Engine from 'react-tsparticles';
-import { FaEthereum, FaReact, FaBootstrap } from 'react-icons/fa';
+import { IntroCard } from '../components/intro-card';
+import Link from 'next/link';
 
 const particlesOptions: any = {
   background: {
@@ -16,34 +15,6 @@ const particlesOptions: any = {
     },
   },
   fpsLimit: 120,
-  interactivity: {
-    events: {
-      onClick: {
-        enable: true,
-        mode: 'push',
-      },
-      onHover: {
-        enable: true,
-        mode: 'repulse',
-      },
-      resize: true,
-    },
-    modes: {
-      bubble: {
-        distance: 400,
-        duration: 2,
-        opacity: 0.8,
-        size: 40,
-      },
-      push: {
-        quantity: 4,
-      },
-      repulse: {
-        distance: 200,
-        duration: 0.4,
-      },
-    },
-  },
   particles: {
     color: {
       value: '#000000',
@@ -53,7 +24,7 @@ const particlesOptions: any = {
       distance: 150,
       enable: true,
       opacity: 0.5,
-      width: 1,
+      width: 0.5,
     },
     collisions: {
       enable: true,
@@ -63,7 +34,7 @@ const particlesOptions: any = {
       enable: true,
       outMode: 'bounce',
       random: false,
-      speed: 6,
+      speed: 2,
       straight: false,
     },
     number: {
@@ -75,15 +46,6 @@ const particlesOptions: any = {
     },
     opacity: {
       value: 0.5,
-    },
-    shape: {
-      character: {
-        fill: true,
-        font: 'Font Awesome 5 Brands',
-        style: '',
-        value: () => FaReact,
-        weight: '400',
-      },
     },
     size: {
       random: true,
@@ -126,9 +88,20 @@ const Home: NextPage = () => {
         <Fade className={styles.description}>
           <h3 className={styles.code}>Full-stack Developer</h3>
         </Fade>
-        <JackInTheBox delay={8000}>
-          <Button variant='primary'>[PH]ENTER</Button>
-        </JackInTheBox>
+        {/* <JackInTheBox>
+          <IntroCard />
+        </JackInTheBox> */}
+        <Image src='/under_construction.png' width={300} height={200} />
+        <Fade>
+          <div className={styles.code}>
+            Sorry, The page is constantly being updated, I'm doing it solo
+            without a plan so everything ie being improvised and thought about
+            on the spot which is mentally draining! Im a coder not a designer
+            😅😂 here are 2 links <Link href='/dapp'>[Web3 Dapp]</Link> and a
+            still WIP link to my <Link href='/projects'>[projects]</Link> page.
+            all this was done Tuesday March 1st 2022.
+          </div>
+        </Fade>
       </main>
 
       <footer className={styles.footer}>
