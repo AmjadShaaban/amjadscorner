@@ -5,8 +5,10 @@ import styles from '../styles/Home.module.css';
 import { Fade } from 'react-awesome-reveal';
 import Paper from '@mui/material/Paper';
 import List from '@mui/material/List';
+import Button from '@mui/material/Button';
 import ListItem from '@mui/material/ListItem';
 import Link from '@mui/material/Link';
+import Container from '@mui/material/Container';
 import { JackInTheBox } from 'react-awesome-reveal';
 import Particles from 'react-tsparticles';
 import { IntroCard } from '../components/intro-card';
@@ -84,7 +86,7 @@ const Home: NextPage = () => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <main className={styles.main}>
+      <Container className={styles.main}>
         <Fade>
           <h1 className={styles.title}>
             Hello, I&apos;m{' '}
@@ -94,29 +96,32 @@ const Home: NextPage = () => {
         <Fade className={styles.description}>
           <h3 className={styles.code}>Full-stack Developer</h3>
         </Fade>
-        {/* <JackInTheBox>
+        <Image src='/amj-portfolio.jpg' width={480} height={320} />
+        <JackInTheBox>
           <IntroCard />
-        </JackInTheBox> */}
-        <Image src='/under_construction.png' width={300} height={200} />
-        <Paper elevation={6} style={{ zIndex: 2, width: '36rem' }}></Paper>
-        <List>
-          <ListItem>
-            <Link href='/blog' underline='hover'>
-              Blog
-            </Link>
-          </ListItem>
-          <ListItem>
-            <Link href='/projects' underline='hover'>
-              Projects
-            </Link>
-          </ListItem>
-          <ListItem>
-            <Link href='/dapp' underline='hover'>
-              DAPP
-            </Link>
-          </ListItem>
-        </List>
-      </main>
+        </JackInTheBox>
+        <Paper elevation={6} style={{ zIndex: 2, maxWidth: '36rem' }}>
+          <Image src='/under_construction.png' width={300} height={200} />
+          <List>
+            <ListItem>
+              <Link href='/blog' underline='hover'>
+                Blog
+              </Link>
+            </ListItem>
+            <ListItem>
+              <Link href='/projects' underline='hover'>
+                Projects
+              </Link>
+            </ListItem>
+            <ListItem>
+              <Link href='/dapp' underline='hover'>
+                DAPP
+              </Link>
+            </ListItem>
+          </List>
+          <Button variant='text'>View my work</Button>
+        </Paper>
+      </Container>
 
       <footer className={styles.footer}>
         <a
