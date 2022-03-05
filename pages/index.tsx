@@ -3,10 +3,13 @@ import Head from 'next/head';
 import Image from 'next/image';
 import styles from '../styles/Home.module.css';
 import { Fade } from 'react-awesome-reveal';
+import Paper from '@mui/material/Paper';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Link from '@mui/material/Link';
 import { JackInTheBox } from 'react-awesome-reveal';
 import Particles from 'react-tsparticles';
 import { IntroCard } from '../components/intro-card';
-import Link from 'next/link';
 
 const particlesOptions: any = {
   background: {
@@ -64,13 +67,17 @@ const Home: NextPage = () => {
     console.log(container);
   };
   return (
-    <div className={styles.container}>
-      <Particles
-        id='tsparticles'
-        init={particlesInit}
-        loaded={particlesLoaded}
-        options={particlesOptions}
-      />
+    <>
+      <div className={styles.container}>
+        <Particles
+          style={{ zIndex: -1 }}
+          id='tsparticles'
+          init={particlesInit}
+          loaded={particlesLoaded}
+          options={particlesOptions}
+        />
+      </div>
+
       <Head>
         <title>Amjad&apos;s Portfolio</title>
         <meta name='description' content="Amjad's Portfolio" />
@@ -84,7 +91,6 @@ const Home: NextPage = () => {
             <a href='https://github.com/AmjadShaaban'>Amjad Shaaban</a>
           </h1>
         </Fade>
-
         <Fade className={styles.description}>
           <h3 className={styles.code}>Full-stack Developer</h3>
         </Fade>
@@ -92,16 +98,24 @@ const Home: NextPage = () => {
           <IntroCard />
         </JackInTheBox> */}
         <Image src='/under_construction.png' width={300} height={200} />
-        <Fade>
-          <div className={styles.code}>
-            Sorry, The page is constantly being updated, I&apos;m doing it solo
-            without a plan so everything is being improvised and thought of on
-            the spot which is mentally draining! I&apos;m a coder not a designer
-            😅😂 here are 2 links <Link href='/dapp'>[Web3 Dapp]</Link> and a
-            still WIP link to my <Link href='/projects'>[projects]</Link> page.
-            all this was done is a day&apos;s work and more updates coming soon.
-          </div>
-        </Fade>
+        <Paper elevation={6} style={{ zIndex: 2, width: '36rem' }}></Paper>
+        <List>
+          <ListItem>
+            <Link href='/blog' underline='hover'>
+              Blog
+            </Link>
+          </ListItem>
+          <ListItem>
+            <Link href='/projects' underline='hover'>
+              Projects
+            </Link>
+          </ListItem>
+          <ListItem>
+            <Link href='/dapp' underline='hover'>
+              DAPP
+            </Link>
+          </ListItem>
+        </List>
       </main>
 
       <footer className={styles.footer}>
@@ -116,7 +130,7 @@ const Home: NextPage = () => {
           </span>
         </a>
       </footer>
-    </div>
+    </>
   );
 };
 
