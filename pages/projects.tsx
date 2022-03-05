@@ -1,125 +1,134 @@
-import type { NextPage } from 'next';
-import { useEffect, useState } from 'react';
-import {
-  Navbar,
-  Container,
-  Nav,
-  Carousel,
-  Card,
-  Row,
-  Col,
-  Accordion,
-} from 'react-bootstrap';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Container from '@mui/material/Container';
+import CssBaseline from '@mui/material/CssBaseline';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
-const projects = [
-  {
-    title: 'PROJECT TITLE',
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis vel aut id et! Beatae, natus consequatur ullam doloremque nulla perferendis ipsa repudiandae labore aperiam et? Illo dolorum maxime excepturi. Placeat?',
-    text2: 'Last updated 3 mins ago',
-  },
-  {
-    title: 'PROJECT TITLE',
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis vel aut id et! Beatae, natus consequatur ullam doloremque nulla perferendis ipsa repudiandae labore aperiam et? Illo dolorum maxime excepturi. Placeat?',
-    text2: 'Last updated 3 mins ago',
-  },
-  {
-    title: 'PROJECT TITLE',
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis vel aut id et! Beatae, natus consequatur ullam doloremque nulla perferendis ipsa repudiandae labore aperiam et? Illo dolorum maxime excepturi. Placeat?',
-    text2: 'Last updated 3 mins ago',
-  },
-  {
-    title: 'PROJECT TITLE',
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis vel aut id et! Beatae, natus consequatur ullam doloremque nulla perferendis ipsa repudiandae labore aperiam et? Illo dolorum maxime excepturi. Placeat?',
-    text2: 'Last updated 3 mins ago',
-  },
-  {
-    title: 'PROJECT TITLE',
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis vel aut id et! Beatae, natus consequatur ullam doloremque nulla perferendis ipsa repudiandae labore aperiam et? Illo dolorum maxime excepturi. Placeat?',
-    text2: 'Last updated 3 mins ago',
-  },
-  {
-    title: 'PROJECT TITLE',
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis vel aut id et! Beatae, natus consequatur ullam doloremque nulla perferendis ipsa repudiandae labore aperiam et? Illo dolorum maxime excepturi. Placeat?',
-    text2: 'Last updated 3 mins ago',
-  },
-  {
-    title: 'PROJECT TITLE',
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis vel aut id et! Beatae, natus consequatur ullam doloremque nulla perferendis ipsa repudiandae labore aperiam et? Illo dolorum maxime excepturi. Placeat?',
-    text2: 'Last updated 3 mins ago',
-  },
-  {
-    title: 'PROJECT TITLE',
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis vel aut id et! Beatae, natus consequatur ullam doloremque nulla perferendis ipsa repudiandae labore aperiam et? Illo dolorum maxime excepturi. Placeat?',
-    text2: 'Last updated 3 mins ago',
-  },
-];
-
-const Portfolio: NextPage = () => {
-  // const [projects, setProjects] = useState([]);
-
+function Copyright() {
   return (
-    <Container fluid className='bg-dark'>
-      <Navbar bg='dark' variant='dark'>
-        <Navbar.Brand href='#home'>Navbar</Navbar.Brand>
-        <Nav className='me-auto'>
-          <Nav.Link href='/'>Home</Nav.Link>
-          <Nav.Link href='#[PH]'>[PH]</Nav.Link>
-          <Nav.Link href='#contact'>Contact</Nav.Link>
-        </Nav>
-      </Navbar>
-      <h2 className='text-light text-center'>Featured Work</h2>
-      <div className='d-flex align-items-center justify-content-center'>
-        <Carousel variant='dark' style={{ width: '64rem' }}>
-          <Carousel.Item>
-            <img
-              className='d-block w-100'
-              src='/800x400.png'
-              alt='First slide'
-            />
-            <Carousel.Caption>
-              <h5>First slide label</h5>
-              <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-            </Carousel.Caption>
-          </Carousel.Item>
-          <Carousel.Item>
-            <img
-              className='d-block w-100'
-              src='/800x400.png'
-              alt='Second slide'
-            />
-            <Carousel.Caption>
-              <h5>Second slide label</h5>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </Carousel.Caption>
-          </Carousel.Item>
-          <Carousel.Item>
-            <img
-              className='d-block w-100'
-              src='/800x400.png'
-              alt='Third slide'
-            />
-            <Carousel.Caption>
-              <h5>Third slide label</h5>
-              <p>
-                Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-              </p>
-            </Carousel.Caption>
-          </Carousel.Item>
-        </Carousel>
-      </div>
-
-      <h3 className='text-light text-center'>My Work</h3>
-      {Array.isArray(projects) &&
-        projects?.map((project, idx) => (
-          <Accordion key={idx} style={{ width: '24rem' }}>
-            <Accordion.Item eventKey={idx.toString()}>
-              <Accordion.Header>{project.title}</Accordion.Header>
-              <Accordion.Body>{project.text}</Accordion.Body>
-            </Accordion.Item>
-          </Accordion>
-        ))}
-    </Container>
+    <Typography variant='body2' color='text.secondary' align='center'>
+      {'Copyright © '}
+      <Link color='inherit' href='https://mui.com/'>
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
   );
-};
+}
 
-export default Portfolio;
+const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+const theme = createTheme();
+
+export default function Album() {
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <main>
+        {/* Hero unit */}
+        <Box
+          sx={{
+            bgcolor: 'background.paper',
+            pt: 8,
+            pb: 6,
+          }}
+        >
+          <Container maxWidth='sm'>
+            <Typography
+              component='h1'
+              variant='h2'
+              align='center'
+              color='text.primary'
+              gutterBottom
+            >
+              Album layout
+            </Typography>
+            <Typography
+              variant='h5'
+              align='center'
+              color='text.secondary'
+              paragraph
+            >
+              Something short and leading about the collection below—its
+              contents, the creator, etc. Make it short and sweet, but not too
+              short so folks don&apos;t simply skip over it entirely.
+            </Typography>
+            <Stack
+              sx={{ pt: 4 }}
+              direction='row'
+              spacing={2}
+              justifyContent='center'
+            >
+              <Button variant='contained'>Main call to action</Button>
+              <Button variant='outlined'>Secondary action</Button>
+            </Stack>
+          </Container>
+        </Box>
+        <Container sx={{ py: 8 }} maxWidth='md'>
+          {/* End hero unit */}
+          <Grid container spacing={4}>
+            {cards.map((card) => (
+              <Grid item key={card} xs={12} sm={6} md={4}>
+                <Card
+                  sx={{
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <CardMedia
+                    component='img'
+                    sx={{
+                      // 16:9
+                      pt: '56.25%',
+                    }}
+                    image='https://source.unsplash.com/random'
+                    alt='random'
+                  />
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <Typography gutterBottom variant='h5' component='h2'>
+                      Heading
+                    </Typography>
+                    <Typography>
+                      This is a media card. You can use this section to describe
+                      the content.
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Button size='small'>View</Button>
+                    <Button size='small'>Edit</Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </main>
+      {/* Footer */}
+      <Box sx={{ bgcolor: 'background.paper', p: 6 }} component='footer'>
+        <Typography variant='h6' align='center' gutterBottom>
+          Footer
+        </Typography>
+        <Typography
+          variant='subtitle1'
+          align='center'
+          color='text.secondary'
+          component='p'
+        >
+          Something here to give the footer a purpose!
+        </Typography>
+        <Copyright />
+      </Box>
+      {/* End footer */}
+    </ThemeProvider>
+  );
+}

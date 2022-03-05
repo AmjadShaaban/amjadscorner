@@ -1,6 +1,9 @@
 import React, { FC } from 'react';
-import Card from 'react-bootstrap/Card';
-
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import { CardActionArea } from '@mui/material';
 interface Wave {
   address?: string;
   message: string;
@@ -9,12 +12,23 @@ interface Wave {
 
 export const WaveCard: FC<{ wave: Wave }> = ({ wave }) => {
   return (
-    <Card bg='light' style={{ width: '20rem' }} className='text-muted'>
-      <Card.Header>From: {wave.address}</Card.Header>
-      <Card.Body className='text-dark'>{wave.message}</Card.Body>
-      <Card.Footer className='text-muted'>
-        On: {wave.timestamp.toString()}
-      </Card.Footer>
+    <Card sx={{ maxWidth: 345 }}>
+      <CardActionArea>
+        <CardMedia
+          component='img'
+          height='140'
+          image='/static/images/cards/contemplative-reptile.jpg'
+          alt='green iguana'
+        />
+        <CardContent>
+          <Typography gutterBottom variant='h5' component='div'>
+            {wave.address}
+          </Typography>
+          <Typography variant='body2' color='text.secondary'>
+            {wave.message}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
     </Card>
   );
 };

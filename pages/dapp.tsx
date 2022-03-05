@@ -1,18 +1,19 @@
 import { useState, useEffect } from 'react';
 import { NextPage } from 'next';
 import { ethers } from 'ethers';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
 import { FaEthereum, FaReact, FaBootstrap } from 'react-icons/fa';
-import { SiSolidity } from 'react-icons/si';
+import { SiSolidity, SiMaterialui } from 'react-icons/si';
 import abi from '../utils/WavePortal.json';
 import { WaveCard } from '../components/wave-card';
+import AppBar from '@mui/material/AppBar';
+import TextField from '@mui/material/TextField';
 
 interface Wave {
   from?: string;
@@ -180,84 +181,58 @@ const Dapp: NextPage = () => {
   }, []);
 
   return (
-    <Container fluid className='bg-dark'>
-      <Navbar variant='dark'>
-        <Navbar.Brand>DAPP</Navbar.Brand>
-        <Nav className='me-auto'>
-          <Nav.Link href='http://amjadscorner.us'>Home</Nav.Link>
-          <NavDropdown title='Projects' id='navbarScrollingDropdown'>
-            <NavDropdown.Item href='#action1'>
-              [PH]Project 2 name
-            </NavDropdown.Item>
-            <NavDropdown.Item href='#action2'>
-              [PH]Project 3 name
-            </NavDropdown.Item>
-            <NavDropdown.Item href='#action3'>
-              [PH]Project 4 name
-            </NavDropdown.Item>
-            <NavDropdown.Item href='#action4'>
-              [PH]Project 5 name
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item href='#action5'>[PH]</NavDropdown.Item>
-          </NavDropdown>
-          <Nav.Link href='#contact'>Contact me!</Nav.Link>
-        </Nav>
-      </Navbar>
-      <p className='text-center text-light fs-1'>Welcome to my first DAPP!</p>
-      <p className='text-center text-light fs-3'>
-        A Web3 app with <SiSolidity size={32} />
-        Solidity + <FaEthereum size={32} />
-        Ethereum smart contract built in <FaReact size={32} /> React +{' '}
-        <FaBootstrap size={32} /> Bootstrap
-      </p>
-      <p className='text-body text-muted text-center fs-6'>
-        Deployed on Rinkeby Test Network!. Wave at me, send a message and you
-        might be one of the lucky prize winners!
-      </p>
-      {!currentAccount && (
-        <Button variant='success' onClick={connectWallet}>
-          Connect to Wallet 💰
-        </Button>
-      )}
-      <Container className='d-flex justify-content-center text-center'>
-        <Form style={{ width: '24rem' }}>
-          <Form.Group className='mb-3' controlId='waveMessageForm'>
-            <Form.Label>Message</Form.Label>
-            <Form.Control
-              type='text'
-              className='text-info'
-              placeholder='Enter your message'
-              onChange={(e) => {
-                setWaveMessage(e.target.value);
-              }}
-            />
-            <Form.Text className='text-muted'>
-              Send a message with your Wave.
-            </Form.Text>
-          </Form.Group>
-          <Button
-            variant='secondary'
-            type='submit'
-            onClick={(e) => {
-              e.preventDefault();
-              wave(waveMessage);
-            }}
+    <>
+      <AppBar position='static'>
+        <Toolbar>
+          <IconButton
+            size='large'
+            edge='start'
+            color='inherit'
+            aria-label='menu'
+            sx={{ mr: 2 }}
           >
-            Send a Wave 👋
-          </Button>
-        </Form>
-      </Container>
-      <Row>
-        {allWaves.map((wave, index) => {
-          return (
-            <Col key={index}>
-              <WaveCard wave={wave} />
-            </Col>
-          );
+            <MenuIcon />
+          </IconButton>
+          <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
+            News
+          </Typography>
+          <Button color='inherit'>Login</Button>
+        </Toolbar>
+      </AppBar>
+      <Box sx={{ mt: 4, mx: 2 }}>
+        <Paper elevation={6}>
+          <Typography variant='h2' component='div'>
+            Welcome to my first DAPP!
+          </Typography>
+          <Typography variant='h3' component='div'>
+            A Web3 app with <SiSolidity size={32} />
+            Solidity + <FaEthereum size={32} />
+            Ethereum smart contract built in <FaReact size={32} /> React +{' '}
+            <SiMaterialui size={32} /> Material UI
+          </Typography>
+          <p className='text-body text-muted text-center fs-6'>
+            Deployed on Rinkeby Test Network!. Wave at me, send a message and
+            you might be one of the lucky prize winners!
+          </p>
+        </Paper>
+        {!currentAccount && (
+          <Button onClick={connectWallet}>Connect to Wallet 💰</Button>
+        )}
+        <TextField id='standard-basic' label='Standard' variant='standard' />
+        <Button
+          type='submit'
+          onClick={(e) => {
+            e.preventDefault();
+            wave(waveMessage);
+          }}
+        >
+          Send a Wave 👋
+        </Button>
+        {allWaves.map((wave, idx) => {
+          return <WaveCard key={idx} wave={wave} />;
         })}
-      </Row>
-    </Container>
+      </Box>
+    </>
   );
 };
 
