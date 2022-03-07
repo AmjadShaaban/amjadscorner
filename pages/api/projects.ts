@@ -57,13 +57,28 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  try {
-    await dbConnect();
-    const newProject = new Project(projects[0]);
-    const saved = await newProject.save();
-    res.status(200).json(saved);
-  } catch (error) {
-    console.log(error);
-    res.status(500).send('error');
+  if (req.method === 'POST') {
+    try {
+      const { body } = req;
+      await dbConnect();
+      console.log('BODY:', req.body);
+      const newProject = new Project(body);
+      const saved = await newProject.save();
+      res.status(200).json(saved);
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: 'Bad Request' });
+    }
+  } else if (req.method === 'GET') {
+    try {
+      await dbConnect();
+      const response = await Project.find({});
+      if (!response) {
+        res.status(404).json({ message: 'Resourses not found' });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
   }
 }
