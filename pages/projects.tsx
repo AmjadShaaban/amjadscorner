@@ -11,25 +11,32 @@ import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
+import { useGetProjects } from '../utils/hooks/api-hooks';
+import { FaGithub, FaLinkedin, FaGlobe } from 'react-icons/fa';
+import { useMemo } from 'react';
+import { ProjectCard } from '../components/project-card';
 
 function Copyright() {
   return (
     <Typography variant='body2' color='text.secondary' align='center'>
       {'Copyright © '}
-      <Link color='inherit' href='https://mui.com/'>
-        Your Website
-      </Link>{' '}
+      <Link color='inherit' href='https://amjadscorner.us'>
+        Amjad's Corner
+      </Link>
       {new Date().getFullYear()}
-      {'.'}
     </Typography>
   );
 }
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
 const theme = createTheme();
 
 export default function Album() {
+  const { data: projectsResponse } = useGetProjects();
+
+  const data = useMemo(
+    () => projectsResponse?.projects ?? [],
+    [projectsResponse?.projects]
+  );
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -77,38 +84,9 @@ export default function Album() {
         <Container sx={{ py: 8 }} maxWidth='md'>
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {cards.map((card) => (
-              <Grid item key={card} xs={12} sm={6} md={4}>
-                <Card
-                  sx={{
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  <CardMedia
-                    component='img'
-                    sx={{
-                      // 16:9
-                      pt: '56.25%',
-                    }}
-                    image='https://source.unsplash.com/random'
-                    alt='random'
-                  />
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant='h5' component='h2'>
-                      Heading
-                    </Typography>
-                    <Typography>
-                      This is a media card. You can use this section to describe
-                      the content.
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size='small'>View</Button>
-                    <Button size='small'>Edit</Button>
-                  </CardActions>
-                </Card>
+            {data.map((project) => (
+              <Grid item key={project._id} xs={12} sm={6} md={4}>
+                <ProjectCard project={project} />
               </Grid>
             ))}
           </Grid>
@@ -117,7 +95,9 @@ export default function Album() {
       {/* Footer */}
       <Box sx={{ bgcolor: 'background.paper', p: 6 }} component='footer'>
         <Typography variant='h6' align='center' gutterBottom>
-          Footer
+          <FaGithub />
+          <FaGlobe />
+          <FaLinkedin />
         </Typography>
         <Typography
           variant='subtitle1'
@@ -125,7 +105,7 @@ export default function Album() {
           color='text.secondary'
           component='p'
         >
-          Something here to give the footer a purpose!
+          Let&apos;s build something amazing!
         </Typography>
         <Copyright />
       </Box>

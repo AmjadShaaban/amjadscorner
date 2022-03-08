@@ -119,7 +119,7 @@ const Home: NextPage = () => {
               </Link>
             </ListItem>
           </List>
-          <Button variant='text'>View my work</Button>
+          <Button variant='outlined'>View my work</Button>
         </Paper>
       </Container>
 
