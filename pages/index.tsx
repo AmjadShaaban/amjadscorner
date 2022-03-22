@@ -94,10 +94,7 @@ const Home: NextPage = () => {
         <Fade className={styles.description}>
           <h3 className={styles.code}>Junior Software Engineer</h3>
         </Fade>
-        <Paper
-          elevation={6}
-          style={{ zIndex: 2, alignItems: 'center', justifyContent: 'center' }}
-        >
+        <Paper elevation={6}>
           <JackInTheBox>
             <IntroCard />
           </JackInTheBox>
