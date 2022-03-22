@@ -1,20 +1,16 @@
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
+import Image from 'next/image';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { useGetProjects } from '../utils/hooks/api-hooks';
-import { FaGithub, FaLinkedin, FaGlobe } from 'react-icons/fa';
 import { useMemo } from 'react';
+import { FaGithub, FaGlobe, FaLinkedin } from 'react-icons/fa';
 import { ProjectCard } from '../components/project-card';
+import { useGetProjects } from '../utils/hooks/api-hooks';
+import { Footer } from '../components/footer';
 
 function Copyright() {
   return (
@@ -22,7 +18,7 @@ function Copyright() {
       {'Copyright © '}
       <Link color='inherit' href='https://amjadscorner.us'>
         Amjad's Corner
-      </Link>
+      </Link>{' '}
       {new Date().getFullYear()}
     </Typography>
   );
@@ -57,7 +53,7 @@ export default function Album() {
               color='text.primary'
               gutterBottom
             >
-              Album layout
+              My Projects
             </Typography>
             <Typography
               variant='h5'
@@ -65,20 +61,12 @@ export default function Album() {
               color='text.secondary'
               paragraph
             >
-              Something short and JUST TO ADD SOMETHING leading about the
-              collection below—its contents, the creator, etc. Make it short and
-              sweet, but not too short so folks don&apos;t simply skip over it
-              entirely.
+              Here&apos;s a list of projects i worked on and little apps i did
+              to demonstrate my abilities. look around and check them out. Any
+              constructive critisism is greatly appreciated.{' '}
+              <Link href='/api/projects'>Click here</Link> For the JSON from the
+              API
             </Typography>
-            <Stack
-              sx={{ pt: 4 }}
-              direction='row'
-              spacing={2}
-              justifyContent='center'
-            >
-              <Button variant='contained'>Main call to action</Button>
-              <Button variant='outlined'>Secondary action</Button>
-            </Stack>
           </Container>
         </Box>
         <Container sx={{ py: 8 }} maxWidth='md'>
@@ -92,24 +80,7 @@ export default function Album() {
           </Grid>
         </Container>
       </main>
-      {/* Footer */}
-      <Box sx={{ bgcolor: 'background.paper', p: 6 }} component='footer'>
-        <Typography variant='h6' align='center' gutterBottom>
-          <FaGithub />
-          <FaGlobe />
-          <FaLinkedin />
-        </Typography>
-        <Typography
-          variant='subtitle1'
-          align='center'
-          color='text.secondary'
-          component='p'
-        >
-          Let&apos;s build something amazing!
-        </Typography>
-        <Copyright />
-      </Box>
-      {/* End footer */}
+      <Footer />
     </ThemeProvider>
   );
 }

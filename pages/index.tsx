@@ -1,17 +1,17 @@
+import { Typography } from '@mui/material';
+import Container from '@mui/material/Container';
+import Link from '@mui/material/Link';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Paper from '@mui/material/Paper';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import styles from '../styles/Home.module.css';
-import { Fade } from 'react-awesome-reveal';
-import Paper from '@mui/material/Paper';
-import List from '@mui/material/List';
-import Button from '@mui/material/Button';
-import ListItem from '@mui/material/ListItem';
-import Link from '@mui/material/Link';
-import Container from '@mui/material/Container';
-import { JackInTheBox } from 'react-awesome-reveal';
+import { Fade, JackInTheBox, AttentionSeeker } from 'react-awesome-reveal';
 import Particles from 'react-tsparticles';
+import { Footer } from '../components/footer';
 import { IntroCard } from '../components/intro-card';
+import styles from '../styles/Home.module.css';
 
 const particlesOptions: any = {
   background: {
@@ -94,47 +94,26 @@ const Home: NextPage = () => {
           </h1>
         </Fade>
         <Fade className={styles.description}>
-          <h3 className={styles.code}>Full-stack Developer</h3>
+          <h3 className={styles.code}>Junior Software Engineer</h3>
         </Fade>
-        <Image src='/amj-portfolio.jpg' width={480} height={320} />
-        <JackInTheBox>
-          <IntroCard />
-        </JackInTheBox>
-        <Paper elevation={6} style={{ zIndex: 2, maxWidth: '36rem' }}>
-          <Image src='/under_construction.png' width={300} height={200} />
-          <List>
-            <ListItem>
-              <Link href='/blog' underline='hover'>
-                Blog
-              </Link>
-            </ListItem>
-            <ListItem>
-              <Link href='/projects' underline='hover'>
-                Projects
-              </Link>
-            </ListItem>
-            <ListItem>
-              <Link href='/dapp' underline='hover'>
-                DAPP
-              </Link>
-            </ListItem>
-          </List>
-          <Button variant='outlined'>View my work</Button>
+        <Paper
+          elevation={6}
+          style={{ zIndex: 2, alignItems: 'center', justifyContent: 'center' }}
+        >
+          <JackInTheBox>
+            <IntroCard />
+          </JackInTheBox>
+          <AttentionSeeker effect='heartBeat'>
+            <img src='/under_construction.png' width={300} height={200} />
+          </AttentionSeeker>
+          <Typography align='center'>
+            <Link href='/projects' underline='hover'>
+              My Projects
+            </Link>
+          </Typography>
+          <Footer />
         </Paper>
       </Container>
-
-      <footer className={styles.footer}>
-        <a
-          href='https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src='/vercel.svg' alt='Vercel Logo' width={72} height={16} />
-          </span>
-        </a>
-      </footer>
     </>
   );
 };

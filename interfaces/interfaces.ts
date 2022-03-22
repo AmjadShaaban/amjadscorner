@@ -4,4 +4,6 @@ export interface Project {
   text: string;
   text2: string;
   img: string;
+  repoUrl?: string;
+  demoUrl?: string;
 }

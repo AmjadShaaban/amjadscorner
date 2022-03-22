@@ -5,8 +5,9 @@ import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import CardActions from '@mui/material/CardActions';
+import Link from '@mui/material/Link';
 import Button from '@mui/material/Button';
-import { FaGithub } from 'react-icons/fa';
+import { FaGithub, FaGlobe } from 'react-icons/fa';
 
 interface ProjectCardProps {
   project: Project;
@@ -23,12 +24,10 @@ export const ProjectCard: FC<ProjectCardProps> = ({ project }) => {
     >
       <CardMedia
         component='img'
-        sx={{
-          // 16:9
-          pt: '56.25%',
-        }}
         image={project.img}
         alt='random'
+        width={263}
+        height={168}
       />
       <CardContent sx={{ flexGrow: 1 }}>
         <Typography gutterBottom variant='h5' component='h2'>
@@ -38,10 +37,12 @@ export const ProjectCard: FC<ProjectCardProps> = ({ project }) => {
         <Typography>{project.text2}</Typography>
       </CardContent>
       <CardActions>
-        <Button size='small'>
+        <Link href={project?.repoUrl || '#'}>
           <FaGithub />
-        </Button>
-        <Button size='small'>DEMO</Button>
+        </Link>
+        <Link href={project?.demoUrl || '#'}>
+          <FaGlobe />
+        </Link>
       </CardActions>
     </Card>
   );
