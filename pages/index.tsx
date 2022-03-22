@@ -104,7 +104,7 @@ const Home: NextPage = () => {
             <IntroCard />
           </JackInTheBox>
           <AttentionSeeker effect='heartBeat'>
-            <img src='/under_construction.png' width={300} height={200} />
+            <Image src='/under_construction.png' width={300} height={200} />
           </AttentionSeeker>
           <Typography align='center'>
             <Link href='/projects' underline='hover'>
