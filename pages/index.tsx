@@ -28,20 +28,13 @@ const Home: NextPage = () => {
         <Fade className={styles.description}>
           <h3 className={styles.code}>Junior Software Engineer</h3>
         </Fade>
-        <Paper elevation={6}>
-          <JackInTheBox>
-            <IntroCard />
-          </JackInTheBox>
-          <AttentionSeeker effect='heartBeat'>
-            <Image src='/under_construction.png' width={300} height={200} />
-          </AttentionSeeker>
-          <Typography align='center'>
-            <Link href='/projects' underline='hover'>
-              My Projects
-            </Link>
-          </Typography>
-          <Footer />
-        </Paper>
+        <JackInTheBox>
+          <IntroCard />
+        </JackInTheBox>
+        <AttentionSeeker effect='heartBeat'>
+          <Image src='/under_construction.png' width={300} height={200} />
+        </AttentionSeeker>
+        <Footer />
       </Container>
     </>
   );
