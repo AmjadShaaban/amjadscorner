@@ -19,18 +19,12 @@ const Home: NextPage = () => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <Container className={styles.main}>
-        <Fade>
-          <h1 className={styles.title}>
-            Hello, I&apos;m{' '}
-            <a href='https://github.com/AmjadShaaban'>Amjad Shaaban</a>
-          </h1>
-        </Fade>
-        <Fade className={styles.description}>
-          <h3 className={styles.code}>Junior Software Engineer</h3>
-        </Fade>
-        <JackInTheBox>
-          <IntroCard />
-        </JackInTheBox>
+        <h1 className={styles.title}>
+          Hello, I&apos;m{' '}
+          <a href='https://github.com/AmjadShaaban'>Amjad Shaaban</a>
+        </h1>
+        <h3 className={styles.code}>Junior Software Engineer</h3>
+        <IntroCard />
         <AttentionSeeker effect='heartBeat'>
           <Image src='/under_construction.png' width={300} height={200} />
         </AttentionSeeker>
