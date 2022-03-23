@@ -3,14 +3,12 @@ import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
-import Image from 'next/image';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { useMemo } from 'react';
-import { FaGithub, FaGlobe, FaLinkedin } from 'react-icons/fa';
+import { Footer } from '../components/footer';
 import { ProjectCard } from '../components/project-card';
 import { useGetProjects } from '../utils/hooks/api-hooks';
-import { Footer } from '../components/footer';
 
 function Copyright() {
   return (
