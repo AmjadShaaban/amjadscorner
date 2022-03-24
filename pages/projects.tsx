@@ -10,18 +10,6 @@ import { Footer } from '../components/footer';
 import { ProjectCard } from '../components/project-card';
 import { useGetProjects } from '../utils/hooks/api-hooks';
 
-function Copyright() {
-  return (
-    <Typography variant='body2' color='text.secondary' align='center'>
-      {'Copyright © '}
-      <Link color='inherit' href='https://amjadscorner.us'>
-        Amjad&apos;s Corner
-      </Link>{' '}
-      {new Date().getFullYear()}
-    </Typography>
-  );
-}
-
 const theme = createTheme();
 
 export default function Album() {
@@ -62,8 +50,7 @@ export default function Album() {
               Here&apos;s a list of projects i worked on and little apps i did
               to demonstrate my abilities. look around and check them out. Any
               constructive critisism is greatly appreciated.{' '}
-              <Link href='/api/projects'>Click here</Link> For the JSON from the
-              API
+              <Link href='/api-json'>Click here</Link> For the JSON from the API
             </Typography>
           </Container>
         </Box>
