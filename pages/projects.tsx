@@ -10,8 +10,6 @@ import { Footer } from '../components/footer';
 import { ProjectCard } from '../components/project-card';
 import { useGetProjects } from '../utils/hooks/api-hooks';
 
-const theme = createTheme();
-
 export default function Album() {
   const { data: projectsResponse } = useGetProjects();
 
@@ -20,10 +18,9 @@ export default function Album() {
     [projectsResponse?.projects]
   );
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <CssBaseline />
       <main>
-        {/* Hero unit */}
         <Box
           sx={{
             bgcolor: 'background.paper',
@@ -55,7 +52,6 @@ export default function Album() {
           </Container>
         </Box>
         <Container sx={{ py: 8 }} maxWidth='md'>
-          {/* End hero unit */}
           <Grid container spacing={4}>
             {data.map((project) => (
               <Grid item key={project._id} xs={12} sm={6} md={4}>
@@ -66,6 +62,6 @@ export default function Album() {
         </Container>
       </main>
       <Footer />
-    </ThemeProvider>
+    </>
   );
 }
