@@ -55,7 +55,7 @@ export const Header: FC = () => {
           ))}
         </div>
         <div
-          className={`mt-5 md:flex items-start justify-start w-full flex-col text-2xl lg:hidden xl:hidden 2xl:hidden ${showMenu}`}
+          className={`mt-5 md:flex items-start justify-start w-full flex-col text-2xl lg:hidden xl:hidden 2xl:hidden 4xl:hidden ${showMenu}`}
         >
           {menuItems.map((item) => (
             <li
