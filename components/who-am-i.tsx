@@ -9,11 +9,10 @@ export const WhoAmI: FC = () => {
           Who am I?
         </h1>
         <Player
-          className='h-1/2'
+          className='h-1/2 max-w-lg'
           autoplay
           loop
           src='https://assets2.lottiefiles.com/packages/lf20_gja1z1ru.json'
-          style={{ height: '500px', width: '500px' }}
         >
           <div className='absolute top-52 right-0 left-0 bottom-0 flex flex-col items-center'>
             <pre>
