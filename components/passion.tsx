@@ -10,12 +10,12 @@ export const Passion: FC = () => {
         </h1>
       </div>
       <div className='md:mx-5 mx-32 shadow-2xl bg-gray-50 -mt-20 rounded-md hover:bg-gray-700 hover:text-white'>
-        <div>
+        <div className='h-full'>
           <Player
+            className=' max-w-sm'
             autoplay
             loop
             src='https://assets1.lottiefiles.com/packages/lf20_ngzwzxib.json'
-            style={{ height: '300px', width: '300px' }}
           ></Player>
         </div>
         <p className='text-xl my-5 font-semibold md:px-5 px-14 py-10'>

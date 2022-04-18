@@ -4,12 +4,12 @@ import { Player } from '@lottiefiles/react-lottie-player';
 export const WhoAmI: FC = () => {
   return (
     <div>
-      <div className='h-screen relative'>
+      <div className='h-full relative'>
         <h1 className='text-4xl text-gray-500 text-center font-bold'>
           Who am I?
         </h1>
         <Player
-          className='h-1/2 max-w-lg'
+          className='max-w-lg'
           autoplay
           loop
           src='https://assets2.lottiefiles.com/packages/lf20_gja1z1ru.json'

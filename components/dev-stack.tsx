@@ -16,19 +16,19 @@ const devStack = [
   },
 ];
 
-export const DevStack = () => {
+export const DevStack: FC = () => {
   return (
     <div className='my-20'>
       <div className='text-center h-52 bg-orange-400'>
         <h1 className='text-white font-bold text-4xl py-10'>My Dev Stack</h1>
       </div>
       <div className='md:mx-5 mx-32 shadow-2xl bg-gray-50 -mt-20 rounded-md hover:bg-gray-700 hover:text-white'>
-        <div>
+        <div className='h-full'>
           <Player
+            className=' max-w-sm'
             autoplay
             loop
             src='https://assets4.lottiefiles.com/packages/lf20_ge4hzqpv.json'
-            style={{ height: '300px', width: '300px' }}
           ></Player>
         </div>
         <div className='grid md:grid-cols-1 grid-cols-3 p-5'>
