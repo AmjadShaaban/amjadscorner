@@ -12,6 +12,7 @@ module.exports = {
       fontFamily: {
         SquarePeg: ['Square Peg', 'cursive'],
         DancingScript: ['Dancing Script', 'cursive'],
+        Kanit: ['Kanit', 'sans-serif'],
       },
     },
     screens: {

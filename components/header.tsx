@@ -2,28 +2,29 @@ import Link from 'next/link';
 import { FaBars } from 'react-icons/fa';
 import { FC, useState } from 'react';
 
+const menuItems = [
+  {
+    title: 'Home',
+    route: '/',
+  },
+  {
+    title: 'Projects',
+    route: '/projects',
+  },
+  {
+    title: 'Contact',
+    route: '/contact',
+  },
+];
+
 export const Header: FC = () => {
   const [showMenu, setShowMenu] = useState('md:hidden');
-  const menuItems = [
-    {
-      title: 'Home',
-      route: '/',
-    },
-    {
-      title: 'Projects',
-      route: '/projects',
-    },
-    {
-      title: 'Contact',
-      route: '/contact',
-    },
-  ];
 
   const activeRoute =
     typeof window !== 'undefined' ? window.location.pathname : '/';
 
   return (
-    <div className='text-white fixed top-0 left-0 right-0 z-50'>
+    <div className='text-white fixed top-0 left-0 right-0 z-50 font-Kanit'>
       <div
         className={`flex bg-theme justify-between items-center p-2 shadow-lg ${
           showMenu !== 'md:hidden' && 'flex-col'
