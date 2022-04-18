@@ -177,7 +177,9 @@ const Home: NextPage = () => {
                   <h1 className='text-xl font-bold'>{col.title}</h1>
                   <hr />
                   {col.items.map((item) => (
-                    <p className='font-semibold mt-2'>{item}</p>
+                    <p key={item} className='font-semibold mt-2'>
+                      {item}
+                    </p>
                   ))}
                 </div>
               ))}
