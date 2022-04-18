@@ -33,7 +33,7 @@ export const Header: FC = () => {
         <div className='flex justify-between items-center w-full'>
           <h1 className='text-4xl font-semibold'>Amjad&apos;s Corner</h1>
           <FaBars
-            className='lg:hidden xl:hidden 2xl:hidden md:flex cursor-pointer'
+            className='lg:hidden xl:hidden 2xl:hidden 4xl:hidden md:flex cursor-pointer'
             onClick={() =>
               showMenu === 'md:hidden'
                 ? setShowMenu('')
