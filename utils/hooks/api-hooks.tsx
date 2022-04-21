@@ -1,7 +1,8 @@
 import { useDataAccess } from '../data-access.provider';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { PostProjectDto } from '../../interfaces/lib/dtos';
+import { PostMessageDto, PostProjectDto } from '../../interfaces/lib/dtos';
 import {
+  MessagesResponse,
   ProjectResponse,
   ProjectsResponse,
 } from '../../interfaces/lib/responses';
@@ -41,6 +42,43 @@ export const usePostProject = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['projects']);
+      },
+    }
+  );
+};
+
+export const useGetMessages = () => {
+  const { axiosInstance } = useDataAccess();
+
+  return useQuery(
+    ['messages'],
+    async ({ signal }) => {
+      const response = await axiosInstance.get<MessagesResponse>('/contact', {
+        signal,
+      });
+
+      return response.data;
+    },
+    {
+      initialData: {
+        messages: [],
+      },
+    }
+  );
+};
+
+export const usePostMessage = () => {
+  const queryClient = useQueryClient();
+  const { axiosInstance } = useDataAccess();
+
+  return useMutation(
+    async (dto: PostMessageDto) => {
+      const response = await axiosInstance.post('/contact', dto);
+      return response.data;
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['messages']);
       },
     }
   );

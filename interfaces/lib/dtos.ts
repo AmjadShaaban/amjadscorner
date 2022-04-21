@@ -4,3 +4,9 @@ export interface PostProjectDto {
   text2: string;
   img: string;
 }
+
+export interface PostMessageDto {
+  name: string;
+  email: string;
+  message: string;
+}

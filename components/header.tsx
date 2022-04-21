@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { FaBars } from 'react-icons/fa';
 import { FC, useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 const menuItems = [
   {
@@ -19,6 +20,8 @@ const menuItems = [
 
 export const Header: FC = () => {
   const [showMenu, setShowMenu] = useState('md:hidden');
+
+  const { data, status } = useSession();
 
   const activeRoute =
     typeof window !== 'undefined' ? window.location.pathname : '/';
@@ -41,7 +44,11 @@ export const Header: FC = () => {
             }
           />
         </div>
-
+        {status === 'authenticated' ? (
+          <div>Authenticated {data?.user?.email}</div>
+        ) : (
+          <div>Not</div>
+        )}
         <div className='flex md:hidden text-2xl'>
           {menuItems.map((item) => (
             <li

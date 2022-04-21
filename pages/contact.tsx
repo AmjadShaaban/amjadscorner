@@ -2,11 +2,14 @@ import { NextPage } from 'next';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { Layout } from '../components/layout';
 import { useState } from 'react';
+import { usePostMessage } from '../utils/hooks/api-hooks';
 
 const Contact: NextPage = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+
+  const { mutateAsync: doPost, isLoading: posting } = usePostMessage();
 
   return (
     <Layout>
@@ -26,17 +29,20 @@ const Contact: NextPage = () => {
               type='text'
               className='w-full border-2 border-gray-400 rounded-md p-1 shadow-lg mt-5'
               placeholder='Name'
+              value={name}
               onChange={(e) => setName(e.target.value)}
             />
             <input
               type='text'
               className='w-full border-2 border-gray-400 rounded-md p-1 shadow-lg mt-5'
               placeholder='Email'
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
             <textarea
               className='w-full border-2 border-gray-400 rounded-md p-1 shadow-lg mt-5'
               placeholder='Message'
+              value={message}
               onChange={(e) => setMessage(e.target.value)}
             />
             <button
@@ -45,7 +51,10 @@ const Contact: NextPage = () => {
               onClick={(e) => {
                 e.preventDefault();
                 let data = { name, email, message };
-                console.log('data: ', data);
+                doPost(data);
+                setName('');
+                setEmail('');
+                setMessage('');
               }}
             >
               Submit

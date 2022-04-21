@@ -7,3 +7,15 @@ export interface Project {
   repoUrl?: string;
   demoUrl?: string;
 }
+
+export interface Message {
+  _id?: string;
+  name: string;
+  email: string;
+  message: string;
+}
+
+export enum Roles {
+  ADMIN = 'ADMIN',
+  USER = 'USER',
+}

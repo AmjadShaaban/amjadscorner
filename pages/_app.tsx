@@ -5,6 +5,7 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import type { AppProps } from 'next/app';
 import { DataAccessContextProvider } from '../utils/data-access.provider';
+import { SessionProvider } from 'next-auth/react';
 import { QueryClient } from 'react-query';
 import axios from 'axios';
 
@@ -25,9 +26,11 @@ const queryClient = new QueryClient({
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <DataAccessContextProvider {...{ axiosInstance, queryClient }}>
-      <Component {...pageProps} />
-    </DataAccessContextProvider>
+    <SessionProvider>
+      <DataAccessContextProvider {...{ axiosInstance, queryClient }}>
+        <Component {...pageProps} />
+      </DataAccessContextProvider>
+    </SessionProvider>
   );
 }
 
