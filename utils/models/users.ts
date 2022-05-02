@@ -15,7 +15,7 @@ const UserSchema = new mongoose.Schema(
     password: { type: String, required: true },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    role: { type: String, enum: Object.values(Roles), default: Roles.ADMIN },
+    role: { type: String, enum: Object.values(Roles), default: Roles.USER },
   },
   { timestamps: true }
 );

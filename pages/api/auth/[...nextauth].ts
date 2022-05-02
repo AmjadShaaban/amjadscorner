@@ -9,13 +9,14 @@ interface Credentials {
   password: string;
 }
 export default NextAuth({
+  secret: process.env.NEXTAUTH_SECRET,
   session: { strategy: 'jwt' },
   providers: [
     CredentialsProvider({
       //@ts-expect-error
       async authorize(credentials: Credentials) {
         const { username, password } = credentials;
-        await dbConnect();
+        const client = await dbConnect();
         const user = await User.findOne({ email: username });
 
         if (!user) {

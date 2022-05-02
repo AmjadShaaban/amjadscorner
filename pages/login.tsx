@@ -28,7 +28,7 @@ const Login: NextPage = () => {
         className='bg-red-600 rounded text-white px-5 py-1 mt-4'
         onClick={(e) => {
           e.preventDefault();
-          signIn('credentials', { redirect: false, username, password }).then(
+          signIn('credentials', { callbackUrl: '/', username, password }).then(
             (r) => console.log(r)
           );
         }}
