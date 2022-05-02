@@ -44,10 +44,8 @@ export const Header: FC = () => {
             }
           />
         </div>
-        {status === 'authenticated' ? (
+        {status === 'authenticated' ?? (
           <div>Authenticated {data?.user?.email}</div>
-        ) : (
-          <div>Not</div>
         )}
         <div className='flex md:hidden text-2xl'>
           {menuItems.map((item) => (
