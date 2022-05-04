@@ -16,7 +16,7 @@ export default NextAuth({
       //@ts-expect-error
       async authorize(credentials: Credentials) {
         const { username, password } = credentials;
-        const client = await dbConnect();
+        await dbConnect();
         const user = await User.findOne({ email: username });
 
         if (!user) {
@@ -30,13 +30,25 @@ export default NextAuth({
         }
 
         let authenticatedUser = {
-          firstName: user.firstName,
-          lastName: user.lastName,
+          name: user.firstName + ' ' + user.lastName,
           email: user.email,
+          id: user._id,
+          role: user.role,
         };
 
         return authenticatedUser;
       },
     }),
   ],
+  callbacks: {
+    jwt: async ({ token, user }) => {
+      user && (token.user = user);
+      return token;
+    },
+    session: async ({ session, token }) => {
+      //@ts-expect-error
+      session.user = token.user;
+      return session;
+    },
+  },
 });

@@ -10,3 +10,10 @@ export interface PostMessageDto {
   email: string;
   message: string;
 }
+
+export interface PostSignUpDto {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}

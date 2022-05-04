@@ -15,6 +15,13 @@ export interface Message {
   message: string;
 }
 
+export interface User {
+  _id?: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
 export enum Roles {
   ADMIN = 'ADMIN',
   USER = 'USER',

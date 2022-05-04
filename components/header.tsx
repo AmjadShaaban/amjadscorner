@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { FaBars } from 'react-icons/fa';
 import { FC, useState } from 'react';
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 
 const menuItems = [
   {
@@ -34,7 +34,16 @@ export const Header: FC = () => {
         }`}
       >
         <div className='flex justify-between items-center w-full'>
-          <h1 className='text-4xl font-semibold'>Amjad&apos;s Corner</h1>
+          {status === 'authenticated' ? (
+            <>
+              <div>Welcome: {data?.user?.name}</div>
+              <button className=' cursor-pointer' onClick={() => signOut()}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <h1 className='text-4xl font-semibold'>Amjad&apos;s Corner</h1>
+          )}
           <FaBars
             className='lg:hidden xl:hidden 2xl:hidden 4xl:hidden md:flex cursor-pointer'
             onClick={() =>
@@ -44,9 +53,7 @@ export const Header: FC = () => {
             }
           />
         </div>
-        {status === 'authenticated' ?? (
-          <div>Authenticated {data?.user?.email}</div>
-        )}
+
         <div className='flex md:hidden text-2xl'>
           {menuItems.map((item) => (
             <li

@@ -1,6 +1,10 @@
 import { useDataAccess } from '../data-access.provider';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { PostMessageDto, PostProjectDto } from '../../interfaces/lib/dtos';
+import {
+  PostMessageDto,
+  PostProjectDto,
+  PostSignUpDto,
+} from '../../interfaces/lib/dtos';
 import {
   MessagesResponse,
   ProjectResponse,
@@ -82,4 +86,13 @@ export const usePostMessage = () => {
       },
     }
   );
+};
+
+export const usePostSignUp = () => {
+  const { axiosInstance } = useDataAccess();
+
+  return useMutation(async (dto: PostSignUpDto) => {
+    const response = await axiosInstance.post('/auth/signup', dto);
+    return response.data;
+  });
 };
