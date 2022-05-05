@@ -15,10 +15,10 @@ const Messages: NextPage = () => {
     <Layout>
       {isFetching ? (
         <h1>LOADING...</h1>
+      ) : status !== 'authenticated' ? (
+        <h1>NOT AUTHENTICATED</h1>
       ) : session?.user?.role !== 'ADMIN' ? (
         <h1>NOT AUTHORIZED</h1>
-      ) : status === 'unauthenticated' ? (
-        <h1>NOT AUTHENTICATED</h1>
       ) : (
         <>
           <div>
