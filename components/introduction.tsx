@@ -3,8 +3,8 @@ import { Player } from '@lottiefiles/react-lottie-player';
 
 export const Introduction: FC = () => {
   return (
-    <div className='bg-theme h-screen'>
-      <div className='grid bg-theme md:grid-cols-1 grid-cols-2 h-full items-center border-4 md:border-0 mx-10 border-white transform rotate-12 md:rotate-0'>
+    <div className='bg-theme'>
+      <div className='grid bg-theme md:grid-cols-1 grid-cols-2 items-center border-4 md:border-0 mx-10 border-white transform rotate-12 md:rotate-0'>
         <div className='h-full  md:mt-16'>
           <Player
             className='h-1/2 md:h-80'

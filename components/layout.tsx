@@ -9,7 +9,7 @@ export const Layout = ({ children }: Props) => {
   return (
     <div>
       <Header />
-      <div>{children}</div>
+      <div className=' mt-14 mb-24'>{children}</div>
       <Footer />
     </div>
   );
