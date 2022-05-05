@@ -2,8 +2,8 @@ import { Player } from '@lottiefiles/react-lottie-player';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { Layout } from '../components/layout';
-import { usePostSignUp } from '../utils/hooks/api-hooks';
+import { Layout } from '../components';
+import { usePostSignUp } from '../utils/hooks';
 
 const SignUp: NextPage = () => {
   const [firstName, setFirstName] = useState('');

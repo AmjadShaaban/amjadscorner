@@ -1,6 +1,6 @@
-import dbConnect from '../../utils/dbConnect';
+import { dbConnect } from '../../utils';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { Project } from '../../utils/models/projects';
+import { Project } from '../../utils/models';
 
 export default async function handler(
   req: NextApiRequest,

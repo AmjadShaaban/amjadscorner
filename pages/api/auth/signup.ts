@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { hashPassword } from '../../../utils/auth';
-import dbConnect from '../../../utils/dbConnect';
-import { User } from '../../../utils/models/users';
+import { hashPassword } from '../../../utils';
+import { dbConnect } from '../../../utils';
+import { User } from '../../../utils/models';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') {

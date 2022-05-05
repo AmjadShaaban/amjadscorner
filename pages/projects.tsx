@@ -1,8 +1,8 @@
 import { Player } from '@lottiefiles/react-lottie-player';
 import { NextPage } from 'next';
 import Image from 'next/image';
-import { Layout } from '../components/layout';
-import { useGetProjects } from '../utils/hooks/api-hooks';
+import { Layout } from '../components';
+import { useGetProjects } from '../utils/hooks';
 import { FaGithub } from 'react-icons/fa';
 
 const Projects: NextPage = () => {

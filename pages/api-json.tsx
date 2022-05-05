@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import { useMemo } from 'react';
-import { useGetProjects } from '../utils/hooks/api-hooks';
+import { useGetProjects } from '../utils/hooks';
 
 const APIJSON: NextPage = () => {
   const { data: projectsResponse } = useGetProjects();

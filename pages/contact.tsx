@@ -1,8 +1,8 @@
 import { Player } from '@lottiefiles/react-lottie-player';
 import { NextPage } from 'next';
 import { useState } from 'react';
-import { Layout } from '../components/layout';
-import { usePostMessage } from '../utils/hooks/api-hooks';
+import { Layout } from '../components';
+import { usePostMessage } from '../utils/hooks';
 
 const Contact: NextPage = () => {
   const [name, setName] = useState('');
