@@ -21,9 +21,6 @@ const Messages: NextPage = () => {
   //     console.log(loadedSession);
   //   });
   // });
-  if (isFetching || status === 'loading') {
-    return <p>LOADING...</p>;
-  }
   if (status === 'unauthenticated') {
     return <p>Not Authenticated</p>;
   }
@@ -33,31 +30,37 @@ const Messages: NextPage = () => {
   }
   return (
     <Layout>
-      <div className=' mt-16'>
-        <div>
-          <Player
-            className='max-w-xs'
-            autoplay
-            loop
-            src='https://assets9.lottiefiles.com/private_files/lf30_odansovk.json'
-          ></Player>
-        </div>
-        {data?.messages?.map((msg) => (
-          <div key={msg._id}>
-            <div className='w-screen flex justify-center m-10'>
-              <div className='md:w-full w-1/2 p-10 shadow-2xl bg-gray-100 rounded'>
-                <FiDelete
-                  className=' text-red-500 text-right cursor-pointer'
-                  onClick={() => console.log('deleting msg id: ', msg._id)}
-                />
-                <h3 className='font-bold text-orange-500'>From: {msg.name}</h3>
-                <p className=' text-center italic'>{msg.message}</p>
-                <Link href={`mailto:${msg.email}`}>Reply</Link>
+      {isFetching ? (
+        <p>LOADING...</p>
+      ) : (
+        <>
+          <div>
+            <Player
+              className='max-w-xs'
+              autoplay
+              loop
+              src='https://assets9.lottiefiles.com/private_files/lf30_odansovk.json'
+            ></Player>
+          </div>
+          {data?.messages?.map((msg) => (
+            <div key={msg._id}>
+              <div className='w-screen flex justify-center m-10'>
+                <div className='md:w-full w-1/2 p-10 shadow-2xl bg-gray-100 rounded'>
+                  <FiDelete
+                    className=' text-red-500 text-right cursor-pointer'
+                    onClick={() => console.log('deleting msg id: ', msg._id)}
+                  />
+                  <h3 className='font-bold text-orange-500'>
+                    From: {msg.name}
+                  </h3>
+                  <p className=' text-center italic'>{msg.message}</p>
+                  <Link href={`mailto:${msg.email}`}>Reply</Link>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </>
+      )}
     </Layout>
   );
 };
