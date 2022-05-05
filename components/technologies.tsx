@@ -13,7 +13,7 @@ export const Technologies: FC = () => {
         {ICONS_DATA.map((item) => {
           const { icon } = item;
           return (
-            <Tooltip key={item.title} title={item.title} position='left'>
+            <Tooltip key={item.title} title={item.title} position='bottom'>
               {icon}
             </Tooltip>
           );
