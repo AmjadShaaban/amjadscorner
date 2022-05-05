@@ -1,7 +1,7 @@
-import { NextPage } from 'next';
 import { Player } from '@lottiefiles/react-lottie-player';
-import { Layout } from '../components/layout';
+import { NextPage } from 'next';
 import { useState } from 'react';
+import { Layout } from '../components/layout';
 import { usePostMessage } from '../utils/hooks/api-hooks';
 
 const Contact: NextPage = () => {
@@ -25,40 +25,44 @@ const Contact: NextPage = () => {
         <div className='w-screen flex justify-center'>
           <div className='md:w-full w-1/2 p-10 shadow-2xl bg-gray-100 rounded'>
             <h1 className='text-2xl font-semibold'>Get in touch with me!</h1>
-            <input
-              type='text'
-              className='w-full border-2 border-gray-400 rounded-md p-1 shadow-lg mt-5'
-              placeholder='Name'
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <input
-              type='text'
-              className='w-full border-2 border-gray-400 rounded-md p-1 shadow-lg mt-5'
-              placeholder='Email'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <textarea
-              className='w-full border-2 border-gray-400 rounded-md p-1 shadow-lg mt-5'
-              placeholder='Message'
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            />
-            <button
-              type='submit'
-              className='bg-red-600 rounded text-white px-5 py-1 mt-4'
-              onClick={(e) => {
+            <form
+              onSubmit={(e) => {
                 e.preventDefault();
                 let data = { name, email, message };
-                doPost(data);
-                setName('');
-                setEmail('');
-                setMessage('');
+                doPost(data).finally(() => {
+                  setName('');
+                  setEmail('');
+                  setMessage('');
+                });
               }}
             >
-              Submit
-            </button>
+              <input
+                type='text'
+                className='w-full border-2 border-gray-400 rounded-md p-1 shadow-lg mt-5'
+                placeholder='Name'
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <input
+                type='text'
+                className='w-full border-2 border-gray-400 rounded-md p-1 shadow-lg mt-5'
+                placeholder='Email'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <textarea
+                className='w-full border-2 border-gray-400 rounded-md p-1 shadow-lg mt-5'
+                placeholder='Message'
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+              />
+              <button
+                type='submit'
+                className='bg-red-600 rounded text-white px-5 py-1 mt-4'
+              >
+                Submit
+              </button>
+            </form>
           </div>
         </div>
       </div>

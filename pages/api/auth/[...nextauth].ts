@@ -32,24 +32,22 @@ export default NextAuth({
         let authenticatedUser = {
           name: user.firstName + ' ' + user.lastName,
           email: user.email,
-          // id: user._id,
+          role: user.role,
+          id: user._id,
         };
 
         return authenticatedUser;
       },
     }),
   ],
-  // callbacks: {
-  // jwt: async ({ token }) => {
-  //   // user && (token.user = user);
-  //   console.log({ token });
-  //   return token;
-  // },
-  // session: async ({ session, token }) => {
-  //   console.log('1', { session });
-  //   session.user.id = token.sub;
-  //   console.log('2', { session });
-  //   return session;
-  // },
-  // },
+  callbacks: {
+    jwt: async ({ token }) => {
+      return token;
+    },
+    session: async ({ session, token }) => {
+      // session.user.id = token.sub;
+      session.user.role = token.role;
+      return session;
+    },
+  },
 });

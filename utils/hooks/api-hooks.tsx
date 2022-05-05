@@ -88,6 +88,23 @@ export const usePostMessage = () => {
   );
 };
 
+export const useDeleteMessage = () => {
+  const queryClient = useQueryClient();
+  const { axiosInstance } = useDataAccess();
+
+  return useMutation(
+    async (msgId: string | undefined) => {
+      const response = await axiosInstance.delete(`/message/${msgId}`);
+      return response.data;
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['messages']);
+      },
+    }
+  );
+};
+
 export const usePostSignUp = () => {
   const { axiosInstance } = useDataAccess();
 
