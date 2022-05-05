@@ -1,19 +1,11 @@
-import { NextPage } from 'next';
-import { useRouter } from 'next/router';
+import { NextPage, NextPageContext } from 'next';
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { Layout } from '../components/layout';
 import { Player } from '@lottiefiles/react-lottie-player';
-import { useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 
 const Login: NextPage = () => {
-  const router = useRouter();
-
-  const { status } = useSession();
-
-  if (status === 'authenticated') {
-    router.replace('/');
-  }
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -60,6 +52,22 @@ const Login: NextPage = () => {
       </div>
     </Layout>
   );
+};
+
+export const getServerSideProps = async (context: NextPageContext) => {
+  const session = await getSession({ req: context.req });
+  if (session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session },
+  };
 };
 
 export default Login;
