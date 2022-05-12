@@ -36,10 +36,15 @@ export const Header: FC = () => {
         <div className='flex justify-between items-center w-full'>
           {status === 'authenticated' ? (
             <>
-              <div>Welcome: {data?.user?.name}</div>
-              <button className=' cursor-pointer' onClick={() => signOut()}>
-                Logout
-              </button>
+              <div className=' text-4xl'>
+                Welcome: {data?.user?.name}{' '}
+                <button
+                  className=' cursor-pointer rounded mx-5 p-1 text-2xl bg-white text-theme'
+                  onClick={() => signOut()}
+                >
+                  Logout
+                </button>
+              </div>
             </>
           ) : (
             <h1 className='text-4xl font-semibold'>Amjad&apos;s Corner</h1>
