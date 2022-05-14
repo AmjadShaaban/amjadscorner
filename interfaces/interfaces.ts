@@ -22,6 +22,21 @@ export interface User {
   email: string;
 }
 
+export interface Todo {
+  _id?: string;
+  label: string;
+  listId: string;
+  done: boolean;
+  deleted: boolean;
+}
+
+export interface TodoList {
+  _id?: string;
+  label: string;
+  owner: string;
+  todos: Todo[];
+}
+
 export enum Roles {
   ADMIN = 'ADMIN',
   USER = 'USER',

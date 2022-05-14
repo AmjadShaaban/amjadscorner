@@ -17,3 +17,12 @@ export interface PostSignUpDto {
   email: string;
   password: string;
 }
+
+export interface PostTodoListDto {
+  label: string;
+}
+
+export interface PostTodoDto {
+  label: string;
+  listId: string | undefined;
+}
