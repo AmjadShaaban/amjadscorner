@@ -19,9 +19,7 @@ export const WhoAmI: FC = () => {
               {JSON.stringify(
                 {
                   name: 'Amjad Shaaban',
-                  age:
-                    new Date().getFullYear() -
-                    new Date('July 8, 1983').getFullYear(),
+                  age: null,
                   gender: 'Male',
                   country: 'USA',
                 },
