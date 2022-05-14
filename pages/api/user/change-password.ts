@@ -11,7 +11,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (method) {
     case 'PATCH':
       {
-        const session = await getSession({ req: req });
+        const session = await getSession({ req });
         if (!session) {
           res.status(401).json({ message: 'not authenticated' });
           return;
