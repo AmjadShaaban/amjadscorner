@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import { usePostTodo } from '../../utils/hooks';
 
 interface AddTodoListItemProps {
-  listId: string | undefined;
+  listId: string;
 }
 
 export const AddTodoListItem: FC<AddTodoListItemProps> = ({ listId }) => {

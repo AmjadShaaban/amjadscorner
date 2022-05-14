@@ -1,5 +1,5 @@
 export interface Project {
-  _id?: string;
+  _id: string;
   title: string;
   text: string;
   text2: string;
@@ -9,21 +9,21 @@ export interface Project {
 }
 
 export interface Message {
-  _id?: string;
+  _id: string;
   name: string;
   email: string;
   message: string;
 }
 
 export interface User {
-  _id?: string;
+  _id: string;
   firstName: string;
   lastName: string;
   email: string;
 }
 
 export interface Todo {
-  _id?: string;
+  _id: string;
   label: string;
   listId: string;
   done: boolean;
@@ -31,7 +31,7 @@ export interface Todo {
 }
 
 export interface TodoList {
-  _id?: string;
+  _id: string;
   label: string;
   owner: string;
   todos: Todo[];
