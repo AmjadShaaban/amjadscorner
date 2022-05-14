@@ -4,11 +4,14 @@ import {
   PostMessageDto,
   PostProjectDto,
   PostSignUpDto,
+  PostTodoDto,
+  PostTodoListDto,
 } from '../../interfaces/lib/dtos';
 import {
   MessagesResponse,
   ProjectResponse,
   ProjectsResponse,
+  TodoListsResponse,
 } from '../../interfaces/lib/responses';
 
 export const useGetProjects = () => {
@@ -93,7 +96,7 @@ export const useDeleteMessage = () => {
   const { axiosInstance } = useDataAccess();
 
   return useMutation(
-    async (msgId: string | undefined) => {
+    async (msgId: string) => {
       const response = await axiosInstance.delete(`/message/${msgId}`);
       return response.data;
     },
@@ -113,3 +116,72 @@ export const usePostSignUp = () => {
     return response.data;
   });
 };
+
+export const usePostTodoList = () => {
+  const queryClient = useQueryClient();
+  const { axiosInstance } = useDataAccess();
+
+  return useMutation(
+    async (dto: PostTodoListDto) => {
+      const response = await axiosInstance.post('/user/todo/lists', dto);
+      return response.data;
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['todoLists']);
+      },
+    }
+  );
+};
+
+export const useGetTodoLists = () => {
+  const { axiosInstance } = useDataAccess();
+  return useQuery(
+    ['todoLists'],
+    async ({ signal }) => {
+      const response = await axiosInstance.get<TodoListsResponse>(
+        '/user/todo/lists',
+        { signal }
+      );
+
+      return response.data;
+    },
+    {
+      initialData: {
+        todoLists: [],
+      },
+    }
+  );
+};
+
+export const usePostTodo = () => {
+  const queryClient = useQueryClient();
+  const { axiosInstance } = useDataAccess();
+
+  return useMutation(
+    async (dto: PostTodoDto) => {
+      const response = await axiosInstance.post(
+        `/user/todo/list/${dto.listId}/`,
+        dto
+      );
+      return response.data;
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['todoLists']);
+      },
+    }
+  );
+};
+
+// export const useGetListTodos = () => {
+//   const { axiosInstance } = useDataAccess();
+
+//   return useQuery(['todos'], async ({ signal }) => {
+//     const response = await axiosInstance.get<TodosResponse>(
+//       `/user/todo/list/${listId}`,
+//       { signal }
+//     );
+//     return response.data;
+//   });
+// };
