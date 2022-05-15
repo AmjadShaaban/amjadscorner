@@ -1,7 +1,6 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { verifyPassword } from '../../../utils';
-import { dbConnect } from '../../../utils';
+import { dbConnect, verifyPassword } from '../../../utils';
 import { User } from '../../../utils/models';
 
 interface Credentials {

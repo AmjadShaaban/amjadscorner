@@ -1,7 +1,7 @@
+import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { FaBars } from 'react-icons/fa';
 import { FC, useState } from 'react';
-import { useSession, signOut } from 'next-auth/react';
+import { FaBars } from 'react-icons/fa';
 
 const menuItems = [
   {

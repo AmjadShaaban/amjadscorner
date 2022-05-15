@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { hashPassword } from '../../../utils';
-import { dbConnect } from '../../../utils';
+import { dbConnect, hashPassword } from '../../../utils';
 import { User } from '../../../utils/models';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

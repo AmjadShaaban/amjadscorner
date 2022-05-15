@@ -1,19 +1,19 @@
-import { useState, useEffect } from 'react';
-import { NextPage } from 'next';
-import { ethers } from 'ethers';
+import MenuIcon from '@mui/icons-material/Menu';
+import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import { FaEthereum, FaReact, FaBootstrap } from 'react-icons/fa';
-import { SiSolidity, SiMaterialui } from 'react-icons/si';
-import abi from '../utils/WavePortal.json';
-import { WaveCard } from '../components/wave-card';
-import AppBar from '@mui/material/AppBar';
+import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import { ethers } from 'ethers';
+import { NextPage } from 'next';
+import { useEffect, useState } from 'react';
+import { FaEthereum, FaReact } from 'react-icons/fa';
+import { SiMaterialui, SiSolidity } from 'react-icons/si';
+import { WaveCard } from '../components/wave-card';
+import abi from '../utils/WavePortal.json';
 
 interface Wave {
   from?: string;

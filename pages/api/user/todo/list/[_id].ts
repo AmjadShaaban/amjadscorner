@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
 import { dbConnect } from '../../../../../utils';
-import { TodoList, Todo } from '../../../../../utils/models';
+import { Todo, TodoList } from '../../../../../utils/models';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { method } = req;

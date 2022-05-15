@@ -1,4 +1,4 @@
-import mongoose, { Mongoose } from 'mongoose';
+import mongoose from 'mongoose';
 //@ts-expect-error it can be undefiend
 const MONGODB_URI: string = process.env.MONGODB_URI;
 

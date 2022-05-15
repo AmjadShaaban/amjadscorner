@@ -1,12 +1,12 @@
+import Link from 'next/link';
 import { FC } from 'react';
 import {
   FaGithub,
-  FaLinkedin,
   FaGlobeAmericas,
+  FaLinkedin,
   FaMailBulk,
 } from 'react-icons/fa';
-import { SiVercel, SiNextdotjs } from 'react-icons/si';
-import Link from 'next/link';
+import { SiNextdotjs, SiVercel } from 'react-icons/si';
 
 export const Footer: FC = () => {
   return (

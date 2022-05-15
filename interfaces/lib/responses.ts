@@ -1,4 +1,4 @@
-import { Project, Message, User, TodoList } from '../interfaces';
+import { Message, Project, TodoList, User } from '../interfaces';
 
 export interface ProjectResponse {
   project: Project;

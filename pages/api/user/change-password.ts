@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
-import { hashPassword, verifyPassword } from '../../../utils/auth';
 import { dbConnect } from '../../../utils';
+import { hashPassword, verifyPassword } from '../../../utils/auth';
 import { User } from '../../../utils/models/users';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

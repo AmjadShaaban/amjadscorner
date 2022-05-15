@@ -1,8 +1,7 @@
-import { createContext } from '../utils/create-context';
 import { AxiosInstance } from 'axios';
-
 import { FC } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { createContext } from '../utils/create-context';
 
 interface DataAccessContext {
   axiosInstance: AxiosInstance;

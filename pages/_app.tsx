@@ -1,14 +1,14 @@
-import '../styles/globals.css';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import 'react-tippy/dist/tippy.css';
-import type { AppProps } from 'next/app';
-import { DataAccessContextProvider } from '../utils/data-access.provider';
-import { SessionProvider } from 'next-auth/react';
-import { QueryClient } from 'react-query';
 import axios from 'axios';
+import { SessionProvider } from 'next-auth/react';
+import type { AppProps } from 'next/app';
+import { QueryClient } from 'react-query';
+import 'react-tippy/dist/tippy.css';
+import '../styles/globals.css';
+import { DataAccessContextProvider } from '../utils/data-access.provider';
 
 const axiosInstance = axios.create({
   baseURL: '/api',

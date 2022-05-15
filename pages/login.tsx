@@ -1,9 +1,8 @@
-import { NextPage, NextPageContext } from 'next';
-import { useState } from 'react';
-import { signIn } from 'next-auth/react';
-import { Layout } from '../components';
 import { Player } from '@lottiefiles/react-lottie-player';
-import { getSession } from 'next-auth/react';
+import { NextPage, NextPageContext } from 'next';
+import { getSession, signIn } from 'next-auth/react';
+import { useState } from 'react';
+import { Layout } from '../components';
 
 const Login: NextPage = () => {
   const [username, setUsername] = useState('');

@@ -1,5 +1,5 @@
-import { FC } from 'react';
 import { Player } from '@lottiefiles/react-lottie-player';
+import { FC } from 'react';
 
 export const Passion: FC = () => {
   return (

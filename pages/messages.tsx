@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { FiDelete } from 'react-icons/fi';
 import { Layout } from '../components';
-import { useGetMessages, useDeleteMessage } from '../utils/hooks';
+import { useDeleteMessage, useGetMessages } from '../utils/hooks';
 
 const Messages: NextPage = () => {
   const { data: session, status } = useSession();

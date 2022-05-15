@@ -1,4 +1,3 @@
-import { useDataAccess } from '../data-access.provider';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import {
   PostMessageDto,
@@ -13,6 +12,7 @@ import {
   ProjectsResponse,
   TodoListsResponse,
 } from '../../interfaces/lib/responses';
+import { useDataAccess } from '../data-access.provider';
 
 export const useGetProjects = () => {
   const { axiosInstance } = useDataAccess();
