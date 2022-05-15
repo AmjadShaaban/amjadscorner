@@ -6,6 +6,7 @@ import { TodoList, Todo } from '../../../../../utils/models';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { method } = req;
   const { listId, label } = req.body;
+  const { _id } = req.query;
 
   const session = await getSession({ req });
   if (!session) {
@@ -31,7 +32,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       case 'POST':
         {
           await dbConnect();
-          console.log({ method, listId, label });
 
           let todoList = await TodoList.findById(listId);
           if (!todoList) {
@@ -43,7 +43,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             });
             await newTodo.save();
 
-            todoList.todos = [...todoList.todos, newTodo._id];
+            todoList.todos.push(newTodo);
 
             await todoList.save();
 
@@ -51,6 +51,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           }
         }
         break;
+      case 'DELETE': {
+        try {
+          await dbConnect();
+          const todoList = await TodoList.findByIdAndDelete({ _id });
+          if (!todoList) {
+            return res.status(404).json({ message: 'List not found' });
+          }
+          await Todo.deleteMany({ listId: _id });
+          return res.status(201).json({ message: 'Item Deleted' });
+        } catch (error) {
+          return res.status(500).json({ error });
+        }
+      }
     }
   }
 };

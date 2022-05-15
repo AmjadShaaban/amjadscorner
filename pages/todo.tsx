@@ -1,12 +1,19 @@
 import { NextPage } from 'next';
-import { useState } from 'react';
 import { Layout } from '../components';
 import { AddTodoList } from '../components/todo/add-todo-list';
 import { AddTodoListItem } from '../components/todo/add-todo-list-item';
-import { useGetTodoLists, usePostTodo } from '../utils/hooks';
+import {
+  useDeleteTodo,
+  useGetTodoLists,
+  useDeleteTodoList,
+  usePatchTodo,
+} from '../utils/hooks';
 
 const Todo: NextPage = () => {
   const { data, isFetching } = useGetTodoLists();
+  const { mutateAsync: doDelete } = useDeleteTodo();
+  const { mutateAsync: doDeleteList } = useDeleteTodoList();
+  const { mutateAsync: doPatchTodo } = usePatchTodo();
   return (
     <Layout>
       <div className=' bg-yellow-300'>
@@ -15,10 +22,38 @@ const Todo: NextPage = () => {
           {Array.isArray(data?.todoLists) && data?.todoLists.length ? (
             data?.todoLists.map((list) => (
               <div key={list._id}>
-                <h1 className='text-4xl'>{list.label}</h1>
+                <h1 className='text-4xl'>
+                  {list.label}{' '}
+                  <button
+                    className='bg-red-400 m-4 rounded p-4 text-xs'
+                    onClick={() => {
+                      doDeleteList(list._id);
+                    }}
+                  >
+                    DELETE
+                  </button>
+                </h1>
                 {Array.isArray(list.todos) && list.todos.length ? (
                   list.todos.map((todo) => (
-                    <div key={todo._id}>{todo.label}</div>
+                    <div key={todo._id}>
+                      <button
+                        className='bg-red-400 m-4 rounded p-4 text-xs'
+                        onClick={() => {
+                          doPatchTodo(todo._id);
+                        }}
+                      >
+                        {todo.done ? <>Undone</> : <>Done</>}
+                      </button>
+                      {todo.label}{' '}
+                      <button
+                        className='bg-red-400 m-4 rounded p-4 text-xs'
+                        onClick={() => {
+                          doDelete(todo._id);
+                        }}
+                      >
+                        DELETE
+                      </button>
+                    </div>
                   ))
                 ) : (
                   <div>No Items YET</div>
@@ -33,6 +68,7 @@ const Todo: NextPage = () => {
           )}
         </div>
       </div>
+      <pre>{JSON.stringify(data?.todoLists, null, 4)}</pre>
     </Layout>
   );
 };

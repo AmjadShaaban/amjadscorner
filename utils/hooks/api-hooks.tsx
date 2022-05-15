@@ -174,14 +174,47 @@ export const usePostTodo = () => {
   );
 };
 
-// export const useGetListTodos = () => {
-//   const { axiosInstance } = useDataAccess();
+export const useDeleteTodo = () => {
+  const queryClient = useQueryClient();
+  const { axiosInstance } = useDataAccess();
 
-//   return useQuery(['todos'], async ({ signal }) => {
-//     const response = await axiosInstance.get<TodosResponse>(
-//       `/user/todo/list/${listId}`,
-//       { signal }
-//     );
-//     return response.data;
-//   });
-// };
+  return useMutation(
+    async (itemId: string) => {
+      const response = await axiosInstance.delete(`/user/todo/item/${itemId}`);
+      return response.data;
+    },
+    {
+      onSuccess: () => queryClient.invalidateQueries(['todoLists']),
+    }
+  );
+};
+
+export const useDeleteTodoList = () => {
+  const queryClient = useQueryClient();
+  const { axiosInstance } = useDataAccess();
+
+  return useMutation(
+    async (listId: string) => {
+      const response = await axiosInstance.delete(`/user/todo/list/${listId}`);
+      return response.data;
+    },
+    {
+      onSuccess: () => queryClient.invalidateQueries(['todoLists']),
+    }
+  );
+};
+
+export const usePatchTodo = () => {
+  const queryClient = useQueryClient();
+  const { axiosInstance } = useDataAccess();
+
+  return useMutation(
+    async (itemId: string) => {
+      const response = await axiosInstance.patch(`/user/todo/item/${itemId}`);
+      return response.data;
+    },
+    {
+      onSuccess: () => queryClient.invalidateQueries(['todoLists']),
+    }
+  );
+};

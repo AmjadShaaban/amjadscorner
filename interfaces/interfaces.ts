@@ -27,7 +27,6 @@ export interface Todo {
   label: string;
   listId: string;
   done: boolean;
-  deleted: boolean;
 }
 
 export interface TodoList {

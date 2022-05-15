@@ -10,8 +10,16 @@ export interface ITodoList extends Document {
 const TodoListSchema = new mongoose.Schema({
   label: { type: String },
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  todos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Todo' }],
 });
+
+TodoListSchema.virtual('todos', {
+  ref: 'Todo',
+  localField: '_id',
+  foreignField: 'listId',
+});
+
+TodoListSchema.set('toObject', { virtuals: true });
+TodoListSchema.set('toJSON', { virtuals: true });
 
 export const TodoList: Model<ITodoList> =
   mongoose.models.TodoList || model('TodoList', TodoListSchema);

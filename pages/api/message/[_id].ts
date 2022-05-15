@@ -16,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             res.status(200).json({ message: `Message id: ${_id} deleted` });
           }
         } catch (error) {
-          res.status(500).json(error);
+          return res.status(500).json(error);
         }
       }
       break;
