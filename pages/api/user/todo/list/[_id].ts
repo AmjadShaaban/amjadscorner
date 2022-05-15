@@ -33,22 +33,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         {
           await dbConnect();
 
-          let todoList = await TodoList.findById(listId);
-          if (!todoList) {
-            return res.status(404).json({ message: 'List not found' });
-          } else {
-            const newTodo = new Todo({
-              label,
-              listId,
-            });
-            await newTodo.save();
+          // const todoList = await TodoList.findById(listId);
+          // if (!todoList) {
+          //   return res.status(404).json({ message: 'List not found' });
+          // } else {
+          const newTodo = new Todo({
+            label,
+            listId,
+          });
+          await newTodo.save();
+          await TodoList.findByIdAndUpdate(
+            { _id: listId },
+            { $push: { todos: newTodo } }
+          );
 
-            todoList.todos.push(newTodo);
-
-            await todoList.save();
-
-            res.status(201).json({ message: 'item added!' });
-          }
+          res.status(201).json({ message: 'item added!' });
+          // }
         }
         break;
       case 'DELETE': {

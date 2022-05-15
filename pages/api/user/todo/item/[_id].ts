@@ -21,9 +21,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         if (!todoList) {
           return res.status(404).json({ message: 'List not found' });
         }
-        todoList.todos = todoList.todos.filter((todo) => {
-          return todo._id !== _id;
-        });
 
         await todoItem.delete();
         await todoList.update({ $pull: { todos: _id } });
