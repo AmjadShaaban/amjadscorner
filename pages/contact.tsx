@@ -1,7 +1,7 @@
 import { Player } from '@lottiefiles/react-lottie-player';
 import { NextPage } from 'next';
 import { useState } from 'react';
-import { Layout } from '../components';
+import { ButtonSpinner, Layout } from '../components';
 import { usePostMessage } from '../utils/hooks';
 
 const Contact: NextPage = () => {
@@ -9,7 +9,7 @@ const Contact: NextPage = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
 
-  const { mutateAsync: doPost, isLoading: posting } = usePostMessage();
+  const { mutateAsync: doPost, isLoading: isPosting } = usePostMessage();
 
   return (
     <Layout>
@@ -58,9 +58,19 @@ const Contact: NextPage = () => {
               />
               <button
                 type='submit'
-                className='bg-red-600 rounded text-white px-5 py-1 mt-4'
+                className={
+                  (isPosting ? 'bg-gray-600' : 'bg-green-600') +
+                  ' rounded text-white px-5 py-1 mt-4'
+                }
               >
-                Submit
+                {isPosting ? (
+                  <>
+                    <ButtonSpinner />
+                    Loading...
+                  </>
+                ) : (
+                  <>Submit</>
+                )}
               </button>
             </form>
           </div>
