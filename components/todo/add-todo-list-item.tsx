@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { usePostTodo } from '../../utils/hooks';
-import { ButtonSpinner } from '../button-spinner';
+import { ButtonSpinner } from '../shared';
 
 interface AddTodoListItemProps {
   listId: string;

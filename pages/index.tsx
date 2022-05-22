@@ -2,11 +2,11 @@ import type { NextPage } from 'next';
 import {
   DevStack,
   Introduction,
-  Layout,
   Passion,
   Technologies,
   WhoAmI,
-} from '../components';
+} from '../components/frontpage';
+import { Layout } from '../components/layout';
 
 const Home: NextPage = () => {
   return (

@@ -1,12 +1,17 @@
 import { Player } from '@lottiefiles/react-lottie-player';
 import { NextPage, NextPageContext } from 'next';
 import { getSession, signIn } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { Layout } from '../components';
+import { useAlert } from 'react-alert';
+import { Layout } from '../components/layout';
 
 const Login: NextPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  const router = useRouter();
+  const alert = useAlert();
 
   return (
     <Layout>
@@ -21,9 +26,22 @@ const Login: NextPage = () => {
         <div className='md:w-full w-1/2 p-10 shadow-2xl bg-gray-100 rounded'>
           <h1>LOGIN</h1>
           <form
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
-              signIn('credentials', { callbackUrl: '/', username, password });
+              const response = await signIn('credentials', {
+                redirect: false,
+                username,
+                password,
+              });
+              console.log({ response });
+              //@ts-expect-error: error is undefined
+              const { error } = response;
+              if (error === null) {
+                alert.success('Success!!');
+                router.replace('/');
+              } else {
+                alert.error(error);
+              }
             }}
           >
             <input

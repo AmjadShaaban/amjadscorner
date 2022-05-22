@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Tooltip } from 'react-tippy';
-import { ICONS_DATA } from '../data';
+import { ICONS_DATA } from '../../data';
 
 export const Technologies: FC = () => {
   return (

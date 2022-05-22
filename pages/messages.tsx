@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { FiDelete } from 'react-icons/fi';
-import { Layout } from '../components';
+import { Layout } from '../components/layout';
 import { useDeleteMessage, useGetMessages } from '../utils/hooks';
 
 const Messages: NextPage = () => {

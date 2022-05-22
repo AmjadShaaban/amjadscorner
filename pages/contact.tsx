@@ -1,7 +1,8 @@
 import { Player } from '@lottiefiles/react-lottie-player';
 import { NextPage } from 'next';
 import { useState } from 'react';
-import { ButtonSpinner, Layout } from '../components';
+import { Layout } from '../components/layout';
+import { ButtonSpinner } from '../components/shared';
 import { usePostMessage } from '../utils/hooks';
 
 const Contact: NextPage = () => {

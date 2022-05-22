@@ -1,6 +1,6 @@
 import { Player } from '@lottiefiles/react-lottie-player';
 import { NextPage } from 'next';
-import { Layout } from '../components';
+import { Layout } from '../components/layout';
 
 const FourZeroFour: NextPage = () => {
   return (
@@ -14,9 +14,7 @@ const FourZeroFour: NextPage = () => {
             src='https://assets5.lottiefiles.com/packages/lf20_GIyuXJ.json'
           ></Player>
         </div>
-        <div className='text-6xl font-SquarePeg font-bold text-center'>
-          PAGE NOT FOUND
-        </div>
+        <div className='text-6xl font-bold text-center'>PAGE NOT FOUND</div>
       </div>
     </Layout>
   );

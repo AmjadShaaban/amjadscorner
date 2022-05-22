@@ -70,6 +70,15 @@ export const Header: FC = () => {
               <Link href={item.route}>{item.title}</Link>
             </li>
           ))}
+          {status === 'unauthenticated' && (
+            <li
+              className={`list-none mx-5 p-1 ${
+                '/login' === activeRoute && 'bg-white text-black rounded-md'
+              }`}
+            >
+              <Link href='/login'>Login</Link>
+            </li>
+          )}
         </div>
         <div
           className={`mt-5 md:flex items-start justify-start w-full flex-col text-2xl lg:hidden xl:hidden 2xl:hidden 4xl:hidden ${showMenu}`}
@@ -85,6 +94,16 @@ export const Header: FC = () => {
               <Link href={item.route}>{item.title}</Link>
             </li>
           ))}
+          {status === 'unauthenticated' && (
+            <li
+              className={`list-none p-1 ${
+                '/login' === activeRoute &&
+                'bg-white text-black rounded-md px-5'
+              }`}
+            >
+              <Link href='/login'>Login</Link>
+            </li>
+          )}
         </div>
       </div>
     </div>

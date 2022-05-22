@@ -5,8 +5,10 @@ import '@fontsource/roboto/700.css';
 import axios from 'axios';
 import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
+import { positions, Provider as AlertProvider, transitions } from 'react-alert';
 import { QueryClient } from 'react-query';
 import 'react-tippy/dist/tippy.css';
+import { AlertBox } from '../components/shared';
 import '../styles/globals.css';
 import { DataAccessContextProvider } from '../utils/data-access.provider';
 
@@ -24,12 +26,20 @@ const queryClient = new QueryClient({
     },
   },
 });
+const alertOptions = {
+  position: positions.BOTTOM_CENTER,
+  timeout: 5000,
+  offset: '30px',
+  transition: transitions.SCALE,
+};
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <SessionProvider>
       <DataAccessContextProvider {...{ axiosInstance, queryClient }}>
-        <Component {...pageProps} />
+        <AlertProvider template={AlertBox} {...alertOptions}>
+          <Component {...pageProps} />
+        </AlertProvider>
       </DataAccessContextProvider>
     </SessionProvider>
   );

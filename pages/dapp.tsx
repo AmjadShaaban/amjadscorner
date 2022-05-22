@@ -1,18 +1,10 @@
-import MenuIcon from '@mui/icons-material/Menu';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import Paper from '@mui/material/Paper';
-import TextField from '@mui/material/TextField';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import { ethers } from 'ethers';
 import { NextPage } from 'next';
 import { useEffect, useState } from 'react';
 import { FaEthereum, FaReact } from 'react-icons/fa';
-import { SiMaterialui, SiSolidity } from 'react-icons/si';
-import { WaveCard } from '../components/wave-card';
+import { SiSolidity, SiTailwindcss } from 'react-icons/si';
+import { Layout } from '../components/layout';
+import { WaveCard } from '../components/dapp';
 import abi from '../utils/WavePortal.json';
 
 interface Wave {
@@ -181,58 +173,38 @@ const Dapp: NextPage = () => {
   }, []);
 
   return (
-    <>
-      <AppBar position='static'>
-        <Toolbar>
-          <IconButton
-            size='large'
-            edge='start'
-            color='inherit'
-            aria-label='menu'
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
-            News
-          </Typography>
-          <Button color='inherit'>Login</Button>
-        </Toolbar>
-      </AppBar>
-      <Box sx={{ mt: 4, mx: 2 }}>
-        <Paper elevation={6}>
-          <Typography variant='h2' component='div'>
-            Welcome to my first DAPP!
-          </Typography>
-          <Typography variant='h3' component='div'>
-            A Web3 app with <SiSolidity size={32} />
-            Solidity + <FaEthereum size={32} />
-            Ethereum smart contract built in <FaReact size={32} /> React +{' '}
-            <SiMaterialui size={32} /> Material UI
-          </Typography>
-          <p className='text-body text-muted text-center fs-6'>
-            Deployed on Rinkeby Test Network!. Wave at me, send a message and
-            you might be one of the lucky prize winners!
-          </p>
-        </Paper>
+    <Layout>
+      <div>
+        <h1>Welcome to my first DAPP!</h1>
+        <p>
+          A Web3 app with <SiSolidity /> Solidity + <FaEthereum /> Ethereum
+          smart contract built in <FaReact /> React + <SiTailwindcss /> Tailwind
+          CSS
+        </p>
+        <p className='text-body text-muted text-center fs-6'>
+          Deployed on Rinkeby Test Network!. Wave at me, send a message and you
+          might be one of the lucky prize winners!
+        </p>
         {!currentAccount && (
-          <Button onClick={connectWallet}>Connect to Wallet 💰</Button>
+          <button onClick={connectWallet}>Connect to Wallet 💰</button>
         )}
-        <TextField id='standard-basic' label='Standard' variant='standard' />
-        <Button
-          type='submit'
-          onClick={(e) => {
-            e.preventDefault();
-            wave(waveMessage);
-          }}
-        >
-          Send a Wave 👋
-        </Button>
+        <form>
+          <input />
+          <button
+            type='submit'
+            onClick={(e) => {
+              e.preventDefault();
+              wave(waveMessage);
+            }}
+          >
+            Send a Wave 👋
+          </button>
+        </form>
         {allWaves.map((wave, idx) => {
           return <WaveCard key={idx} wave={wave} />;
         })}
-      </Box>
-    </>
+      </div>
+    </Layout>
   );
 };
 

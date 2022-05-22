@@ -1,7 +1,7 @@
 import { Player } from '@lottiefiles/react-lottie-player';
 import { NextPage, NextPageContext } from 'next';
 import { getSession } from 'next-auth/react';
-import { Layout } from '../components';
+import { Layout } from '../components/layout';
 import { AddTodoList } from '../components/todo/add-todo-list';
 import { TodoListBlock } from '../components/todo/todo-list-block';
 import { useGetTodoLists } from '../utils/hooks';

@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { usePostTodoList } from '../../utils/hooks';
-import { ButtonSpinner } from '../button-spinner';
+import { ButtonSpinner } from '../shared';
 
 export const AddTodoList: FC = () => {
   const [label, setLabel] = useState('');
