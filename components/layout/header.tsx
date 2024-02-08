@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { FC, useState } from "react";
 import { TbLetterA, TbLetterS } from "react-icons/tb";
@@ -26,13 +27,17 @@ export const Header: FC = () => {
           </h1>
         </div>
 
-        <div className="flex text-2xl">
+        <motion.div
+          whileHover={{ scale: 1.2 }}
+          whileTap={{ scale: 0.8 }}
+          className="flex text-2xl"
+        >
           {menuItems.map((item) => (
             <li key={item.title} className={`list-none mx-5 p-1`}>
               <Link href={item.route}>{item.title}</Link>
             </li>
           ))}
-        </div>
+        </motion.div>
       </div>
     </div>
   );
