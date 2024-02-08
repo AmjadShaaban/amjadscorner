@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { FC, useState } from "react";
-import { FaBars } from "react-icons/fa";
-
+import { TbLetterA, TbLetterS } from "react-icons/tb";
+import { Tooltip } from "react-tippy";
 const menuItems = [
   {
     title: "Contact",
@@ -10,53 +10,25 @@ const menuItems = [
 ];
 
 export const Header: FC = () => {
-  const [showMenu, setShowMenu] = useState("md:hidden");
-
-  const activeRoute =
-    typeof window !== "undefined" ? window.location.pathname : "/";
-
   return (
     <div className="text-white fixed top-0 left-0 right-0 z-50 font-Kanit">
       <div
-        className={`flex bg-theme justify-between items-center p-2 shadow-lg ${
-          showMenu !== "md:hidden" && "flex-col"
-        }`}
+        className={`flex bg-theme justify-between items-center p-2 shadow-lg`}
       >
         <div className="flex justify-between items-center w-full">
-          <h1 className="text-4xl font-semibold">Amjad Shaaban</h1>
-          <FaBars
-            className="lg:hidden xl:hidden 2xl:hidden 4xl:hidden md:flex cursor-pointer"
-            onClick={() =>
-              showMenu === "md:hidden"
-                ? setShowMenu("")
-                : setShowMenu("md:hidden")
-            }
-          />
+          <h1 className="text-4xl  flex flex-row font-semibold">
+            <Tooltip title="Amjad" position="bottom" trigger="mouseenter">
+              <TbLetterA />
+            </Tooltip>
+            <Tooltip title="Shaaban" position="bottom" trigger="mouseenter">
+              <TbLetterS />
+            </Tooltip>
+          </h1>
         </div>
 
-        <div className="flex md:hidden text-2xl">
+        <div className="flex text-2xl">
           {menuItems.map((item) => (
-            <li
-              key={item.title}
-              className={`list-none mx-5 p-1 ${
-                item.route === activeRoute && "bg-white text-black rounded-md"
-              }`}
-            >
-              <Link href={item.route}>{item.title}</Link>
-            </li>
-          ))}
-        </div>
-        <div
-          className={`mt-5 md:flex items-start justify-start w-full flex-col text-2xl lg:hidden xl:hidden 2xl:hidden 4xl:hidden ${showMenu}`}
-        >
-          {menuItems.map((item) => (
-            <li
-              key={item.title}
-              className={`list-none p-1 ${
-                item.route === activeRoute &&
-                "bg-white text-black rounded-md px-5"
-              }`}
-            >
+            <li key={item.title} className={`list-none mx-5 p-1`}>
               <Link href={item.route}>{item.title}</Link>
             </li>
           ))}
