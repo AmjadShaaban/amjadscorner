@@ -1,66 +1,56 @@
-import { Player } from '@lottiefiles/react-lottie-player';
-import { NextPage, NextPageContext } from 'next';
-import { getSession, signIn } from 'next-auth/react';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { useAlert } from 'react-alert';
-import { Layout } from '../components/layout';
+import { Player } from "@lottiefiles/react-lottie-player";
+import { NextPage, NextPageContext } from "next";
+import { getSession, signIn } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { Layout } from "../components/layout";
 
 const Login: NextPage = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const router = useRouter();
-  const alert = useAlert();
 
   return (
     <Layout>
       <Player
-        className='max-w-lg'
+        className="max-w-lg"
         autoplay
         loop
-        src='https://assets8.lottiefiles.com/packages/lf20_87uabjh2.json'
+        src="https://assets8.lottiefiles.com/packages/lf20_87uabjh2.json"
       ></Player>
 
-      <div className='w-screen flex justify-center'>
-        <div className='md:w-full w-1/2 p-10 shadow-2xl bg-gray-100 rounded'>
+      <div className="w-screen flex justify-center">
+        <div className="md:w-full w-1/2 p-10 shadow-2xl bg-gray-100 rounded">
           <h1>LOGIN</h1>
           <form
             onSubmit={async (e) => {
               e.preventDefault();
-              const response = await signIn('credentials', {
+              const response = await signIn("credentials", {
                 redirect: false,
                 username,
                 password,
               });
               console.log({ response });
-              //@ts-expect-error: error is undefined
-              const { error } = response;
-              if (error === null) {
-                alert.success('Success!!');
-                router.replace('/');
-              } else {
-                alert.error(error);
-              }
             }}
           >
             <input
-              type='text'
-              className='w-full border-2 border-gray-400 rounded-md p-1 shadow-lg mt-5'
-              placeholder='Username'
+              type="text"
+              className="w-full border-2 border-gray-400 rounded-md p-1 shadow-lg mt-5"
+              placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
             <input
-              type='password'
-              className='w-full border-2 border-gray-400 rounded-md p-1 shadow-lg mt-5'
-              placeholder='Password'
+              type="password"
+              className="w-full border-2 border-gray-400 rounded-md p-1 shadow-lg mt-5"
+              placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
             <button
-              type='submit'
-              className='bg-red-600 rounded text-white px-5 py-1 mt-4'
+              type="submit"
+              className="bg-red-600 rounded text-white px-5 py-1 mt-4"
             >
               Submit
             </button>
@@ -76,7 +66,7 @@ export const getServerSideProps = async (context: NextPageContext) => {
   if (session) {
     return {
       redirect: {
-        destination: '/',
+        destination: "/",
         permanent: false,
       },
     };

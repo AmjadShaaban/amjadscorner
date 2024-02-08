@@ -1,39 +1,37 @@
-import { NextPage } from 'next';
-import { Layout } from '../components/layout';
-import { useAlert } from 'react-alert';
+import { NextPage } from "next";
+import { Layout } from "../components/layout";
 
 const TestPage: NextPage = () => {
-  const alert = useAlert();
   return (
     <Layout>
       <button
-        className='border-2'
+        className="border-2"
         onClick={() => {
-          alert.show('A Show Alert!!!');
+          console.log("A Show Alert!!!");
         }}
       >
         Show
       </button>
       <button
-        className='border-2'
+        className="border-2"
         onClick={() => {
-          alert.success('A Success Alert!!!');
+          console.log("A Success Alert!!!");
         }}
       >
         Success
       </button>
       <button
-        className='border-2'
+        className="border-2"
         onClick={() => {
-          alert.error('An Error Alert!!!');
+          console.log("An Error Alert!!!");
         }}
       >
         Error
       </button>
       <button
-        className='border-2'
+        className="border-2"
         onClick={() => {
-          alert.info('An Info Alert!!!');
+          console.log("An Info Alert!!!");
         }}
       >
         Info

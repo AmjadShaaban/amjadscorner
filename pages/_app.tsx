@@ -1,21 +1,18 @@
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
-import axios from 'axios';
-import { SessionProvider } from 'next-auth/react';
-import type { AppProps } from 'next/app';
-import { positions, Provider as AlertProvider, transitions } from 'react-alert';
-import { QueryClient } from 'react-query';
-import 'react-tippy/dist/tippy.css';
-import { AlertBox } from '../components/shared';
-import '../styles/globals.css';
-import { DataAccessContextProvider } from '../utils/data-access.provider';
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
+import axios from "axios";
+import type { AppProps } from "next/app";
+import { QueryClient } from "react-query";
+import "react-tippy/dist/tippy.css";
+import "../styles/globals.css";
+import { DataAccessContextProvider } from "../utils/data-access.provider";
 
 const axiosInstance = axios.create({
-  baseURL: '/api',
+  baseURL: "/api",
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
@@ -27,21 +24,15 @@ const queryClient = new QueryClient({
   },
 });
 const alertOptions = {
-  position: positions.BOTTOM_CENTER,
   timeout: 5000,
-  offset: '30px',
-  transition: transitions.SCALE,
+  offset: "30px",
 };
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <SessionProvider>
-      <DataAccessContextProvider {...{ axiosInstance, queryClient }}>
-        <AlertProvider template={AlertBox} {...alertOptions}>
-          <Component {...pageProps} />
-        </AlertProvider>
-      </DataAccessContextProvider>
-    </SessionProvider>
+    <DataAccessContextProvider {...{ axiosInstance, queryClient }}>
+      <Component {...pageProps} />
+    </DataAccessContextProvider>
   );
 }
 
