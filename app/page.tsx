@@ -18,10 +18,10 @@ export default function Home() {
           Todo App
         </Link>
         <Link
-          href="/ecommerce"
+          href="/shop"
           className="p-4 bg-green-500 text-white rounded hover:bg-green-600"
         >
-          E-commerce
+          Shop
         </Link>
         <Link
           href="/forums"
