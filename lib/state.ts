@@ -1,15 +1,16 @@
 import { create } from 'zustand';
 
-interface AppState {
-  user: string | null;
-  cartItems: number;
-  setUser: (user: string | null) => void;
-  addToCart: () => void;
+interface User {
+  id: string;
+  email: string
 }
 
-export const useStore = create<AppState>((set) => ({
+interface AuthState {
+  user: User| null
+  setUser:(user:User|null)=> void
+}
+
+export const useAuthStore = create<AuthState>((set) => ({
   user: null,
-  cartItems: 0,
   setUser: (user) => set({ user }),
-  addToCart: () => set((state) => ({ cartItems: state.cartItems + 1 })),
 }));

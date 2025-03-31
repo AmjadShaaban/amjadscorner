@@ -1,23 +1,23 @@
-"use client";
 import { ReactNode } from "react";
-import "./globals.css"; // Global CSS styles
-import { useStore } from "../lib/state"; // Zustand for shared state
-import Link from "next/link";
+import "./globals.css";
+import { auth } from "../lib/auth";
+import Navbar from "../components/Navbar";
+import SessionWrapper from "../components/SessionWrapper";
 
-export default function RootLayout({ children }: { children: ReactNode }) {
-  const { user } = useStore(); // Example: accessing shared state
-
+export default async function RootLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const session = await auth();
   return (
     <html lang="en">
-      <body>
-        <header>
-          <nav>
-            <Link href={"/"}>Home</Link> | <Link href="/todo">Todo</Link> |{" "}
-            <Link href="/shop">Shop</Link> | <Link href="/forums">Forums</Link>
-            {user && <span>Logged in as {user}</span>}
-          </nav>
-        </header>
-        <main>{children}</main>
+      <body className="min-h-screen bg-gray-100">
+        <SessionWrapper initialSession={session}>
+          <Navbar initialSession={session} />{" "}
+          {/* Pass session to client-side Navbar */}
+          <main className="p-4">{children}</main>
+        </SessionWrapper>
       </body>
     </html>
   );

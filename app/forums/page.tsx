@@ -1,7 +1,9 @@
 "use client";
-import { useStore } from "../../lib/state";
+import { useAuthStore } from "../../lib/state";
 
 export default function Forums() {
-  const { user } = useStore();
-  return <div>Forums - {user ? `Welcome, ${user}` : "Please log in"}</div>;
+  const { user } = useAuthStore();
+  return (
+    <div>Forums - {user ? `Welcome, ${user.email}` : "Please log in"}</div>
+  );
 }
