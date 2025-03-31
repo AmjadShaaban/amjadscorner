@@ -5,7 +5,9 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
       <div className="max-w-4xl mx-auto px-4 py-16">
-        <h1 className="text-5xl md:text-6xl font-bold mb-4">Hi, I'm Amjad</h1>
+        <h1 className="text-5xl md:text-6xl font-bold mb-4">
+          Hi, I&apos;m Amjad
+        </h1>
         <p className="text-xl md:text-2xl text-gray-400">
           A creative full-stack developer building modular{" "}
           <span className="text-pink-500">Next.js</span> apps with style and
