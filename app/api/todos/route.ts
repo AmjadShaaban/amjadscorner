@@ -61,7 +61,29 @@ export async function PUT(req: NextRequest) {
 
     return NextResponse.json(todo);
   } catch (error) {
-    console.error('Todo update error:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  const session = await auth();
+  if (!session?.user.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+  try {
+    const data = await req.json();
+    const { id } = data;
+
+    if (!id) return NextResponse.json({ error: 'Missing id' }, { status: 400 });
+
+    await connectToDatabase();
+    const result = await Todo.deleteOne({ _id: id, userId: session.user.id });
+
+    if (result.deletedCount === 0) {
+      return NextResponse.json({ error: 'Todo not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({ message: 'Todo deleted' }, { status: 200 });
+  } catch (error) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

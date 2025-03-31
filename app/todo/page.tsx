@@ -8,11 +8,11 @@ export default function TodoPage() {
   const [todos, setTodos] = useState([]);
   const [title, setTitle] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [todoToDelete, setTodoToDelete] = useState<string | null>(null);
 
   useEffect(() => {
     if (user) {
       axios.get("/api/todos").then((res) => {
-        console.log("todos: ", res.data);
         setTodos(res.data);
       });
     }
@@ -46,10 +46,49 @@ export default function TodoPage() {
     }
   };
 
+  const handleDelete = async (id: string) => {
+    setTodoToDelete(id); // Show confirmation
+  };
+
+  const confirmDelete = async () => {
+    if (!todoToDelete) return;
+    try {
+      await axios.delete("/api/todos", {
+        data: { id: todoToDelete },
+        headers: { "Content-Type": "application/json" },
+      });
+      setTodos(todos.filter((todo) => todo._id !== todoToDelete));
+      setTodoToDelete(null); // Hide confirmation
+    } catch (err) {
+      setError(err.response?.data?.error || "Failed to delete todo");
+    }
+  };
+
   if (!user) return <p>Please log in to view todos.</p>;
 
   return (
     <div className="max-w-md mx-auto mt-8 p-4 bg-white rounded shadow">
+      {todoToDelete && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-4 rounded shadow">
+            <p>Are you sure you want to delete this todo?</p>
+            <div className="mt-4 flex justify-end space-x-2">
+              <button
+                onClick={() => setTodoToDelete(null)}
+                className="px-4 py-2 bg-gray-300 rounded"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 bg-red-500 text-white rounded"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <h1 className="text-2xl font-bold mb-4">Your Todos, {user.email}</h1>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <form onSubmit={handleSubmit} className="mb-4">
@@ -69,18 +108,29 @@ export default function TodoPage() {
       </form>
       <ul>
         {todos.map((todo) => (
-          <li key={todo._id} className="p-2 border-b flex items-center">
-            <input
-              type="checkbox"
-              checked={todo.completed}
-              onChange={() => handleToggle(todo._id, todo.completed)}
-              className="mr-2"
-            />
-            <span
-              className={todo.completed ? "line-through text-gray-500" : ""}
+          <li
+            key={todo._id}
+            className="p-2 border-b flex items-center justify-between"
+          >
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                checked={todo.completed}
+                onChange={() => handleToggle(todo._id, todo.completed)}
+                className="mr-2"
+              />
+              <span
+                className={todo.completed ? "line-through text-gray-500" : ""}
+              >
+                {todo.title}
+              </span>
+            </div>
+            <button
+              onClick={() => handleDelete(todo._id)}
+              className="text-red-500 hover:text-red-700 text-sm"
             >
-              {todo.title}
-            </span>
+              Delete
+            </button>
           </li>
         ))}{" "}
       </ul>

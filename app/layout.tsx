@@ -12,11 +12,13 @@ export default async function RootLayout({
   const session = await auth();
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/logo.png" />
+      </head>
       <body className="min-h-screen bg-gray-100">
         <SessionWrapper initialSession={session}>
-          <Navbar initialSession={session} />{" "}
-          {/* Pass session to client-side Navbar */}
-          <main className="p-4">{children}</main>
+          <Navbar />
+          <main>{children}</main>
         </SessionWrapper>
       </body>
     </html>
