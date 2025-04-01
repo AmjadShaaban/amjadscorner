@@ -15,10 +15,12 @@ export default async function RootLayout({
       <head>
         <link rel="icon" href="/logo.png" />
       </head>
-      <body className="min-h-screen bg-gray-100">
+      <body className="min-h-screen bg-gradient-to-b from-gray-900 to-black">
         <SessionWrapper initialSession={session}>
-          <Navbar />
-          <main>{children}</main>
+          <div className="max-w-5xl mx-auto my-6 p-6 bg-gray-800 rounded-xl shadow-lg">
+            <Navbar />
+            <main>{children}</main>
+          </div>
         </SessionWrapper>
       </body>
     </html>

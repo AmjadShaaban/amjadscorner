@@ -53,7 +53,7 @@ export default function Navbar() {
   });
 
   return (
-    <header className="bg-blue-600 text-white p-4">
+    <header className="bg-gray-900 text-white p-4">
       <nav className="flex justify-between max-w-4xl mx-auto">
         {/* Logo and Active Link (Left) */}
         <div className="flex items-center space-x-3">

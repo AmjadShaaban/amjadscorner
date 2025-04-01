@@ -64,12 +64,12 @@ export default function TodoPage() {
     }
   };
 
-  if (!user) return <p>Please log in to view todos.</p>;
+  if (!user) return <p className="text-white">Please log in to view todos.</p>;
 
   return (
-    <div className="max-w-md mx-auto mt-8 p-4 bg-white rounded shadow">
+    <div className="max-w-md mx-auto mt-8">
       {todoToDelete && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white">
           <div className="bg-white p-4 rounded shadow">
             <p>Are you sure you want to delete this todo?</p>
             <div className="mt-4 flex justify-end space-x-2">
@@ -89,7 +89,9 @@ export default function TodoPage() {
           </div>
         </div>
       )}
-      <h1 className="text-2xl font-bold mb-4">Your Todos, {user.email}</h1>
+      <h1 className="text-2xl font-bold mb-4 text-white">
+        Your Todos, {user.email}
+      </h1>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <form onSubmit={handleSubmit} className="mb-4">
         <input
@@ -97,7 +99,7 @@ export default function TodoPage() {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Add a todo"
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded text-black"
         />
         <button
           type="submit"
@@ -110,7 +112,7 @@ export default function TodoPage() {
         {todos.map((todo) => (
           <li
             key={todo._id}
-            className="p-2 border-b flex items-center justify-between"
+            className="p-2 border-b border-gray-600 flex items-center justify-between text-white"
           >
             <div className="flex items-center">
               <input
