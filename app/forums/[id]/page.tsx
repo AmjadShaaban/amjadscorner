@@ -2,13 +2,20 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import React from "react"; // Import React for React.use
 
-export default function PostPage({ params }: { params: { id: string } }) {
+export default function PostPage({
+  params: paramsPromise,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const params = React.use(paramsPromise); // Unwrap the params Promise
   const [post, setPost] = useState(null);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
+    if (!params?.id) return; // Ensure params is resolved
     axios
       .get(`/api/posts/${params.id}`)
       .then((res) => setPost(res.data))
@@ -16,7 +23,7 @@ export default function PostPage({ params }: { params: { id: string } }) {
         setError(err.response?.data?.error || "Failed to load post");
         router.push("/forums"); // Redirect if post not found
       });
-  }, [params.id, router]);
+  }, [params?.id, router]); // Use params?.id in the dependency array
 
   if (error)
     return <p className="text-red-500 max-w-3xl mx-auto mt-8">{error}</p>;

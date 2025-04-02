@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectToDatabase } from '../../../../../lib/db';
-import { Post } from '../../../../../models/Post';
+import { connectToDatabase } from '../../../../lib/db';
+import { Post } from '../../../../models/Post';
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   try {

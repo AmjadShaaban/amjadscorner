@@ -1,13 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '../../../../lib/auth';
-import { connectToDatabase } from '../../../../lib/db';
-import { Post, PostSchema } from '../../../../models/Post';
+import { auth } from '../../../lib/auth';
+import { connectToDatabase } from '../../../lib/db';
+import { Post, PostSchema } from '../../../models/Post';
 import { z } from 'zod';
 
 export async function GET(req: NextRequest) {
   try {
+    const { searchParams } = new URL(req.url);
+    const subcategoryId = searchParams.get('subcategoryId');
+
     await connectToDatabase();
-    const posts = await Post.find().sort({ createdAt: -1 }).populate('userId', 'email');
+    const query = subcategoryId ? { subcategoryId } : {};
+    const posts = await Post.find(query).sort({ createdAt: -1 }).populate('userId', 'email');
     return NextResponse.json(posts);
   } catch (error) {
     console.error('Error fetching posts:', error);
@@ -23,6 +27,7 @@ export async function POST(req: NextRequest) {
     const data = await req.json();
     const parsed = PostSchema.omit({ createdAt: true }).parse({
       userId: session.user.id,
+      subcategoryId: data.subcategoryId,
       title: data.title,
       content: data.content,
     });
