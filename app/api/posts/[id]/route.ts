@@ -4,12 +4,12 @@ import { Post } from '../../../../models/Post';
 
 export async function GET(
   req: NextRequest,
-  context: { params: { id: string } } // Use context with params
+  {params}: { params: Promise<{ id: string }> } // Use context with params
 ) {
   try {
-    const { params } = context; // Destructure params from context
+    const id = (await params).id
     await connectToDatabase();
-    const post = await Post.findById(params.id).populate('userId', 'email');
+    const post = await Post.findById(id).populate('userId', 'email');
     if (!post) return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     return NextResponse.json(post);
   } catch (error) {
