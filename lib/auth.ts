@@ -1,5 +1,6 @@
 import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
+// auth strategies will be implemented later
 // import GitHub from "next-auth/providers/github"
 // import Google from "next-auth/providers/google"
 import { User, UserSchema } from "../models/User"

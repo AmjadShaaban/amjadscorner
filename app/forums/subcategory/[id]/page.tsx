@@ -3,58 +3,30 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuthStore } from "../../../../lib/state";
 import Link from "next/link";
-import React from "react"; // Import React for React.use
+import React from "react";
+import { sanitizeHTML } from "../../../../lib/sanitize";
 
 export default function SubcategoryPage({
   params: paramsPromise,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const params = React.use(paramsPromise); // Unwrap the params Promise
+  const params = React.use(paramsPromise);
   const { user } = useAuthStore();
   const [posts, setPosts] = useState([]);
   const [subcategory, setSubcategory] = useState(null);
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!params?.id) return; // Ensure params is resolved
-    // Fetch subcategory details
+    if (!params?.id) return;
     axios.get(`/api/subcategories`).then((res) => {
       const sub = res.data.find((s) => s._id === params.id);
       setSubcategory(sub);
     });
 
-    // Fetch posts for this subcategory
     axios
       .get(`/api/posts?subcategoryId=${params.id}`)
       .then((res) => setPosts(res.data));
-  }, [params?.id]); // Use params?.id in the dependency array
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!user) {
-      setError("Please log in to create a post.");
-      return;
-    }
-
-    try {
-      const res = await axios.post(
-        "/api/posts",
-        { title, content, subcategoryId: params.id },
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      setPosts([res.data, ...posts]);
-      setTitle("");
-      setContent("");
-      setError(null);
-    } catch (err) {
-      setError(err.response?.data?.error || "Failed to create post");
-    }
-  };
+  }, [params?.id]);
 
   if (!subcategory)
     return <p className="text-white max-w-3xl mx-auto mt-8">Loading...</p>;
@@ -63,42 +35,22 @@ export default function SubcategoryPage({
     <div className="max-w-3xl mx-auto mt-8">
       <h1 className="text-3xl font-bold mb-6 text-white">{subcategory.name}</h1>
 
-      {/* Create Post Form */}
-      {user ? (
-        <form onSubmit={handleSubmit} className="mb-8">
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Post Title"
-            className="w-full p-2 border rounded mb-4 text-black"
-          />
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="Post Content"
-            className="w-full p-2 border rounded h-32 text-black"
-          />
-          <button
-            type="submit"
-            className="mt-2 w-full p-2 bg-blue-500 text-white rounded"
-          >
-            Create Post
-          </button>
-          {error && <p className="text-red-500 mt-2">{error}</p>}
-        </form>
-      ) : (
-        <p className="text-white mb-8">
-          Please{" "}
-          <Link href="/login" className="text-blue-400 underline">
-            log in
-          </Link>{" "}
-          to create a post.
-        </p>
-      )}
-
-      {/* Posts List */}
       <div className="space-y-6">
+        {user ? (
+          <Link href={`/forums/subcategory/${params.id}/new`}>
+            <button className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+              New Post
+            </button>
+          </Link>
+        ) : (
+          <p className="text-white mb-8">
+            Please{" "}
+            <Link href="/login" className="text-blue-400 underline">
+              log in
+            </Link>{" "}
+            to create a post.
+          </p>
+        )}
         {posts.length === 0 ? (
           <p className="text-gray-400">
             No posts yet. Be the first to create one!
@@ -114,9 +66,12 @@ export default function SubcategoryPage({
                   By {post.userId?.email || "Unknown"} on{" "}
                   {new Date(post.createdAt).toLocaleDateString()}
                 </p>
-                <p className="text-gray-300 mt-2 line-clamp-2">
-                  {post.content}
-                </p>
+                <div
+                  className="text-gray-300 mt-2 line-clamp-2 prose prose-invert"
+                  dangerouslySetInnerHTML={{
+                    __html: sanitizeHTML(post.content),
+                  }}
+                />
               </div>
             </Link>
           ))

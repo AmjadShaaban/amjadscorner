@@ -4,7 +4,7 @@ import { Post } from '../../../../models/Post';
 
 export async function GET(
   req: NextRequest,
-  {params}: { params: Promise<{ id: string }> } // Use context with params
+  {params}: { params: Promise<{ id: string }> }
 ) {
   try {
     const id = (await params).id

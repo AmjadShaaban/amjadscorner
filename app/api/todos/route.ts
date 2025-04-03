@@ -52,9 +52,9 @@ export async function PUT(req: NextRequest) {
 
     await connectToDatabase();
     const todo = await Todo.findOneAndUpdate(
-      { _id: id, userId: session.user.id }, // Ensure user owns the todo
+      { _id: id, userId: session.user.id },
       { completed },
-      { new: true } // Return updated document
+      { new: true }
     );
 
     if (!todo) return NextResponse.json({ error: 'Todo not found' }, { status: 404 });

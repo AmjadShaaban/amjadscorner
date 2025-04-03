@@ -33,7 +33,6 @@ export default function Navbar() {
     { name: "Forums", href: "/forums" },
   ];
 
-  // Add Admin link for admin users
   if (session?.user?.email === ADMIN_EMAIL) {
     links.push({ name: "Admin", href: "/admin" });
   }

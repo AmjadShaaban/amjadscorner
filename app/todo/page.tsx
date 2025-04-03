@@ -47,7 +47,7 @@ export default function TodoPage() {
   };
 
   const handleDelete = async (id: string) => {
-    setTodoToDelete(id); // Show confirmation
+    setTodoToDelete(id);
   };
 
   const confirmDelete = async () => {
@@ -58,7 +58,7 @@ export default function TodoPage() {
         headers: { "Content-Type": "application/json" },
       });
       setTodos(todos.filter((todo) => todo._id !== todoToDelete));
-      setTodoToDelete(null); // Hide confirmation
+      setTodoToDelete(null);
     } catch (err) {
       setError(err.response?.data?.error || "Failed to delete todo");
     }
