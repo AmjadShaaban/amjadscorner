@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import { connectToDatabase } from '@/lib/db';
-import { Todo, TodoSchema } from '@/models/Todo';
+import { Todo, TodoSchema } from '@/models/todo/Todo';
 import { z } from 'zod';
 
 export async function GET(req: NextRequest) {
