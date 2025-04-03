@@ -3,7 +3,7 @@ import { auth } from '@/lib/auth';
 import { connectToDatabase } from '@/lib/db';
 import { Category, CategorySchema } from '@/models/forums/Category';
 import { z } from 'zod';
-
+// TODO role-based system
 // Hardcoded admin email (replace with your email or a role-based system)
 const ADMIN_EMAIL = 'test@test.com';
 

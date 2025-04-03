@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuthStore } from "../lib/state";
 import Image from "next/image";
-
+// TODO role-based system
 // Hardcoded admin email (replace with your email or a role-based system)
 const ADMIN_EMAIL = "test@test.com";
 

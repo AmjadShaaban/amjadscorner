@@ -106,6 +106,7 @@ export default function QuillEditor({
 
                 try {
                   console.log("Img upload not yet implemented");
+                  // TODO Image Upload
                   // const response = await fetch("/api/upload-image", {
                   //   method: "POST",
                   //   body: formData,
