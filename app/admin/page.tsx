@@ -12,7 +12,6 @@ export default function AdminDashboardPage() {
   const router = useRouter();
   const { user } = useAuthStore();
 
-  // Check if user is admin
   if (!user || user.email !== ADMIN_EMAIL) {
     return (
       <p className="text-white max-w-3xl mx-auto mt-8">

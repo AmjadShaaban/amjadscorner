@@ -166,7 +166,7 @@ export default function QuillEditor({
   }
 
   return (
-    <div className="bg-white text-black rounded mb-4 min-h-[200px]">
+    <div className="bg-white text-black rounded mb-4">
       <div ref={toolbarRef} className="quill-toolbar" />
       <div ref={containerRef} className="quill-editor" />
     </div>

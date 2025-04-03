@@ -109,7 +109,6 @@ export default function ShopAdminPage() {
     }
   };
 
-  // Handle category update
   const handleUpdateCategory = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editCategory) return;
@@ -134,7 +133,6 @@ export default function ShopAdminPage() {
     }
   };
 
-  // Handle category deletion
   const handleDeleteCategory = async (id: string) => {
     try {
       await axios.delete("/api/shop/categories", { data: { id } });
@@ -149,7 +147,6 @@ export default function ShopAdminPage() {
     }
   };
 
-  // Handle item creation
   const handleCreateItem = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -190,7 +187,6 @@ export default function ShopAdminPage() {
     }
   };
 
-  // Handle item update
   const handleUpdateItem = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editItem) return;
@@ -231,7 +227,6 @@ export default function ShopAdminPage() {
     }
   };
 
-  // Handle item deletion
   const handleDeleteItem = async (id: string) => {
     try {
       await axios.delete("/api/shop/items", { data: { id } });
