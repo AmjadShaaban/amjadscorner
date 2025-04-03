@@ -3,9 +3,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { useAuthStore } from "../../../lib/state";
-import { sanitizeHTML } from "../../../lib/sanitize";
-import QuillEditor from "../../../components/QuillEditor";
+import { useAuthStore } from "@/lib/state";
+import { sanitizeHTML } from "@/lib/sanitize";
+import QuillEditor from "@/components/QuillEditor";
 import Link from "next/link";
 
 export default function PostPage({
@@ -24,7 +24,7 @@ export default function PostPage({
   useEffect(() => {
     if (!params?.id) return;
     axios
-      .get(`/api/posts/${params.id}`)
+      .get(`/api/forums/posts/${params.id}`)
       .then((res) => setPost(res.data))
       .catch((err) => {
         setError(err.response?.data?.error || "Failed to load post");
@@ -32,7 +32,7 @@ export default function PostPage({
       });
 
     axios
-      .get(`/api/replies?postId=${params.id}`)
+      .get(`/api/forums/replies?postId=${params.id}`)
       .then((res) => setReplies(res.data));
   }, [params?.id, router]);
 
@@ -49,7 +49,7 @@ export default function PostPage({
 
     try {
       const res = await axios.post(
-        "/api/replies",
+        "/api/forums/replies",
         { postId: params.id, content: replyContent },
         {
           headers: { "Content-Type": "application/json" },

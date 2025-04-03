@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '../../../lib/auth';
-import { connectToDatabase } from '../../../lib/db';
-import { Subcategory, SubcategorySchema } from '../../../models/Subcategory';
+import { auth } from '@/lib/auth';
+import { connectToDatabase } from '@/lib/db';
+import { Subcategory, SubcategorySchema } from '@/models/Subcategory';
 import { z } from 'zod';
 
 // Hardcoded admin email (replace with your email or a role-based system)

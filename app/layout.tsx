@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 import "./globals.css";
-import { auth } from "../lib/auth";
-import Navbar from "../components/Navbar";
-import SessionWrapper from "../components/SessionWrapper";
+import { auth } from "@/lib/auth";
+import Navbar from "@/components/Navbar";
+import SessionWrapper from "@/components/SessionWrapper";
 
 export default async function RootLayout({
   children,

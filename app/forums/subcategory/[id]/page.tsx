@@ -1,10 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useAuthStore } from "../../../../lib/state";
+import { useAuthStore } from "@/lib/state";
 import Link from "next/link";
 import React from "react";
-import { sanitizeHTML } from "../../../../lib/sanitize";
+import { sanitizeHTML } from "@/lib/sanitize";
 
 export default function SubcategoryPage({
   params: paramsPromise,
@@ -18,13 +18,13 @@ export default function SubcategoryPage({
 
   useEffect(() => {
     if (!params?.id) return;
-    axios.get(`/api/subcategories`).then((res) => {
+    axios.get(`/api/forums/subcategories`).then((res) => {
       const sub = res.data.find((s) => s._id === params.id);
       setSubcategory(sub);
     });
 
     axios
-      .get(`/api/posts?subcategoryId=${params.id}`)
+      .get(`/api/forums/posts?subcategoryId=${params.id}`)
       .then((res) => setPosts(res.data));
   }, [params?.id]);
 

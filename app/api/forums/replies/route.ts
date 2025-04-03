@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '../../../lib/auth';
-import { connectToDatabase } from '../../../lib/db';
-import { Reply, ReplySchema } from '../../../models/Reply';
+import { auth } from '@/lib/auth';
+import { connectToDatabase } from '@/lib/db';
+import { Reply, ReplySchema } from '@/models/Reply';
 import { z } from 'zod';
 
 export async function GET(req: NextRequest) {

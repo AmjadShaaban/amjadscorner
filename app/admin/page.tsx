@@ -16,15 +16,17 @@ export default function AdminPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    axios.get("/api/categories").then((res) => setCategories(res.data));
-    axios.get("/api/subcategories").then((res) => setSubcategories(res.data));
+    axios.get("/api/forums/categories").then((res) => setCategories(res.data));
+    axios
+      .get("/api/forums/subcategories")
+      .then((res) => setSubcategories(res.data));
   }, []);
 
   const handleCategorySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "/api/categories",
+        "/api/forums/categories",
         { name: categoryName },
         {
           headers: { "Content-Type": "application/json" },
@@ -46,7 +48,7 @@ export default function AdminPage() {
     }
     try {
       const res = await axios.post(
-        "/api/subcategories",
+        "/api/forums/subcategories",
         { categoryId: selectedCategoryId, name: subcategoryName },
         {
           headers: { "Content-Type": "application/json" },

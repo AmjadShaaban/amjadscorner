@@ -105,24 +105,25 @@ export default function QuillEditor({
                 formData.append("file", file);
 
                 try {
-                  const response = await fetch("/api/upload-image", {
-                    method: "POST",
-                    body: formData,
-                  });
+                  console.log("Img upload not yet implemented");
+                  // const response = await fetch("/api/upload-image", {
+                  //   method: "POST",
+                  //   body: formData,
+                  // });
 
-                  const data = await response.json();
-                  if (data.url) {
-                    const range = quillRef.current?.getSelection();
-                    if (range) {
-                      quillRef.current?.insertEmbed(
-                        range.index,
-                        "image",
-                        data.url
-                      );
-                    }
-                  } else {
-                    console.error("Image upload failed:", data.error);
-                  }
+                  // const data = await response.json();
+                  // if (data.url) {
+                  //   const range = quillRef.current?.getSelection();
+                  //   if (range) {
+                  //     quillRef.current?.insertEmbed(
+                  //       range.index,
+                  //       "image",
+                  //       data.url
+                  //     );
+                  //   }
+                  // } else {
+                  //   console.error("Image upload failed:", data.error);
+                  // }
                 } catch (error) {
                   console.error("Error uploading image:", error);
                 }

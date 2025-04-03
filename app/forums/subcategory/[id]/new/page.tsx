@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import QuillEditor from "../../../../../components/QuillEditor";
-import { useAuthStore } from "../../../../../lib/state";
+import QuillEditor from "@/components/QuillEditor";
+import { useAuthStore } from "@/lib/state";
 
 export default function NewPostPage() {
   const router = useRouter();
@@ -35,7 +35,7 @@ export default function NewPostPage() {
     }
 
     try {
-      const response = await fetch("/api/posts", {
+      const response = await fetch("/api/forums/posts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -1,5 +1,5 @@
 export async function createPost(data: { title: string; content: string; subcategoryId: number }) {
-    const response = await fetch('/api/posts', {
+    const response = await fetch('/api/forums/posts', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

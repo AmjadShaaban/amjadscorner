@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useAuthStore } from "../../lib/state";
+import { useAuthStore } from "@/lib/state";
 import Link from "next/link";
 
 export default function ForumsPage() {
@@ -10,8 +10,10 @@ export default function ForumsPage() {
   const [subcategories, setSubcategories] = useState([]);
 
   useEffect(() => {
-    axios.get("/api/categories").then((res) => setCategories(res.data));
-    axios.get("/api/subcategories").then((res) => setSubcategories(res.data));
+    axios.get("/api/forums/categories").then((res) => setCategories(res.data));
+    axios
+      .get("/api/forums/subcategories")
+      .then((res) => setSubcategories(res.data));
   }, []);
 
   return (

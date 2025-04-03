@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectToDatabase } from '../../../lib/db';
-import { User, UserSchema } from '../../../models/User';
+import { connectToDatabase } from '@/lib/db';
+import { User, UserSchema } from '@/models/User';
 import bcrypt from 'bcryptjs';
-import { auth } from '../../../lib/auth';
+import { auth } from '@/lib/auth';
 
 export async function PUT(req: NextRequest) {
   const session = await auth();

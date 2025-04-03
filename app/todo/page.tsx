@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useAuthStore } from "../../lib/state";
+import { useAuthStore } from "@/lib/state";
 
 export default function TodoPage() {
   const { user } = useAuthStore();
