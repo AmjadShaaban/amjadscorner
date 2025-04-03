@@ -15,6 +15,13 @@ export default function ForumsAdminPage() {
   const [selectedCategoryId, setSelectedCategoryId] = useState("");
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    axios.get("/api/forums/categories").then((res) => setCategories(res.data));
+    axios
+      .get("/api/forums/subcategories")
+      .then((res) => setSubcategories(res.data));
+  }, []);
+
   if (!user || user.email !== ADMIN_EMAIL) {
     return (
       <p className="text-white max-w-3xl mx-auto mt-8">
@@ -22,13 +29,6 @@ export default function ForumsAdminPage() {
       </p>
     );
   }
-
-  useEffect(() => {
-    axios.get("/api/forums/categories").then((res) => setCategories(res.data));
-    axios
-      .get("/api/forums/subcategories")
-      .then((res) => setSubcategories(res.data));
-  }, []);
 
   const handleCategorySubmit = async (e: React.FormEvent) => {
     e.preventDefault();

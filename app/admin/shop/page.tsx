@@ -39,14 +39,6 @@ export default function ShopAdminPage() {
   const [editItem, setEditItem] = useState<Item | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  if (!user || user.email !== ADMIN_EMAIL) {
-    return (
-      <p className="text-white max-w-3xl mx-auto mt-8">
-        Access denied. Admins only.
-      </p>
-    );
-  }
-
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -63,7 +55,7 @@ export default function ShopAdminPage() {
     };
 
     fetchCategories();
-  }, []);
+  });
 
   useEffect(() => {
     if (!selectedCategoryId) return;
@@ -82,6 +74,14 @@ export default function ShopAdminPage() {
 
     fetchItems();
   }, [selectedCategoryId]);
+
+  if (!user || user.email !== ADMIN_EMAIL) {
+    return (
+      <p className="text-white max-w-3xl mx-auto mt-8">
+        Access denied. Admins only.
+      </p>
+    );
+  }
 
   if (!user || user.email !== ADMIN_EMAIL) {
     return (
