@@ -5,3 +5,29 @@
     min-height: 150px;
 }
 
+blockquote {
+    border-left: 4px solid #007bff;
+    background-color: #f8f9fa;    
+    font-style: italic;
+    color: #333;
+    line-height: 1.6;
+    position: relative;
+  }
+  
+  
+  ol {
+    list-style-type: decimal;
+    margin: 1em 0;           
+    padding-left: 2em;       
+    color: #333;
+  }
+  
+  ol li {
+    margin-bottom: 0.5em;
+    line-height: 1.5;
+  }
+  
+  ol ol {
+    list-style-type: lower-alpha;
+    padding-left: 1.5em;
+  }
