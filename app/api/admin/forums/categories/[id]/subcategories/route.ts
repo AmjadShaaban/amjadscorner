@@ -9,11 +9,11 @@ import { Subcategory, SubcategorySchema } from "@/models/forums/Subcategory";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
     await connectToDatabase();
-    const categoryId = params.id;
+    const { id: categoryId } = context.params;
 
     const subcategories = await Subcategory.find({
       category: categoryId,
