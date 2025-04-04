@@ -6,11 +6,8 @@ import { connectToDatabase } from "@/lib/db";
 import { requireRole } from "@/lib/auth/requireRole";
 import { UserRole } from "@/types/roles";
 import { Subcategory, SubcategorySchema } from "@/models/forums/Subcategory";
-
-export async function GET(
-  req: NextRequest,
-  context: { params: { id: string } }
-) {
+// TODO fix me i hate any types
+export async function GET(req: NextRequest, context: any) {
   try {
     await connectToDatabase();
     const { id: categoryId } = context.params;
