@@ -1,109 +1,118 @@
+// Navbar.tsx
 "use client";
-import { useEffect } from "react";
-import { signOut, useSession } from "next-auth/react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useSession, signOut } from "next-auth/react";
+import {
+  Menu,
+  X,
+  Home,
+  ClipboardList,
+  ShoppingBag,
+  Users,
+  Shield,
+} from "lucide-react";
+import { UserRole } from "@/types/roles";
 import { useAuthStore } from "../lib/state";
-import Image from "next/image";
-// TODO role-based system
-// Hardcoded admin email (replace with your email or a role-based system)
-const ADMIN_EMAIL = "test@test.com";
+import NavLink from "./NavLink";
 
 export default function Navbar() {
   const { setUser } = useAuthStore();
   const { data: session } = useSession();
-  const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    console.log("Session in useEffect:", session);
     if (session?.user) {
-      setUser({
-        id: session.user.id,
-        email: session.user.email || "",
-      });
+      setUser({ id: session.user.id, email: session.user.email ?? "" });
     } else if (session === null) {
       setUser(null);
     }
   }, [session, setUser]);
 
+  const role = session?.user?.role ?? UserRole.GUEST;
+
   const links = [
-    { name: "Home", href: "/" },
-    { name: "Todo", href: "/todo" },
-    { name: "Shop", href: "/shop" },
-    { name: "Forums", href: "/forums" },
-  ];
+    { name: "Home", href: "/", showFor: UserRole.GUEST, Icon: Home },
+    {
+      name: "Todo",
+      href: "/todo",
+      showFor: UserRole.USER,
+      Icon: ClipboardList,
+    },
+    { name: "Shop", href: "/shop", showFor: UserRole.GUEST, Icon: ShoppingBag },
+    { name: "Forums", href: "/forums", showFor: UserRole.GUEST, Icon: Users },
+    { name: "Admin", href: "/admin", showFor: UserRole.ADMIN, Icon: Shield },
+  ] as const;
 
-  if (session?.user?.email === ADMIN_EMAIL) {
-    links.push({ name: "Admin", href: "/admin" });
-  }
-
-  const activeLink = links.find((link) => link.href === pathname) || links[0];
-  const inactiveLinks = links.filter((link) => link.href !== activeLink.href);
-  const orderedInactiveLinks = inactiveLinks.sort((a, b) => {
-    const order = {
-      Home:
-        activeLink.name === "Home"
-          ? ["Todo", "Shop", "Forums", "Admin"]
-          : ["Home", "Shop", "Forums", "Admin"],
-      Todo: ["Home", "Shop", "Forums", "Admin"],
-      Shop: ["Home", "Todo", "Forums", "Admin"],
-      Forums: ["Home", "Todo", "Shop", "Admin"],
-      Admin: ["Home", "Todo", "Shop", "Forums"],
-    };
-    return (
-      order[activeLink.name].indexOf(a.name) -
-      order[activeLink.name].indexOf(b.name)
-    );
+  const visibleLinks = links.filter((link) => {
+    if (link.showFor === UserRole.GUEST) return true;
+    if (
+      link.showFor === UserRole.USER &&
+      (role === UserRole.USER || role === UserRole.ADMIN)
+    )
+      return true;
+    if (link.showFor === UserRole.ADMIN && role === UserRole.ADMIN) return true;
+    return false;
   });
 
   return (
-    <header className="bg-gray-900 text-white p-4">
-      <nav className="flex justify-between items-center max-w-4xl mx-auto">
-        {/* Logo and Active Link (Left) */}
+    <header className="bg-gray-900 text-white p-4 rounded-t-xl">
+      <nav className="max-w-4xl mx-auto flex justify-between items-center">
+        {/* Left: Logo + Name */}
         <div className="flex items-center space-x-3">
-          <Image
-            src="/logo.png"
-            alt="Amjad's Corner Logo"
-            width={32}
-            height={32}
-          />
-          <span className="underline text-gray-300 cursor-default">
-            {activeLink.name}
-          </span>
+          <img src="/logo.png" alt="Logo" className="w-8 h-8" />
+          <span className="text-gray-300 font-semibold">Amjad's Corner</span>
         </div>
 
-        {/* Inactive Links (Right) */}
-        <div className="flex space-x-4 items-center">
-          {orderedInactiveLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="relative group hover:text-gray-200 transition-colors duration-300"
-            >
-              {link.name}
-              <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-white transition-all duration-300 group-hover:w-full" />
-            </Link>
+        {/* Right: Desktop Links */}
+        <div className="hidden md:flex items-center space-x-4">
+          {visibleLinks.map((link) => (
+            <NavLink key={link.href} {...link} />
           ))}
-          <div>
-            {session?.user ? (
-              <>
-                <span>{session.user.email}</span>
-                <button onClick={() => signOut()} className="ml-4 underline">
-                  Logout
-                </button>
-              </>
-            ) : (
-              <Link
-                href="/login"
-                className="relative group hover:text-gray-200 transition-colors duration-300"
+
+          {session?.user ? (
+            <div className="flex items-center space-x-4">
+              <span className="text-sm text-gray-400">{session.user.name}</span>
+              <button
+                onClick={() => signOut()}
+                className="underline hover:text-gray-200"
               >
-                Login
-                <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-white transition-all duration-300 group-hover:w-full" />
-              </Link>
-            )}
-          </div>
+                Logout
+              </button>
+            </div>
+          ) : (
+            <NavLink href="/login" name="Login" />
+          )}
+        </div>
+
+        {/* Mobile Menu Toggle */}
+        <div className="md:hidden">
+          <button onClick={() => setMenuOpen((prev) => !prev)}>
+            {menuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
       </nav>
+
+      {/* Mobile Menu Panel */}
+      {menuOpen && (
+        <div className="md:hidden mt-2 flex flex-col items-start space-y-2 px-4">
+          {visibleLinks.map((link) => (
+            <NavLink key={link.href} {...link} />
+          ))}
+          {session?.user ? (
+            <>
+              <span className="text-sm text-gray-400">{session.user.name}</span>
+              <button
+                onClick={() => signOut()}
+                className="underline hover:text-gray-200"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <NavLink href="/login" name="Login" />
+          )}
+        </div>
+      )}
     </header>
   );
 }
