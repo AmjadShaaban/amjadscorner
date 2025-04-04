@@ -1,27 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import mongoose from "mongoose";
+
 import { connectToDatabase } from "@/lib/db";
 import { requireRole } from "@/lib/auth/requireRole";
 import { UserRole } from "@/types/roles";
 import { Category } from "@/models/forums/Category";
-import mongoose from "mongoose";
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
+  const params = await context.params;
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
-  if (user instanceof NextResponse) return;
+  if (user instanceof NextResponse) return user;
 
   try {
+    const { searchParams } = new URL(req.url);
+    const restore = searchParams.get("restore") === "true";
+
     const { name } = await req.json();
-    const nameSchema = z.string().min(1, "Name is required");
-    nameSchema.parse(name);
+    z.string().min(1).parse(name);
 
     await connectToDatabase();
 
-    const category = await Category.findById(params.id);
-
+    const category = await Category.findOne({ _id: params.id });
     if (!category) {
       return NextResponse.json(
         { error: "Category not found" },
@@ -31,8 +34,14 @@ export async function PUT(
 
     category.name = name;
     category.updatedBy = new mongoose.Types.ObjectId(user.id);
-    await category.save();
 
+    if (restore) {
+      category.isDeleted = false;
+      category.deletedAt = null;
+      category.deletedBy = null;
+    }
+
+    await category.save();
     return NextResponse.json(category);
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -51,30 +60,34 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
+  const params = await context.params;
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
-  if (user instanceof NextResponse) return;
+  if (user instanceof NextResponse) return user;
 
   try {
     await connectToDatabase();
 
-    const category = await Category.findById(params.id);
-    if (!category || category.isDeleted) {
+    const category = await Category.findOne({
+      _id: params.id,
+      isDeleted: false,
+    });
+    if (!category) {
       return NextResponse.json(
         { error: "Category not found" },
         { status: 404 }
       );
     }
 
-    category.deletedBy = new mongoose.Types.ObjectId(user.id);
-    category.deletedAt = new Date();
     category.isDeleted = true;
+    category.deletedAt = new Date();
+    category.deletedBy = new mongoose.Types.ObjectId(user.id);
     await category.save();
 
     return NextResponse.json({ message: "Category deleted" });
   } catch (error) {
-    console.error("Category delete error:", error);
+    console.error("Category deletion error:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

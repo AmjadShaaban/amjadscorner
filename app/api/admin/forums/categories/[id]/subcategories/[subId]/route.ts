@@ -9,12 +9,16 @@ import { Subcategory } from "@/models/forums/Subcategory";
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string; subId: string } }
+  context: { params: Promise<{ id: string; subId: string }> }
 ) {
+  const params = await context.params;
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
 
   try {
+    const { searchParams } = new URL(req.url);
+    const restore = searchParams.get("restore") === "true";
+
     const { name } = await req.json();
     z.string().min(1).parse(name);
 
@@ -23,7 +27,6 @@ export async function PUT(
     const subcategory = await Subcategory.findOne({
       _id: params.subId,
       category: params.id,
-      isDeleted: false,
     });
 
     if (!subcategory) {
@@ -35,8 +38,14 @@ export async function PUT(
 
     subcategory.name = name;
     subcategory.updatedBy = new mongoose.Types.ObjectId(user.id);
-    await subcategory.save();
 
+    if (restore) {
+      subcategory.isDeleted = false;
+      subcategory.deletedAt = null;
+      subcategory.deletedBy = null;
+    }
+
+    await subcategory.save();
     return NextResponse.json(subcategory);
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -55,8 +64,9 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string; subId: string } }
+  context: { params: Promise<{ id: string; subId: string }> }
 ) {
+  const params = await context.params;
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
 
