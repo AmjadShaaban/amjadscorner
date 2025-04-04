@@ -27,18 +27,16 @@ export async function GET(req: NextRequest, context: any) {
   }
 }
 
-export async function POST(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function POST(req: NextRequest, context: any) {
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
 
   try {
+    const { id: categoryId } = context.params;
     const data = await req.json();
     const parsed = SubcategorySchema.parse({
       name: data.name,
-      categoryId: params.id,
+      categoryId,
     });
 
     await connectToDatabase();
