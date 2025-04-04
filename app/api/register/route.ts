@@ -12,13 +12,14 @@ export async function POST(req: NextRequest) {
     }
 
     await connectToDatabase();
-    const { email, password } = parsed.data;
+    const userData = parsed.data;
 
-    const hashedPassword = bcrypt.hashSync(password, 10);
-    const user = new User({ email, password: hashedPassword });
+    userData.password = bcrypt.hashSync(userData.password, 10);
+
+    const user = new User(userData);
     await user.save();
 
-    return NextResponse.json({ message: 'User created' }, { status: 201 });
+    return NextResponse.json({ user:user.toJSON() }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
