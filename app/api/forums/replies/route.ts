@@ -1,3 +1,9 @@
+import { NextResponse } from "next/server";
+// TODO Finish me
+export async function GET() {
+  return NextResponse.json("IM A PLACEHOLDER");
+}
+
 // import { NextRequest, NextResponse } from "next/server";
 // import { auth } from "@/lib/auth/auth";
 // import { connectToDatabase } from "@/lib/db";

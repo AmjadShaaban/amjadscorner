@@ -1,25 +1,31 @@
-import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth/auth";
-import { connectToDatabase } from "@/lib/db";
-import { Subcategory, SubcategorySchema } from "@/models/forums/Subcategory";
-import { z } from "zod";
-// TODO role-based system
-// Hardcoded admin email (replace with your email or a role-based system)
-const ADMIN_EMAIL = "test@test.com";
-
-export async function GET(req: NextRequest) {
-  try {
-    await connectToDatabase();
-    const subcategories = await Subcategory.find().sort({ createdAt: 1 });
-    return NextResponse.json(subcategories);
-  } catch (error) {
-    console.error("Error fetching subcategories:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
-  }
+import { NextResponse } from "next/server";
+// TODO Finish me
+export async function GET() {
+  return NextResponse.json("IM A PLACEHOLDER");
 }
+
+// import { NextRequest, NextResponse } from "next/server";
+// import { auth } from "@/lib/auth/auth";
+// import { connectToDatabase } from "@/lib/db";
+// import { Subcategory, SubcategorySchema } from "@/models/forums/Subcategory";
+// import { z } from "zod";
+// // TODO role-based system
+// // Hardcoded admin email (replace with your email or a role-based system)
+// const ADMIN_EMAIL = "test@test.com";
+
+// export async function GET(req: NextRequest) {
+//   try {
+//     await connectToDatabase();
+//     const subcategories = await Subcategory.find().sort({ createdAt: 1 });
+//     return NextResponse.json(subcategories);
+//   } catch (error) {
+//     console.error("Error fetching subcategories:", error);
+//     return NextResponse.json(
+//       { error: "Internal Server Error" },
+//       { status: 500 }
+//     );
+//   }
+// }
 
 // export async function POST(req: NextRequest) {
 //   const session = await auth();
