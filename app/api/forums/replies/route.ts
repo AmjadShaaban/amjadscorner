@@ -1,33 +1,40 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/lib/auth';
-import { connectToDatabase } from '@/lib/db';
-import { Reply, ReplySchema } from '@/models/forums/Reply';
-import { z } from 'zod';
+import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@/lib/auth/auth";
+import { connectToDatabase } from "@/lib/db";
+import { Reply, ReplySchema } from "@/models/forums/Reply";
+import { z } from "zod";
 
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const postId = searchParams.get('postId');
+    const postId = searchParams.get("postId");
 
     if (!postId) {
-      return NextResponse.json({ error: 'Post ID is required' }, { status: 400 });
+      return NextResponse.json(
+        { error: "Post ID is required" },
+        { status: 400 }
+      );
     }
 
     await connectToDatabase();
     const replies = await Reply.find({ postId })
       .sort({ createdAt: 1 })
-      .populate('userId', 'email')
-      .populate('quotedReplyId', 'content userId');
+      .populate("userId", "email")
+      .populate("quotedReplyId", "content userId");
     return NextResponse.json(replies);
   } catch (error) {
-    console.error('Error fetching replies:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error("Error fetching replies:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
 
 export async function POST(req: NextRequest) {
   const session = await auth();
-  if (!session?.user.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  if (!session?.user.id)
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   try {
     const data = await req.json();
@@ -44,9 +51,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(reply, { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.errors[0].message }, { status: 400 });
+      return NextResponse.json(
+        { error: error.errors[0].message },
+        { status: 400 }
+      );
     }
-    console.error('Reply creation error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error("Reply creation error:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }

@@ -1,13 +1,9 @@
-import { create } from 'zustand';
-
-interface User {
-  id: string;
-  email: string
-}
+import { create } from "zustand";
+import { AuthUser } from "@/types/user";
 
 interface AuthState {
-  user: User| null
-  setUser:(user:User|null)=> void
+  user: AuthUser | null;
+  setUser: (user: AuthUser | null) => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
