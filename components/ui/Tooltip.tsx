@@ -36,7 +36,7 @@ export default function Tooltip({
       onMouseLeave={() => setVisible(false)}
       onFocus={() => setVisible(true)}
       onBlur={() => setVisible(false)}
-      tabIndex={0} // for keyboard focus
+      tabIndex={0}
     >
       {children}
       {visible && (

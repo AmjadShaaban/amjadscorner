@@ -1,4 +1,3 @@
-// Navbar.tsx
 "use client";
 import { useState, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
@@ -14,6 +13,7 @@ import {
 import { UserRole } from "@/types/roles";
 import { useAuthStore } from "../lib/state";
 import NavLink from "./NavLink";
+import Image from "next/image";
 
 export default function Navbar() {
   const { setUser } = useAuthStore();
@@ -59,8 +59,10 @@ export default function Navbar() {
       <nav className="max-w-4xl mx-auto flex justify-between items-center">
         {/* Left: Logo + Name */}
         <div className="flex items-center space-x-3">
-          <img src="/logo.png" alt="Logo" className="w-8 h-8" />
-          <span className="text-gray-300 font-semibold">Amjad's Corner</span>
+          <Image src="/logo.png" alt="Logo" className="w-8 h-8" />
+          <span className="text-gray-300 font-semibold">
+            Amjad&apos;s Corner
+          </span>
         </div>
 
         {/* Right: Desktop Links */}
