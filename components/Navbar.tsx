@@ -15,7 +15,7 @@ import { useAuthStore } from "@/lib/state";
 import NavLink from "./NavLink";
 import Image from "next/image";
 
-export default function Navbar() {
+const Navbar = () => {
   const { user } = useAuthStore();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -112,4 +112,5 @@ export default function Navbar() {
       )}
     </header>
   );
-}
+};
+export default Navbar;

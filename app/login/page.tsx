@@ -2,7 +2,7 @@
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 
-export default function Login() {
+const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -38,4 +38,6 @@ export default function Login() {
       </form>
     </div>
   );
-}
+};
+
+export default LoginPage;

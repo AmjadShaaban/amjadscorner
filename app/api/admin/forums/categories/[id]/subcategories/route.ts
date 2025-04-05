@@ -7,10 +7,10 @@ import { requireRole } from "@/lib/auth/requireRole";
 import { UserRole } from "@/types/roles";
 import { Subcategory, SubcategorySchema } from "@/models/forums/Subcategory";
 
-export async function GET(
+export const GET = async (
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
-) {
+) => {
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
 
@@ -30,12 +30,12 @@ export async function GET(
       { status: 500 }
     );
   }
-}
+};
 
-export async function POST(
+export const POST = async (
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
-) {
+) => {
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
 
@@ -70,4 +70,4 @@ export async function POST(
       { status: 500 }
     );
   }
-}
+};

@@ -1,9 +1,9 @@
 import { UserRole } from "@/types/roles";
 
-export interface AuthUser {
+export type AuthUser = {
   id: string;
   email: string;
   firstName?: string;
   lastName?: string;
   role: UserRole;
-}
+};

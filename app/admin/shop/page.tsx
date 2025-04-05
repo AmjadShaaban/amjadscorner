@@ -6,22 +6,22 @@ import { useAuthStore } from "@/lib/state";
 
 // TODO role-based system
 // Hardcoded admin email (replace with your email or a role-based system)
-const ADMIN_EMAIL = "test@test.com";
+const ADMIN_EMAIL = "admin@test.com";
 
-interface Category {
+type Category = {
   _id: string;
   name: string;
-}
+};
 
-interface Item {
+type Item = {
   _id: string;
   name: string;
   description: string;
   price: number;
   categoryId: string;
-}
+};
 
-export default function ShopAdminPage() {
+const ShopAdminPage = () => {
   const { user } = useAuthStore();
   const [categories, setCategories] = useState<Category[]>([]);
   const [newCategoryName, setNewCategoryName] = useState("");
@@ -548,4 +548,6 @@ export default function ShopAdminPage() {
       )}
     </div>
   );
-}
+};
+
+export default ShopAdminPage;

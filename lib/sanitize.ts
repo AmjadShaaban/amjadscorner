@@ -1,5 +1,5 @@
-import DOMPurify from 'dompurify';
+import DOMPurify from "dompurify";
 
-export function sanitizeHTML(html: string) {
+export const sanitizeHTML = (html: string) => {
   return DOMPurify.sanitize(html);
-}
+};

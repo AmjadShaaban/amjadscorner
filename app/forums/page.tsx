@@ -4,7 +4,7 @@ import axios from "axios";
 import { useAuthStore } from "@/lib/state";
 import Link from "next/link";
 
-export default function ForumsPage() {
+const ForumsPage = () => {
   const { user } = useAuthStore();
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
@@ -53,4 +53,6 @@ export default function ForumsPage() {
       )}
     </div>
   );
-}
+};
+
+export default ForumsPage;

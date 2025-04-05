@@ -7,7 +7,7 @@ import CreateCategoryForm from "@/components/admin/forums/CreateCategoryForm";
 import CreateSubcategoryForm from "@/components/admin/forums/CreateSubcategoryForm";
 import ForumsStructureTree from "@/components/admin/forums/ForumsStructureTree";
 
-export default function ForumsAdminPage() {
+const ForumsAdminPage = () => {
   const [categories, setCategories] = useState<any[]>([]);
   const [subcategories, setSubcategories] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -84,4 +84,6 @@ export default function ForumsAdminPage() {
       </div>
     </RoleGuard>
   );
-}
+};
+
+export default ForumsAdminPage;

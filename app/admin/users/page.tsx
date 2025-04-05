@@ -2,9 +2,9 @@
 import { useAuthStore } from "@/lib/state";
 // TODO role-based system
 // Hardcoded admin email (replace with your email or a role-based system)
-const ADMIN_EMAIL = "test@test.com";
+const ADMIN_EMAIL = "admin@test.com";
 
-export default function UsersAdminPage() {
+const UsersAdminPage = () => {
   const { user } = useAuthStore();
 
   if (!user || user.email !== ADMIN_EMAIL) {
@@ -16,4 +16,6 @@ export default function UsersAdminPage() {
   }
 
   return <>Users Admin Page</>;
-}
+};
+
+export default UsersAdminPage;

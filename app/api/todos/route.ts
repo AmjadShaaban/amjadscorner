@@ -4,7 +4,7 @@ import { connectToDatabase } from "@/lib/db";
 import { Todo, TodoSchema } from "@/models/todo/Todo";
 import { z } from "zod";
 
-export async function GET(req: NextRequest) {
+export const GET = async (req: NextRequest) => {
   const session = await auth();
   if (!session?.user.id)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -12,9 +12,9 @@ export async function GET(req: NextRequest) {
   await connectToDatabase();
   const todos = await Todo.find({ userId: session.user.id });
   return NextResponse.json(todos);
-}
+};
 
-export async function POST(req: NextRequest) {
+export const POST = async (req: NextRequest) => {
   const session = await auth();
   if (!session?.user.id)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -44,9 +44,9 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
-}
+};
 
-export async function PUT(req: NextRequest) {
+export const PUT = async (req: NextRequest) => {
   const session = await auth();
   if (!session?.user.id)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -79,9 +79,9 @@ export async function PUT(req: NextRequest) {
       { status: 500 }
     );
   }
-}
+};
 
-export async function DELETE(req: NextRequest) {
+export const DELETE = async (req: NextRequest) => {
   const session = await auth();
   if (!session?.user.id)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -106,4 +106,4 @@ export async function DELETE(req: NextRequest) {
       { status: 500 }
     );
   }
-}
+};

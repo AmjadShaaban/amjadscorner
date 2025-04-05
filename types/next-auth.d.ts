@@ -2,7 +2,7 @@ import { DefaultSession } from "next-auth";
 import { UserRole } from "@/types/roles";
 
 declare module "next-auth" {
-  interface Session {
+  type Session = {
     user: {
       id: string;
       email: string;
@@ -10,13 +10,13 @@ declare module "next-auth" {
       lastName?: string;
       role: UserRole;
     } & DefaultSession["user"];
-  }
+  };
 
-  interface User {
+  type User = {
     id: string;
     email: string;
     firstName?: string;
     lastName?: string;
     role: UserRole;
-  }
+  };
 }

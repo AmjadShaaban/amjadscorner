@@ -4,13 +4,13 @@ import { usePathname } from "next/navigation";
 import { LucideIcon } from "lucide-react";
 import Tooltip from "@/components/ui/Tooltip";
 
-interface NavLinkProps {
+type NavLinkProps = {
   href: string;
   name: string;
   Icon?: LucideIcon;
-}
+};
 
-export default function NavLink({ href, name, Icon }: NavLinkProps) {
+const NavLink = ({ href, name, Icon }: NavLinkProps) => {
   const pathname = usePathname();
   const isActive = pathname === href;
 
@@ -27,4 +27,6 @@ export default function NavLink({ href, name, Icon }: NavLinkProps) {
       </Link>
     </Tooltip>
   );
-}
+};
+
+export default NavLink;

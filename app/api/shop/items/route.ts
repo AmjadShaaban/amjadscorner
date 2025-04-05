@@ -7,7 +7,7 @@
 // import { auth } from "@/lib/auth/auth";
 // // TODO role-based system
 // // Hardcoded admin email (replace with your email or a role-based system)
-// const ADMIN_EMAIL = "test@test.com";
+// const ADMIN_EMAIL = "admin@test.com";
 
 // export async function GET(req: NextRequest) {
 //   try {

@@ -2,12 +2,12 @@
 import { useRef, useEffect, useState } from "react";
 import type Quill from "quill";
 
-interface QuillEditorProps {
+type QuillEditorProps = {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
   readOnly?: boolean;
-}
+};
 
 let quillConstructor: any = null;
 let quillPromise: Promise<void> | null = null;
@@ -31,12 +31,12 @@ if (typeof window !== "undefined" && !quillConstructor && !quillPromise) {
     });
 }
 
-export default function QuillEditor({
+const QuillEditor = ({
   value,
   onChange,
   placeholder = "Write your content here...",
   readOnly = false,
-}: QuillEditorProps) {
+}: QuillEditorProps) => {
   const quillRef = useRef<Quill | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const toolbarRef = useRef<HTMLDivElement>(null);
@@ -171,4 +171,6 @@ export default function QuillEditor({
       <div ref={containerRef} className="quill-editor" />
     </div>
   );
-}
+};
+
+export default QuillEditor;

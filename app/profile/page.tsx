@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 
-export default function Profile() {
+const ProfilePage = () => {
   const { data: session } = useSession();
   const [password, setPassword] = useState("");
 
@@ -35,4 +35,6 @@ export default function Profile() {
       </form>
     </div>
   );
-}
+};
+
+export default ProfilePage;

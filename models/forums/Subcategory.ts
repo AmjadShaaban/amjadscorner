@@ -7,7 +7,7 @@ const SubcategorySchema = z.object({
   categoryId: z.string().min(1, { message: "Category ID is required" }),
 });
 
-interface ISubcategory extends Document {
+type ISubcategory = {
   name: string;
   category: Types.ObjectId;
   createdBy: Types.ObjectId;
@@ -17,7 +17,7 @@ interface ISubcategory extends Document {
   isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
-}
+} & Document;
 
 const subcategorySchema = new Schema<ISubcategory>(
   {

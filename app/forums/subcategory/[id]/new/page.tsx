@@ -4,7 +4,7 @@ import { useRouter, useParams } from "next/navigation";
 import QuillEditor from "@/components/QuillEditor";
 import { useAuthStore } from "@/lib/state";
 
-export default function NewPostPage() {
+const NewPostPage = () => {
   const router = useRouter();
   const { id: subcategoryId } = useParams();
   const { user } = useAuthStore();
@@ -115,4 +115,6 @@ export default function NewPostPage() {
       </form>
     </div>
   );
-}
+};
+
+export default NewPostPage;

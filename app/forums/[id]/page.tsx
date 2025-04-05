@@ -8,11 +8,11 @@ import { sanitizeHTML } from "@/lib/sanitize";
 import QuillEditor from "@/components/QuillEditor";
 import Link from "next/link";
 
-export default function PostPage({
+const PostPage = ({
   params: paramsPromise,
 }: {
   params: Promise<{ id: string }>;
-}) {
+}) => {
   const params = React.use(paramsPromise);
   const { user } = useAuthStore();
   const [post, setPost] = useState(null);
@@ -153,4 +153,6 @@ export default function PostPage({
       )}
     </div>
   );
-}
+};
+
+export default PostPage;

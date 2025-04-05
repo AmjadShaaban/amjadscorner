@@ -3,10 +3,10 @@ import { UserRole } from "@/types/roles";
 import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 
-export async function requireRole(
+export const requireRole = async (
   allowedRoles: UserRole[],
   options?: { returnJson?: boolean }
-) {
+) => {
   const session = await auth();
 
   const user = session?.user;
@@ -22,4 +22,4 @@ export async function requireRole(
   }
 
   return user;
-}
+};

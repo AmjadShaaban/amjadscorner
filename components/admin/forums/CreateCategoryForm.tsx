@@ -1,13 +1,11 @@
 import axios from "axios";
 import { useState } from "react";
 
-interface CreateCategoryFormProps {
+type CreateCategoryFormProps = {
   onCreate: (newCategory: any) => void;
-}
+};
 
-export default function CreateCategoryForm({
-  onCreate,
-}: CreateCategoryFormProps) {
+const CreateCategoryForm = ({ onCreate }: CreateCategoryFormProps) => {
   const [categoryName, setCategoryName] = useState("");
   const [error, setError] = useState<string | null>(null);
 
@@ -46,4 +44,6 @@ export default function CreateCategoryForm({
       {error && <p className="text-red-500 mt-2">{error}</p>}
     </section>
   );
-}
+};
+
+export default CreateCategoryForm;

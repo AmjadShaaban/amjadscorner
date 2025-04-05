@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { Pencil, Trash, Check, X } from "lucide-react";
 
-interface ForumsStructureTreeProps {
+type ForumsStructureTreeProps = {
   categories: any[];
   subcategories: any[];
   loading: boolean;
@@ -10,9 +10,9 @@ interface ForumsStructureTreeProps {
   onDeleteCategory: (id: string) => void;
   onUpdateSubcategory: (updated: any) => void;
   onDeleteSubcategory: (id: string) => void;
-}
+};
 
-export default function ForumsStructureTree({
+const ForumsStructureTree = ({
   categories,
   subcategories,
   loading,
@@ -20,7 +20,7 @@ export default function ForumsStructureTree({
   onDeleteCategory,
   onUpdateSubcategory,
   onDeleteSubcategory,
-}: ForumsStructureTreeProps) {
+}: ForumsStructureTreeProps) => {
   const [editingCategoryId, setEditingCategoryId] = useState<string | null>(
     null
   );
@@ -318,4 +318,6 @@ export default function ForumsStructureTree({
       )}
     </section>
   );
-}
+};
+
+export default ForumsStructureTree;

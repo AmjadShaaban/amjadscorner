@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuthStore } from "@/lib/state";
 
-export default function TodoPage() {
+const TodoPage = () => {
   const { user } = useAuthStore();
   const [todos, setTodos] = useState([]);
   const [title, setTitle] = useState("");
@@ -138,4 +138,6 @@ export default function TodoPage() {
       </ul>
     </div>
   );
-}
+};
+
+export default TodoPage;

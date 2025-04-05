@@ -5,7 +5,7 @@ const CategorySchema = z.object({
   name: z.string().min(1, { message: "Category name is required" }),
 });
 
-interface ICategory extends Document {
+type ICategory = {
   name: string;
   createdBy: Types.ObjectId;
   updatedBy?: Types.ObjectId | null;
@@ -14,7 +14,7 @@ interface ICategory extends Document {
   isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
-}
+} & Document;
 
 const categorySchema: Schema<ICategory> = new Schema(
   {

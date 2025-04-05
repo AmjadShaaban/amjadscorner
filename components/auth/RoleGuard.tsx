@@ -5,16 +5,16 @@ import { useAuthStore } from "@/lib/state";
 import { UserRole } from "@/types/roles";
 
 type RoleGuardProps = {
-  role: UserRole | UserRole[]; // allow single or multiple roles
+  role: UserRole | UserRole[];
   children: ReactNode;
   redirectTo?: string;
 };
 
-export default function RoleGuard({
+const RoleGuard = ({
   role,
   children,
   redirectTo = "/unauthorized",
-}: RoleGuardProps) {
+}: RoleGuardProps) => {
   const { user } = useAuthStore();
   const router = useRouter();
 
@@ -27,8 +27,9 @@ export default function RoleGuard({
     }
   }, [user, isAuthorized, router, redirectTo]);
 
-  // Optional: render null or fallback while waiting for auth
   if (!user || !isAuthorized) return null;
 
   return <>{children}</>;
-}
+};
+
+export default RoleGuard;

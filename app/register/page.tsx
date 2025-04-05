@@ -2,7 +2,7 @@
 import { useState } from "react";
 import axios from "axios";
 // TODO style the page
-export default function Register() {
+const RegisterPage = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -55,4 +55,6 @@ export default function Register() {
       </form>
     </div>
   );
-}
+};
+
+export default RegisterPage;

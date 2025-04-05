@@ -7,10 +7,10 @@ import { requireRole } from "@/lib/auth/requireRole";
 import { UserRole } from "@/types/roles";
 import { Category } from "@/models/forums/Category";
 
-export async function PUT(
+export const PUT = async (
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
-) {
+) => {
   const params = await context.params;
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
@@ -56,12 +56,12 @@ export async function PUT(
       { status: 500 }
     );
   }
-}
+};
 
-export async function DELETE(
+export const DELETE = async (
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
-) {
+) => {
   const params = await context.params;
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
@@ -93,4 +93,4 @@ export async function DELETE(
       { status: 500 }
     );
   }
-}
+};

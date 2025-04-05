@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 
-export default function HomePage() {
+const HomePage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white rounded-b-xl">
       <div className="max-w-4xl mx-auto px-4 py-16">
@@ -97,4 +97,6 @@ export default function HomePage() {
       </div>
     </div>
   );
-}
+};
+
+export default HomePage;

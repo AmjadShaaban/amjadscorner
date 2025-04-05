@@ -5,7 +5,7 @@ import { requireRole } from "@/lib/auth/requireRole";
 import { UserRole } from "@/types/roles";
 import { Category, CategorySchema } from "@/models/forums/Category";
 
-export async function GET() {
+export const GET = async () => {
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
 
@@ -22,9 +22,9 @@ export async function GET() {
       { status: 500 }
     );
   }
-}
+};
 
-export async function POST(req: NextRequest) {
+export const POST = async (req: NextRequest) => {
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return;
 
@@ -56,4 +56,4 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
-}
+};

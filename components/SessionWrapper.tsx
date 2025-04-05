@@ -4,12 +4,12 @@ import { SessionProvider, useSession } from "next-auth/react";
 import { useAuthStore } from "@/lib/state";
 import { AuthUser } from "@/types/user";
 
-type Props = {
+type SessionWrapperProps = {
   children: ReactNode;
   initialSession: any;
 };
 
-function SyncAuthStore() {
+const SyncAuthStore = () => {
   const { data: session } = useSession();
   const setUser = useAuthStore((state) => state.setUser);
 
@@ -29,13 +29,15 @@ function SyncAuthStore() {
   }, [session, setUser]);
 
   return null;
-}
+};
 
-export default function SessionWrapper({ children, initialSession }: Props) {
+const SessionWrapper = ({ children, initialSession }: SessionWrapperProps) => {
   return (
     <SessionProvider session={initialSession}>
       <SyncAuthStore />
       {children}
     </SessionProvider>
   );
-}
+};
+
+export default SessionWrapper;

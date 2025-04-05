@@ -1,8 +1,10 @@
 "use client";
-export default function Shop() {
+const ShopPage = () => {
   return (
     <div>
       <p>Shop</p>
     </div>
   );
-}
+};
+
+export default ShopPage;

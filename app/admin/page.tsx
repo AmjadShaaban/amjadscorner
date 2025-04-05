@@ -3,7 +3,7 @@ import RoleGuard from "@/components/auth/RoleGuard";
 import Link from "next/link";
 import { UserRole } from "../../types/roles";
 
-export default function AdminDashboardPage() {
+const AdminDashboardPage = () => {
   return (
     <RoleGuard role={UserRole.ADMIN}>
       <div className="max-w-4xl mx-auto mt-8 p-4">
@@ -39,4 +39,6 @@ export default function AdminDashboardPage() {
       </div>
     </RoleGuard>
   );
-}
+};
+
+export default AdminDashboardPage;

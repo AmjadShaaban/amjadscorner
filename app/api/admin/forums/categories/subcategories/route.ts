@@ -4,7 +4,7 @@ import { requireRole } from "@/lib/auth/requireRole";
 import { UserRole } from "@/types/roles";
 import { Subcategory } from "@/models/forums/Subcategory";
 
-export async function GET(req: NextRequest) {
+export const GET = async (req: NextRequest) => {
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
 
@@ -23,4 +23,4 @@ export async function GET(req: NextRequest) {
       { status: 500 }
     );
   }
-}
+};

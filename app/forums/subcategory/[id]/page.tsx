@@ -6,11 +6,11 @@ import Link from "next/link";
 import React from "react";
 import { sanitizeHTML } from "@/lib/sanitize";
 
-export default function SubcategoryPage({
+const SubcategoryPage = ({
   params: paramsPromise,
 }: {
   params: Promise<{ id: string }>;
-}) {
+}) => {
   const params = React.use(paramsPromise);
   const { user } = useAuthStore();
   const [posts, setPosts] = useState([]);
@@ -79,4 +79,6 @@ export default function SubcategoryPage({
       </div>
     </div>
   );
-}
+};
+
+export default SubcategoryPage;
