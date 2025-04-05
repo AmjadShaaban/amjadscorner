@@ -112,7 +112,7 @@ export default function ForumsStructureTree({
             {editingCategoryId === cat.id ? (
               <div className="flex gap-2 items-center mb-1">
                 <input
-                  className="p-1 text-sm rounded border-gray-300 text-gray-300 flex-grow"
+                  className="p-1 text-sm rounded border border-gray-300 text-gray-300 flex-grow"
                   value={editCategoryValue}
                   onChange={(e) => setEditCategoryValue(e.target.value)}
                 />
@@ -198,7 +198,7 @@ export default function ForumsStructureTree({
                     {editingSubId === sub.id ? (
                       <div className="flex items-center gap-2 w-full">
                         <input
-                          className="flex-grow p-1 text-sm rounded border-gray-300 text-gray-300"
+                          className="flex-grow p-1 text-sm rounded border border-gray-300 text-gray-300"
                           value={editSubValue}
                           onChange={(e) => setEditSubValue(e.target.value)}
                         />
