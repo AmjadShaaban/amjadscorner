@@ -3,8 +3,8 @@ import Credentials from "next-auth/providers/credentials";
 // TODO multiple auth strategies
 // import GitHub from "next-auth/providers/github"
 // import Google from "next-auth/providers/google"
-import { User, UserSchema } from "../../models/auth/User";
-import { connectToDatabase } from "../db";
+import { User, UserSchema } from "@/models/auth/User";
+import { connectToDatabase } from "@/lib/db";
 import bcrypt from "bcryptjs";
 import { UserRole } from "@/types/roles";
 export const { auth, handlers, signIn, signOut } = NextAuth({
@@ -34,7 +34,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
           throw new Error("Invalid credentials");
         }
         return {
-          id: user._id.toString(),
+          id: user.id.toString(),
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName,
