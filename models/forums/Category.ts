@@ -1,3 +1,4 @@
+import { applyDefaultToJSONTransform } from "@/lib/mongoose/toJSONTransform";
 import mongoose, { Schema, Document, Model, Types } from "mongoose";
 import { z } from "zod";
 
@@ -27,6 +28,8 @@ const categorySchema: Schema<ICategory> = new Schema(
   },
   { timestamps: true }
 );
+
+applyDefaultToJSONTransform(categorySchema);
 
 const Category: Model<ICategory> =
   mongoose.models.Category ||

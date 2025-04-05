@@ -1,3 +1,4 @@
+import { applyDefaultToJSONTransform } from "@/lib/mongoose/toJSONTransform";
 import mongoose, { Schema, Document, Model, Types } from "mongoose";
 import { z } from "zod";
 
@@ -38,6 +39,8 @@ const subcategorySchema = new Schema<ISubcategory>(
   },
   { timestamps: true }
 );
+
+applyDefaultToJSONTransform(subcategorySchema);
 
 const Subcategory: Model<ISubcategory> =
   mongoose.models.Subcategory ||

@@ -1,33 +1,54 @@
-import { UserRole } from "@/types/roles";
-import mongoose, { Document, Model, Schema } from "mongoose";
+import mongoose, { Schema, Document, Model } from "mongoose";
 import { z } from "zod";
+import { UserRole } from "@/types/roles";
+import { applyDefaultToJSONTransform } from "@/lib/mongoose/toJSONTransform";
 
 const UserSchema = z.object({
-  email: z.string().email({ message: "Invalid email address" }),
-  password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters long" }),
+  email: z.string().email(),
+  password: z.string().min(8),
+  role: z.nativeEnum(UserRole).default(UserRole.USER),
   firstName: z.string().optional(),
   lastName: z.string().optional(),
-  role: z.nativeEnum(UserRole).default(UserRole.USER),
 });
 
-type IUser = z.infer<typeof UserSchema> & Document;
+type IUser = {
+  email: string;
+  password: string;
+  role: UserRole;
+  firstName?: string;
+  lastName?: string;
+  isDeleted: boolean;
+  deletedAt?: Date;
+  deletedBy?: mongoose.Types.ObjectId;
+  createdBy: mongoose.Types.ObjectId;
+  updatedBy?: mongoose.Types.ObjectId;
+  createdAt: Date;
+  updatedAt: Date;
+} & Document;
 
-const userSchema: Schema<IUser> = new Schema({
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  role: { type: String, enum: Object.values(UserRole), default: UserRole.USER },
-});
+const userSchema = new Schema<IUser>(
+  {
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    role: {
+      type: String,
+      enum: Object.values(UserRole),
+      default: UserRole.USER,
+    },
+    firstName: { type: String },
+    lastName: { type: String },
 
-userSchema.set("toJSON", {
-  transform: (_doc, ret) => {
-    delete ret.password;
-    return ret;
+    isDeleted: { type: Boolean, default: false },
+    deletedAt: { type: Date, default: null },
+    deletedBy: { type: Schema.Types.ObjectId, ref: "User", default: null },
+
+    createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    updatedBy: { type: Schema.Types.ObjectId, ref: "User", default: null },
   },
-});
+  { timestamps: true }
+);
+
+applyDefaultToJSONTransform(userSchema, { remove: ["password"] });
 
 const User: Model<IUser> =
   mongoose.models.User || mongoose.model<IUser>("User", userSchema);

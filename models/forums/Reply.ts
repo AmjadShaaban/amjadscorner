@@ -1,24 +1,46 @@
-import mongoose, { Schema, Document, Model } from 'mongoose';
-import { z } from 'zod';
+import { applyDefaultToJSONTransform } from "@/lib/mongoose/toJSONTransform";
+import mongoose, { Schema, Document, Model } from "mongoose";
+import { z } from "zod";
 
 const ReplySchema = z.object({
-  postId: z.string().min(1, { message: 'Post ID is required' }),
-  userId: z.string().min(1, { message: 'User ID is required' }),
-  content: z.string().min(1, { message: 'Content must be at least 1 character' }),
-  quotedReplyId: z.string().optional(),
-  createdAt: z.date().default(() => new Date()),
+  content: z.string().min(1, { message: "Reply content is required" }),
+  post: z.string().min(1, { message: "Post ID is required" }),
 });
 
-type IReply = z.infer<typeof ReplySchema> & Document;
+type IReply = {
+  content: string;
+  post: mongoose.Types.ObjectId;
+  author: mongoose.Types.ObjectId;
+  createdBy: mongoose.Types.ObjectId;
+  updatedBy?: mongoose.Types.ObjectId;
+  deletedBy?: mongoose.Types.ObjectId;
+  isDeleted: boolean;
+  deletedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+} & Document;
 
-const replySchema: Schema<IReply> = new Schema({
-  postId: { type: String, required: true, index: true },
-  userId: { type: String, required: true, index: true },
-  content: { type: String, required: true },
-  quotedReplyId: { type: String, index: true },
-  createdAt: { type: Date, default: Date.now },
-});
+const replySchema: Schema<IReply> = new Schema(
+  {
+    content: { type: String, required: true },
+    post: { type: Schema.Types.ObjectId, ref: "Post", required: true },
+    author: { type: Schema.Types.ObjectId, ref: "User", required: true },
 
-const Reply:Model<IReply> = mongoose.models.Reply || mongoose.model<IReply>('Reply', replySchema);
+    isDeleted: { type: Boolean, default: false },
+    deletedAt: { type: Date, default: null },
+    deletedBy: { type: Schema.Types.ObjectId, ref: "User", default: null },
+
+    createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    updatedBy: { type: Schema.Types.ObjectId, ref: "User", default: null },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+applyDefaultToJSONTransform(replySchema);
+
+const Reply: Model<IReply> =
+  mongoose.models.Reply || mongoose.model<IReply>("Reply", replySchema);
 
 export { Reply, ReplySchema };

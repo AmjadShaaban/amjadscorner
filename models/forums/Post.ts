@@ -1,24 +1,51 @@
-import mongoose, { Schema, Document, Model } from 'mongoose';
-import { z } from 'zod';
+import { applyDefaultToJSONTransform } from "@/lib/mongoose/toJSONTransform";
+import mongoose, { Schema, Document, Model } from "mongoose";
+import { z } from "zod";
 
 const PostSchema = z.object({
-  userId: z.string().min(1, { message: 'User ID is required' }),
-  subcategoryId: z.string().min(1, { message: 'Subcategory ID is required' }),
-  title: z.string().min(1, { message: 'Title must be at least 1 character' }),
-  content: z.string().min(1, { message: 'Content must be at least 1 character' }),
-  createdAt: z.date().default(() => new Date()),
+  title: z.string().min(1, { message: "Title is required" }),
+  content: z.string().min(1, { message: "Content is required" }),
+  subcategory: z.string().min(1, { message: "Subcategory ID is required" }),
 });
 
-type IPost = z.infer<typeof PostSchema> & Document;
+type IPost = {
+  title: string;
+  content: string;
+  subcategory: mongoose.Types.ObjectId;
+  author: mongoose.Types.ObjectId;
+  createdBy: mongoose.Types.ObjectId;
+  updatedBy?: mongoose.Types.ObjectId;
+  deletedBy?: mongoose.Types.ObjectId;
+  isDeleted: boolean;
+  deletedAt?: Date;
+} & Document;
 
-const postSchema: Schema<IPost> = new Schema({
-  userId: { type: String, required: true, index: true },
-  subcategoryId: { type: String, required: true, index: true },
-  title: { type: String, required: true },
-  content: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
-});
+const postSchema: Schema<IPost> = new Schema(
+  {
+    title: { type: String, required: true },
+    content: { type: String, required: true },
+    subcategory: {
+      type: Schema.Types.ObjectId,
+      ref: "Subcategory",
+      required: true,
+    },
+    author: { type: Schema.Types.ObjectId, ref: "User", required: true },
 
-const Post:Model<IPost> = mongoose.models.Post || mongoose.model<IPost>('Post', postSchema);
+    isDeleted: { type: Boolean, default: false },
+    deletedAt: { type: Date, default: null },
+    deletedBy: { type: Schema.Types.ObjectId, ref: "User", default: null },
+
+    createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    updatedBy: { type: Schema.Types.ObjectId, ref: "User", default: null },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+applyDefaultToJSONTransform(postSchema);
+
+const Post: Model<IPost> =
+  mongoose.models.Post || mongoose.model<IPost>("Post", postSchema);
 
 export { Post, PostSchema };
