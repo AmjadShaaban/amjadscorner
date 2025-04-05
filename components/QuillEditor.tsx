@@ -1,6 +1,7 @@
 "use client";
-import { useRef, useEffect, useState } from "react";
+
 import type Quill from "quill";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 type QuillEditorProps = {
   value: string;
@@ -9,7 +10,7 @@ type QuillEditorProps = {
   readOnly?: boolean;
 };
 
-let quillConstructor: any = null;
+let quillConstructor: typeof Quill | null = null;
 let quillPromise: Promise<void> | null = null;
 
 if (typeof window !== "undefined" && !quillConstructor && !quillPromise) {
@@ -27,7 +28,7 @@ if (typeof window !== "undefined" && !quillConstructor && !quillPromise) {
       }
     })
     .catch((error) => {
-      throw error;
+      console.error("Error loading Quill:", error);
     });
 }
 
@@ -52,28 +53,35 @@ const QuillEditor = ({
     if (quillConstructor) {
       setIsQuillReady(true);
     } else if (quillPromise) {
-      quillPromise.then(() => {
-        setIsQuillReady(true);
-      });
+      quillPromise.then(() => setIsQuillReady(true));
     }
   }, []);
 
-  useEffect(() => {
-    if (
-      !isMounted ||
-      !containerRef.current ||
-      !toolbarRef.current ||
-      !quillConstructor ||
-      !isQuillReady ||
-      isInitialized
-    ) {
-      return;
-    }
+  const handleImageUpload = useCallback(() => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.click();
 
-    if (quillRef.current) {
-      quillRef.current.off("text-change");
-      quillRef.current = null;
-    }
+    input.onchange = async () => {
+      const file = input.files?.[0];
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        console.log("Image upload not implemented yet");
+        // Implement API call if needed
+      } catch (error) {
+        console.error("Image upload error:", error);
+      }
+    };
+  }, []);
+
+  const initializeEditor = () => {
+    if (!quillConstructor || !containerRef.current || !toolbarRef.current)
+      return;
 
     const toolbarOptions = [
       [{ header: [1, 2, false] }],
@@ -83,7 +91,7 @@ const QuillEditor = ({
       ["clean"],
     ];
 
-    quillRef.current = new quillConstructor(containerRef.current, {
+    const editor = new quillConstructor(containerRef.current, {
       theme: "snow",
       placeholder,
       readOnly,
@@ -91,60 +99,36 @@ const QuillEditor = ({
         toolbar: {
           container: toolbarOptions,
           handlers: {
-            image: async () => {
-              const input = document.createElement("input");
-              input.setAttribute("type", "file");
-              input.setAttribute("accept", "image/*");
-              input.click();
-
-              input.onchange = async () => {
-                const file = input.files?.[0];
-                if (!file) return;
-
-                const formData = new FormData();
-                formData.append("file", file);
-
-                try {
-                  console.log("Img upload not yet implemented");
-                  // TODO Image Upload
-                  // const response = await fetch("/api/upload-image", {
-                  //   method: "POST",
-                  //   body: formData,
-                  // });
-
-                  // const data = await response.json();
-                  // if (data.url) {
-                  //   const range = quillRef.current?.getSelection();
-                  //   if (range) {
-                  //     quillRef.current?.insertEmbed(
-                  //       range.index,
-                  //       "image",
-                  //       data.url
-                  //     );
-                  //   }
-                  // } else {
-                  //   console.error("Image upload failed:", data.error);
-                  // }
-                } catch (error) {
-                  console.error("Error uploading image:", error);
-                }
-              };
-            },
+            image: handleImageUpload,
           },
         },
       },
     });
 
     if (value) {
-      quillRef.current.clipboard.dangerouslyPasteHTML(value);
+      editor.clipboard.dangerouslyPasteHTML(value);
     }
 
-    quillRef.current.on("text-change", () => {
-      const content = quillRef.current?.root.innerHTML || "";
-      onChange(content);
+    editor.on("text-change", () => {
+      const html = editor.root.innerHTML || "";
+      onChange(html);
     });
 
+    quillRef.current = editor;
     setIsInitialized(true);
+  };
+
+  useEffect(() => {
+    const shouldInit =
+      isMounted &&
+      isQuillReady &&
+      !isInitialized &&
+      containerRef.current &&
+      toolbarRef.current;
+
+    if (shouldInit) {
+      initializeEditor();
+    }
 
     return () => {
       if (quillRef.current) {
@@ -153,22 +137,25 @@ const QuillEditor = ({
       }
       setIsInitialized(false);
     };
-  }, [isMounted, isQuillReady, onChange, placeholder, readOnly]);
+  }, [isMounted, isQuillReady, isInitialized, initializeEditor]);
 
   useEffect(() => {
-    if (quillRef.current && value !== quillRef.current.root.innerHTML) {
-      quillRef.current.clipboard.dangerouslyPasteHTML(value);
+    if (quillRef.current) {
+      const currentHTML = quillRef.current.root.innerHTML;
+      if (value && currentHTML !== value) {
+        quillRef.current.clipboard.dangerouslyPasteHTML(value);
+      }
     }
   }, [value]);
 
   if (!isMounted) {
-    return null;
+    return <div className="text-gray-500">Loading editor...</div>;
   }
 
   return (
-    <div className="bg-white text-black rounded mb-4">
-      <div ref={toolbarRef} className="quill-toolbar" />
-      <div ref={containerRef} className="quill-editor" />
+    <div className="bg-white text-black dark:bg-gray-900 dark:text-white rounded mb-4 border border-gray-300 dark:border-gray-700">
+      <div ref={toolbarRef} className="quill-toolbar mb-2" />
+      <div ref={containerRef} className="quill-editor min-h-[200px]" />
     </div>
   );
 };

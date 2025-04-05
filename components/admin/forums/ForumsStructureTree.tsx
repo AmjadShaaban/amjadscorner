@@ -1,170 +1,131 @@
+"use client";
+import {
+  useDeleteCategory,
+  useDeleteSubcategory,
+  useEditCategory,
+  useEditSubcategory,
+} from "@/lib/queries/admin/forums";
+import { Check, Pencil, Trash, Undo2, X } from "lucide-react";
 import { useState } from "react";
-import axios from "axios";
-import { Pencil, Trash, Check, X } from "lucide-react";
 
 type ForumsStructureTreeProps = {
   categories: any[];
   subcategories: any[];
   loading: boolean;
-  onUpdateCategory: (updated: any) => void;
-  onDeleteCategory: (id: string) => void;
-  onUpdateSubcategory: (updated: any) => void;
-  onDeleteSubcategory: (id: string) => void;
 };
 
-const ForumsStructureTree = ({
+export default function ForumsStructureTree({
   categories,
   subcategories,
   loading,
-  onUpdateCategory,
-  onDeleteCategory,
-  onUpdateSubcategory,
-  onDeleteSubcategory,
-}: ForumsStructureTreeProps) => {
+}: ForumsStructureTreeProps) {
   const [editingCategoryId, setEditingCategoryId] = useState<string | null>(
     null
   );
   const [editCategoryValue, setEditCategoryValue] = useState("");
-
   const [editingSubId, setEditingSubId] = useState<string | null>(null);
   const [editSubValue, setEditSubValue] = useState("");
 
-  const [recentlyDeleted, setRecentlyDeleted] = useState<{
-    type: "cat" | "sub";
-    data: any;
-  } | null>(null);
+  const editCategory = useEditCategory();
+  const deleteCategory = useDeleteCategory();
+  const editSubcategory = useEditSubcategory();
+  const deleteSubcategory = useDeleteSubcategory();
 
-  const startEditCategory = (cat: any) => {
-    setEditingCategoryId(cat._id);
-    setEditCategoryValue(cat.name);
-  };
-
-  const cancelEditCategory = () => {
-    setEditingCategoryId(null);
-    setEditCategoryValue("");
-  };
-
-  const saveEditCategory = async (cat: any) => {
+  const handleEditCategory = async (cat: any) => {
     try {
-      const res = await axios.put(`/api/admin/forums/categories/${cat._id}`, {
-        name: editCategoryValue,
+      await editCategory.mutateAsync({ id: cat.id, name: editCategoryValue });
+      setEditingCategoryId(null);
+    } catch (err) {
+      console.error("Edit category failed", err);
+    }
+  };
+
+  const handleDeleteCategory = async (cat: any) => {
+    try {
+      await deleteCategory.mutateAsync(cat.id);
+    } catch (err) {
+      console.error("Delete category failed", err);
+    }
+  };
+
+  const handleUndoCategory = async (cat: any) => {
+    try {
+      await editCategory.mutateAsync({
+        id: cat.id,
+        name: cat.name,
+        restore: true,
       });
-      onUpdateCategory(res.data);
-      cancelEditCategory();
     } catch (err) {
-      console.error("Category edit error:", err);
+      console.error("Undo category failed", err);
     }
   };
 
-  const deleteCategory = async (cat: any) => {
+  const handleEditSub = async (sub: any) => {
     try {
-      await axios.delete(`/api/admin/forums/categories/${cat._id}`);
-      onDeleteCategory(cat._id);
-      setRecentlyDeleted({ type: "cat", data: cat });
+      await editSubcategory.mutateAsync({
+        categoryId: sub.category,
+        subcategoryId: sub.id,
+        name: editSubValue,
+      });
+      setEditingSubId(null);
     } catch (err) {
-      console.error("Category delete error:", err);
+      console.error("Edit subcategory failed", err);
     }
   };
 
-  const startEditSub = (sub: any) => {
-    setEditingSubId(sub._id);
-    setEditSubValue(sub.name);
-  };
-
-  const cancelEditSub = () => {
-    setEditingSubId(null);
-    setEditSubValue("");
-  };
-
-  const saveEditSub = async (sub: any) => {
+  const handleDeleteSub = async (sub: any) => {
     try {
-      const res = await axios.put(
-        `/api/admin/forums/categories/${sub.category}/subcategories/${sub._id}`,
-        { name: editSubValue }
-      );
-      onUpdateSubcategory(res.data);
-      cancelEditSub();
+      await deleteSubcategory.mutateAsync({
+        categoryId: sub.category,
+        subcategoryId: sub.id,
+      });
     } catch (err) {
-      console.error("Subcategory edit error:", err);
+      console.error("Delete subcategory failed", err);
     }
   };
 
-  const deleteSub = async (sub: any) => {
+  const handleUndoSub = async (sub: any) => {
     try {
-      await axios.delete(
-        `/api/admin/forums/categories/${sub.category}/subcategories/${sub._id}`
-      );
-      onDeleteSubcategory(sub._id);
-      setRecentlyDeleted({ type: "sub", data: sub });
+      await editSubcategory.mutateAsync({
+        categoryId: sub.category,
+        subcategoryId: sub.id,
+        name: sub.name,
+        restore: true,
+      });
     } catch (err) {
-      console.error("Subcategory delete error:", err);
-    }
-  };
-
-  const handleUndo = async () => {
-    if (!recentlyDeleted) return;
-    try {
-      if (recentlyDeleted.type === "cat") {
-        const res = await axios.put(
-          `/api/admin/forums/categories/${recentlyDeleted.data._id}`,
-          { name: recentlyDeleted.data.name }
-        );
-        onUpdateCategory(res.data);
-      } else {
-        const res = await axios.put(
-          `/api/admin/forums/categories/${recentlyDeleted.data.category}/subcategories/${recentlyDeleted.data._id}`,
-          { name: recentlyDeleted.data.name }
-        );
-        onUpdateSubcategory(res.data);
-      }
-      setRecentlyDeleted(null);
-    } catch (err) {
-      console.error("Undo failed:", err);
+      console.error("Undo subcategory failed", err);
     }
   };
 
   return (
     <section>
       <h2 className="text-xl text-white font-semibold mb-4">Forum Structure</h2>
-      {recentlyDeleted && (
-        <div className="mb-4 p-3 bg-yellow-100 text-black rounded flex justify-between items-center">
-          <span>
-            {recentlyDeleted.type === "cat"
-              ? `Category "${recentlyDeleted.data.name}" deleted.`
-              : `Subcategory "${recentlyDeleted.data.name}" deleted.`}
-          </span>
-          <button
-            onClick={handleUndo}
-            className="underline text-blue-700 hover:text-blue-900 ml-4"
-          >
-            Undo
-          </button>
-        </div>
-      )}
+
       {loading ? (
         <p className="text-gray-400">Loading...</p>
       ) : categories.length === 0 ? (
         <p className="text-gray-400">No categories yet.</p>
       ) : (
-        categories.map((cat, idx) => (
-          <div
-            key={cat._id}
-            className={`${idx !== categories.length - 1 ? "mb-6" : ""}`}
-          >
-            {editingCategoryId === cat._id ? (
+        categories.map((cat) => (
+          <div key={cat.id} className="mb-6">
+            {/* Category Header */}
+            {editingCategoryId === cat.id ? (
               <div className="flex gap-2 items-center mb-1">
                 <input
-                  className="p-1 text-sm rounded text-black flex-grow"
+                  className="p-1 text-sm rounded border-gray-300 text-gray-300 flex-grow"
                   value={editCategoryValue}
                   onChange={(e) => setEditCategoryValue(e.target.value)}
                 />
                 <button
-                  onClick={() => saveEditCategory(cat)}
+                  onClick={() => handleEditCategory(cat)}
                   className="text-green-400"
                 >
                   <Check size={18} />
                 </button>
-                <button onClick={cancelEditCategory} className="text-red-400">
+                <button
+                  onClick={() => setEditingCategoryId(null)}
+                  className="text-red-400"
+                >
                   <X size={18} />
                 </button>
               </div>
@@ -172,140 +133,131 @@ const ForumsStructureTree = ({
               <div className="flex justify-between items-center mb-1">
                 <h3
                   className={`text-lg font-semibold ${
-                    cat.isDeleted ? "line-through text-red-400" : "text-white"
+                    cat.isDeleted ? "line-through text-red-300" : "text-white"
                   }`}
                 >
                   📁 {cat.name}
-                  {cat.isDeleted && (
-                    <span className="ml-2 text-xs bg-red-600 text-white px-1 py-0.5 rounded">
-                      deleted
+                  {cat.createdAt && (
+                    <span className="ml-2 text-xs text-gray-400">
+                      Created: {new Date(cat.createdAt).toLocaleString()}
+                      {cat.createdBy && (
+                        <> by {cat.createdBy.name || cat.createdBy.email}</>
+                      )}
                     </span>
                   )}
-                  {!cat.isDeleted && cat.updatedAt && (
-                    <span className="text-xs text-gray-400 ml-2">
+                  {cat.updatedAt && (
+                    <span className="ml-2 text-xs text-gray-400">
                       Updated: {new Date(cat.updatedAt).toLocaleString()}
                     </span>
                   )}
                 </h3>
-
-                <div className="flex gap-2 items-center">
-                  {cat.isDeleted ? (
-                    <button
-                      onClick={async () => {
-                        try {
-                          const res = await axios.put(
-                            `/api/admin/forums/categories/${cat._id}?restore=true`,
-                            { name: cat.name }
-                          );
-                          onUpdateCategory(res.data);
-                        } catch (err) {
-                          console.error("Undo category failed", err);
-                        }
-                      }}
-                      className="text-blue-400 text-xs hover:underline"
-                    >
-                      Undo
-                    </button>
-                  ) : (
+                <div className="flex gap-2">
+                  {!cat.isDeleted ? (
                     <>
                       <button
-                        onClick={() => startEditCategory(cat)}
+                        onClick={() => {
+                          setEditingCategoryId(cat.id);
+                          setEditCategoryValue(cat.name);
+                        }}
                         className="text-blue-400"
                       >
                         <Pencil size={16} />
                       </button>
                       <button
-                        onClick={() => deleteCategory(cat)}
+                        onClick={() => handleDeleteCategory(cat)}
                         className="text-red-400"
                       >
                         <Trash size={16} />
                       </button>
                     </>
+                  ) : (
+                    <button
+                      onClick={() => handleUndoCategory(cat)}
+                      className="text-yellow-400"
+                    >
+                      <Undo2 size={16} />
+                    </button>
                   )}
                 </div>
               </div>
             )}
+
+            {/* Subcategories */}
             <ul className="ml-5 mt-2 space-y-1">
               {subcategories
-                .filter((sub) => sub.category === cat._id)
+                .filter((sub) => sub.category === cat.id)
                 .map((sub) => (
                   <li
-                    key={sub._id}
-                    className="text-gray-300 flex items-center justify-between"
+                    key={sub.id}
+                    className={`flex justify-between items-center text-sm ${
+                      sub.isDeleted
+                        ? "line-through text-red-300"
+                        : "text-gray-300"
+                    }`}
                   >
-                    {editingSubId === sub._id ? (
+                    {editingSubId === sub.id ? (
                       <div className="flex items-center gap-2 w-full">
                         <input
-                          className="flex-grow p-1 text-sm rounded text-black"
+                          className="flex-grow p-1 text-sm rounded border-gray-300 text-gray-300"
                           value={editSubValue}
                           onChange={(e) => setEditSubValue(e.target.value)}
                         />
                         <button
-                          onClick={() => saveEditSub(sub)}
-                          className="text-green-400 hover:text-green-500"
+                          onClick={() => handleEditSub(sub)}
+                          className="text-green-400"
                         >
                           <Check size={18} />
                         </button>
                         <button
-                          onClick={cancelEditSub}
-                          className="text-red-400 hover:text-red-500"
+                          onClick={() => setEditingSubId(null)}
+                          className="text-red-400"
                         >
                           <X size={18} />
                         </button>
                       </div>
                     ) : (
-                      <div className="flex items-center justify-between w-full">
-                        <span
-                          className={
-                            sub.isDeleted ? "line-through text-red-400" : ""
-                          }
-                        >
+                      <div className="flex justify-between items-center w-full">
+                        <span>
                           ↳ {sub.name}
-                          {sub.isDeleted && (
-                            <span className="ml-2 text-xs bg-red-600 text-white px-1 py-0.5 rounded">
-                              deleted
+                          {sub.createdAt && (
+                            <span className="ml-2 text-xs text-gray-400">
+                              Created:{" "}
+                              {new Date(sub.createdAt).toLocaleString()}
                             </span>
                           )}
-                          {!sub.isDeleted && sub.updatedAt && (
-                            <span className="text-xs text-gray-400 ml-2">
+                          {sub.updatedAt && (
+                            <span className="ml-2 text-xs text-gray-400">
                               Updated:{" "}
                               {new Date(sub.updatedAt).toLocaleString()}
                             </span>
                           )}
                         </span>
-                        <div className="flex gap-2 items-center">
-                          {sub.isDeleted ? (
-                            <button
-                              onClick={async () => {
-                                try {
-                                  const res = await axios.put(
-                                    `/api/admin/forums/categories/${sub.category}/subcategories/${sub._id}?restore=true`,
-                                    { name: sub.name }
-                                  );
-                                  onUpdateSubcategory(res.data);
-                                } catch (err) {
-                                  console.error("Undo subcategory failed", err);
-                                }
-                              }}
-                              className="text-blue-400 text-xs hover:underline"
-                            >
-                              Undo
-                            </button>
-                          ) : (
+                        <div className="flex gap-2">
+                          {!sub.isDeleted ? (
                             <>
                               <button
-                                onClick={() => startEditSub(sub)}
-                                className="text-blue-400 hover:text-blue-500"
+                                onClick={() => {
+                                  setEditingSubId(sub.id);
+                                  setEditSubValue(sub.name);
+                                }}
+                                className="text-blue-400"
                               >
                                 <Pencil size={16} />
                               </button>
                               <button
-                                onClick={() => deleteSub(sub)}
-                                className="text-red-400 hover:text-red-500"
+                                onClick={() => handleDeleteSub(sub)}
+                                className="text-red-400"
                               >
                                 <Trash size={16} />
                               </button>
                             </>
+                          ) : (
+                            <button
+                              onClick={() => handleUndoSub(sub)}
+                              className="text-yellow-400"
+                            >
+                              <Undo2 size={16} />
+                            </button>
                           )}
                         </div>
                       </div>
@@ -318,6 +270,4 @@ const ForumsStructureTree = ({
       )}
     </section>
   );
-};
-
-export default ForumsStructureTree;
+}

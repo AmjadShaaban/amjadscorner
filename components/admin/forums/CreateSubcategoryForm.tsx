@@ -1,29 +1,25 @@
-import axios from "axios";
+import { useCreateSubcategory } from "@/lib/queries/admin/forums";
 import { useState } from "react";
 
 type CreateSubcategoryFormProps = {
   categories: any[];
-  onCreate: (newSubcategory: any) => void;
 };
 
-const CreateSubcategoryForm = ({
-  categories,
-  onCreate,
-}: CreateSubcategoryFormProps) => {
+const CreateSubcategoryForm = ({ categories }: CreateSubcategoryFormProps) => {
   const [subcategoryName, setSubcategoryName] = useState("");
   const [selectedCategoryId, setSelectedCategoryId] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const createSubcategory = useCreateSubcategory();
 
-  const handleSubcategorySubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedCategoryId) return setError("Please select a category");
 
     try {
-      const res = await axios.post(
-        `/api/admin/forums/categories/${selectedCategoryId}/subcategories`,
-        { name: subcategoryName }
-      );
-      onCreate(res.data);
+      await createSubcategory.mutateAsync({
+        categoryId: selectedCategoryId,
+        name: subcategoryName,
+      });
       setSubcategoryName("");
       setSelectedCategoryId("");
       setError(null);
@@ -37,7 +33,7 @@ const CreateSubcategoryForm = ({
       <h2 className="text-xl text-white font-semibold mb-3">
         Create Subcategory
       </h2>
-      <form onSubmit={handleSubcategorySubmit} className="space-y-3">
+      <form onSubmit={handleSubmit} className="space-y-3">
         <select
           value={selectedCategoryId}
           onChange={(e) => setSelectedCategoryId(e.target.value)}
@@ -45,7 +41,7 @@ const CreateSubcategoryForm = ({
         >
           <option value="">Select a Category</option>
           {categories.map((cat) => (
-            <option key={cat._id} value={cat._id}>
+            <option key={cat.id} value={cat.id}>
               {cat.name}
             </option>
           ))}

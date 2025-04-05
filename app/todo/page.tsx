@@ -1,7 +1,7 @@
 "use client";
-import { useState, useEffect } from "react";
-import axios from "axios";
 import { useAuthStore } from "@/lib/state";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const TodoPage = () => {
   const { user } = useAuthStore();
@@ -99,7 +99,7 @@ const TodoPage = () => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Add a todo"
-          className="w-full p-2 border rounded text-black"
+          className="w-full p-2 border rounded text-gray-300"
         />
         <button
           type="submit"

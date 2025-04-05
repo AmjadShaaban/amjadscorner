@@ -1,26 +1,41 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useAuthStore } from "@/lib/state";
 import Link from "next/link";
 
-const ForumsPage = () => {
-  const { user } = useAuthStore();
-  const [categories, setCategories] = useState([]);
-  const [subcategories, setSubcategories] = useState([]);
+const fetchCategories = async () =>
+  (await axios.get("/api/forums/categories")).data;
 
-  useEffect(() => {
-    axios.get("/api/forums/categories").then((res) => setCategories(res.data));
-    axios
-      .get("/api/forums/subcategories")
-      .then((res) => setSubcategories(res.data));
-  }, []);
+const fetchSubcategories = async () =>
+  (await axios.get("/api/forums/subcategories")).data;
+
+const ForumsPage = () => {
+  const {
+    data: categories = [],
+    isLoading: loadingCategories,
+    error: errorCategories,
+  } = useQuery({ queryKey: ["categories"], queryFn: fetchCategories });
+
+  const {
+    data: subcategories = [],
+    isLoading: loadingSubs,
+    error: errorSubs,
+  } = useQuery({ queryKey: ["subcategories"], queryFn: fetchSubcategories });
+
+  if (loadingCategories || loadingSubs)
+    return <p className="text-gray-400">Loading forums...</p>;
+
+  if (errorCategories || errorSubs)
+    return (
+      <p className="text-red-500">
+        Failed to load forum data. Try again later.
+      </p>
+    );
 
   return (
     <div className="max-w-3xl mx-auto mt-8">
       <h1 className="text-3xl font-bold mb-6 text-white">Forums</h1>
 
-      {/* Display Categories and Subcategories */}
       {categories.length === 0 ? (
         <p className="text-gray-400">No categories yet. Check back later!</p>
       ) : (
@@ -30,8 +45,8 @@ const ForumsPage = () => {
               {category.name}
             </h2>
             <div className="space-y-4">
-              {[] //subcategories TODO fix public /forums get route
-                .filter((sub) => sub.categoryId === category._id)
+              {subcategories
+                .filter((sub) => sub.category === category._id)
                 .map((subcategory) => (
                   <Link
                     key={subcategory._id}

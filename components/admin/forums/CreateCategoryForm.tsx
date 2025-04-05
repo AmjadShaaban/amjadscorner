@@ -1,21 +1,15 @@
-import axios from "axios";
+import { useCreateCategory } from "@/lib/queries/admin/forums";
 import { useState } from "react";
 
-type CreateCategoryFormProps = {
-  onCreate: (newCategory: any) => void;
-};
-
-const CreateCategoryForm = ({ onCreate }: CreateCategoryFormProps) => {
+const CreateCategoryForm = () => {
   const [categoryName, setCategoryName] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const createCategory = useCreateCategory();
 
-  const handleCategorySubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/api/admin/forums/categories", {
-        name: categoryName,
-      });
-      onCreate(res.data);
+      await createCategory.mutateAsync({ name: categoryName });
       setCategoryName("");
       setError(null);
     } catch (err: any) {
@@ -26,7 +20,7 @@ const CreateCategoryForm = ({ onCreate }: CreateCategoryFormProps) => {
   return (
     <section className="mb-10">
       <h2 className="text-xl text-white font-semibold mb-3">Create Category</h2>
-      <form onSubmit={handleCategorySubmit} className="space-y-3">
+      <form onSubmit={handleSubmit} className="space-y-3">
         <input
           type="text"
           value={categoryName}

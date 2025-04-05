@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
-import { connectToDatabase } from "@/lib/db";
 import { requireRole } from "@/lib/auth/requireRole";
-import { UserRole } from "@/types/roles";
+import { connectToDatabase } from "@/lib/db";
 import { Subcategory } from "@/models/forums/Subcategory";
+import { UserRole } from "@/types/roles";
+import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
@@ -11,9 +11,7 @@ export const GET = async (req: NextRequest) => {
   try {
     await connectToDatabase();
 
-    const subcategories = await Subcategory.find()
-      .sort({ createdAt: 1 })
-      .lean();
+    const subcategories = await Subcategory.find().sort({ createdAt: 1 });
 
     return NextResponse.json(subcategories);
   } catch (error) {
