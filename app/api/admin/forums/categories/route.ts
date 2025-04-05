@@ -6,6 +6,9 @@ import { UserRole } from "@/types/roles";
 import { Category, CategorySchema } from "@/models/forums/Category";
 
 export async function GET() {
+  const user = await requireRole([UserRole.ADMIN], { returnJson: true });
+  if (user instanceof NextResponse) return user;
+
   try {
     await connectToDatabase();
     const categories = await Category.find().sort({

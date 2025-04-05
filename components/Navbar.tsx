@@ -51,7 +51,13 @@ export default function Navbar() {
     <header className="bg-gray-900 text-white p-4 rounded-t-xl">
       <nav className="max-w-4xl mx-auto flex justify-between items-center">
         <div className="flex items-center space-x-3">
-          <Image src="/logo.png" alt="Logo" width={32} height={32} />
+          <Image
+            src="/logo.png"
+            alt="Logo"
+            className="w-8 h-8"
+            width={0}
+            height={0}
+          />
           <span className="text-gray-300 font-semibold">
             Amjad&apos;s Corner
           </span>

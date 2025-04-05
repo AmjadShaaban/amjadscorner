@@ -34,7 +34,7 @@ export default function CreateCategoryForm({
           value={categoryName}
           onChange={(e) => setCategoryName(e.target.value)}
           placeholder="Category Name"
-          className="w-full p-2 rounded border border-gray-300 text-black"
+          className="w-full p-2 rounded border border-gray-300 text-gray-300"
         />
         <button
           type="submit"

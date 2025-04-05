@@ -17,8 +17,8 @@ export default function ForumsAdminPage() {
     const loadData = async () => {
       try {
         const [catRes, subRes] = await Promise.all([
-          axios.get("/api/forums/categories"),
-          axios.get("/api/forums/subcategories"),
+          axios.get("/api/admin/forums/categories"),
+          axios.get("/api/admin/forums/categories/subcategories"),
         ]);
         setCategories(catRes.data);
         setSubcategories(subRes.data);
@@ -54,31 +54,33 @@ export default function ForumsAdminPage() {
 
   return (
     <RoleGuard role={UserRole.ADMIN}>
-      <div className="max-w-3xl mx-auto mt-10 px-4">
-        <h1 className="text-3xl font-bold text-white mb-8">
-          Forums Admin Dashboard
-        </h1>
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white rounded-b-xl">
+        <div className="max-w-3xl mx-auto">
+          <h1 className="text-3xl font-bold text-white mb-8">
+            Forums Admin Dashboard
+          </h1>
 
-        <CreateCategoryForm
-          onCreate={(newCat) => setCategories((prev) => [...prev, newCat])}
-        />
+          <CreateCategoryForm
+            onCreate={(newCat) => setCategories((prev) => [...prev, newCat])}
+          />
 
-        <CreateSubcategoryForm
-          categories={categories}
-          onCreate={(newSubCat) =>
-            setSubcategories((prev) => [...prev, newSubCat])
-          }
-        />
+          <CreateSubcategoryForm
+            categories={categories}
+            onCreate={(newSubCat) =>
+              setSubcategories((prev) => [...prev, newSubCat])
+            }
+          />
 
-        <ForumsStructureTree
-          categories={categories}
-          subcategories={subcategories}
-          loading={loading}
-          onUpdateCategory={handleUpdateCategory}
-          onDeleteCategory={handleDeleteCategory}
-          onUpdateSubcategory={handleUpdateSubcategory}
-          onDeleteSubcategory={handleDeleteSubcategory}
-        />
+          <ForumsStructureTree
+            categories={categories}
+            subcategories={subcategories}
+            loading={loading}
+            onUpdateCategory={handleUpdateCategory}
+            onDeleteCategory={handleDeleteCategory}
+            onUpdateSubcategory={handleUpdateSubcategory}
+            onDeleteSubcategory={handleDeleteSubcategory}
+          />
+        </div>
       </div>
     </RoleGuard>
   );

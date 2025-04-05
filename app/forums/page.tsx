@@ -30,7 +30,7 @@ export default function ForumsPage() {
               {category.name}
             </h2>
             <div className="space-y-4">
-              {subcategories
+              {[] //subcategories TODO fix public /forums get route
                 .filter((sub) => sub.categoryId === category._id)
                 .map((subcategory) => (
                   <Link

@@ -6,15 +6,20 @@ import { connectToDatabase } from "@/lib/db";
 import { requireRole } from "@/lib/auth/requireRole";
 import { UserRole } from "@/types/roles";
 import { Subcategory, SubcategorySchema } from "@/models/forums/Subcategory";
-// TODO fix me i hate any types
-export async function GET(req: NextRequest, context: any) {
+
+export async function GET(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
+  const user = await requireRole([UserRole.ADMIN], { returnJson: true });
+  if (user instanceof NextResponse) return user;
+
   try {
     await connectToDatabase();
-    const { id: categoryId } = context.params;
+    const { id: categoryId } = await context.params;
 
     const subcategories = await Subcategory.find({
       category: categoryId,
-      isDeleted: false,
     }).sort({ createdAt: 1 });
 
     return NextResponse.json(subcategories);
@@ -27,12 +32,15 @@ export async function GET(req: NextRequest, context: any) {
   }
 }
 
-export async function POST(req: NextRequest, context: any) {
+export async function POST(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
 
   try {
-    const { id: categoryId } = context.params;
+    const { id: categoryId } = await context.params;
     const data = await req.json();
     const parsed = SubcategorySchema.parse({
       name: data.name,

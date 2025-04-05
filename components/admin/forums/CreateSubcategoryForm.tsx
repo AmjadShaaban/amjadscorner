@@ -41,7 +41,7 @@ const CreateSubcategoryForm = ({
         <select
           value={selectedCategoryId}
           onChange={(e) => setSelectedCategoryId(e.target.value)}
-          className="w-full p-2 rounded border border-gray-300 text-black"
+          className="w-full p-2 rounded border border-gray-300 text-gray-300"
         >
           <option value="">Select a Category</option>
           {categories.map((cat) => (
@@ -55,7 +55,7 @@ const CreateSubcategoryForm = ({
           value={subcategoryName}
           onChange={(e) => setSubcategoryName(e.target.value)}
           placeholder="Subcategory Name"
-          className="w-full p-2 rounded border border-gray-300 text-black"
+          className="w-full p-2 rounded border border-gray-300 text-gray-300"
         />
         <button
           type="submit"

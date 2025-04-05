@@ -146,8 +146,11 @@ export default function ForumsStructureTree({
       ) : categories.length === 0 ? (
         <p className="text-gray-400">No categories yet.</p>
       ) : (
-        categories.map((cat) => (
-          <div key={cat._id} className="mb-6">
+        categories.map((cat, idx) => (
+          <div
+            key={cat._id}
+            className={`${idx !== categories.length - 1 ? "mb-6" : ""}`}
+          >
             {editingCategoryId === cat._id ? (
               <div className="flex gap-2 items-center mb-1">
                 <input
@@ -167,27 +170,58 @@ export default function ForumsStructureTree({
               </div>
             ) : (
               <div className="flex justify-between items-center mb-1">
-                <h3 className="text-white text-lg font-semibold">
+                <h3
+                  className={`text-lg font-semibold ${
+                    cat.isDeleted ? "line-through text-red-400" : "text-white"
+                  }`}
+                >
                   📁 {cat.name}
-                  {cat.updatedAt && (
+                  {cat.isDeleted && (
+                    <span className="ml-2 text-xs bg-red-600 text-white px-1 py-0.5 rounded">
+                      deleted
+                    </span>
+                  )}
+                  {!cat.isDeleted && cat.updatedAt && (
                     <span className="text-xs text-gray-400 ml-2">
                       Updated: {new Date(cat.updatedAt).toLocaleString()}
                     </span>
                   )}
                 </h3>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => startEditCategory(cat)}
-                    className="text-blue-400"
-                  >
-                    <Pencil size={16} />
-                  </button>
-                  <button
-                    onClick={() => deleteCategory(cat)}
-                    className="text-red-400"
-                  >
-                    <Trash size={16} />
-                  </button>
+
+                <div className="flex gap-2 items-center">
+                  {cat.isDeleted ? (
+                    <button
+                      onClick={async () => {
+                        try {
+                          const res = await axios.put(
+                            `/api/admin/forums/categories/${cat._id}?restore=true`,
+                            { name: cat.name }
+                          );
+                          onUpdateCategory(res.data);
+                        } catch (err) {
+                          console.error("Undo category failed", err);
+                        }
+                      }}
+                      className="text-blue-400 text-xs hover:underline"
+                    >
+                      Undo
+                    </button>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => startEditCategory(cat)}
+                        className="text-blue-400"
+                      >
+                        <Pencil size={16} />
+                      </button>
+                      <button
+                        onClick={() => deleteCategory(cat)}
+                        className="text-red-400"
+                      >
+                        <Trash size={16} />
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
             )}
@@ -221,28 +255,58 @@ export default function ForumsStructureTree({
                       </div>
                     ) : (
                       <div className="flex items-center justify-between w-full">
-                        <span>
+                        <span
+                          className={
+                            sub.isDeleted ? "line-through text-red-400" : ""
+                          }
+                        >
                           ↳ {sub.name}
-                          {sub.updatedAt && (
+                          {sub.isDeleted && (
+                            <span className="ml-2 text-xs bg-red-600 text-white px-1 py-0.5 rounded">
+                              deleted
+                            </span>
+                          )}
+                          {!sub.isDeleted && sub.updatedAt && (
                             <span className="text-xs text-gray-400 ml-2">
                               Updated:{" "}
                               {new Date(sub.updatedAt).toLocaleString()}
                             </span>
                           )}
                         </span>
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => startEditSub(sub)}
-                            className="text-blue-400 hover:text-blue-500"
-                          >
-                            <Pencil size={16} />
-                          </button>
-                          <button
-                            onClick={() => deleteSub(sub)}
-                            className="text-red-400 hover:text-red-500"
-                          >
-                            <Trash size={16} />
-                          </button>
+                        <div className="flex gap-2 items-center">
+                          {sub.isDeleted ? (
+                            <button
+                              onClick={async () => {
+                                try {
+                                  const res = await axios.put(
+                                    `/api/admin/forums/categories/${sub.category}/subcategories/${sub._id}?restore=true`,
+                                    { name: sub.name }
+                                  );
+                                  onUpdateSubcategory(res.data);
+                                } catch (err) {
+                                  console.error("Undo subcategory failed", err);
+                                }
+                              }}
+                              className="text-blue-400 text-xs hover:underline"
+                            >
+                              Undo
+                            </button>
+                          ) : (
+                            <>
+                              <button
+                                onClick={() => startEditSub(sub)}
+                                className="text-blue-400 hover:text-blue-500"
+                              >
+                                <Pencil size={16} />
+                              </button>
+                              <button
+                                onClick={() => deleteSub(sub)}
+                                className="text-red-400 hover:text-red-500"
+                              >
+                                <Trash size={16} />
+                              </button>
+                            </>
+                          )}
                         </div>
                       </div>
                     )}
