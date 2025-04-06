@@ -1,9 +1,9 @@
+import { requireRole } from "@/lib/auth/requireRole";
+import { connectToDatabase } from "@/lib/db";
+import { Category, CategorySchema } from "@/models/forums/Category";
+import { UserRole } from "@/types/roles";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { connectToDatabase } from "@/lib/db";
-import { requireRole } from "@/lib/auth/requireRole";
-import { UserRole } from "@/types/roles";
-import { Category, CategorySchema } from "@/models/forums/Category";
 
 export const GET = async () => {
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
@@ -11,6 +11,7 @@ export const GET = async () => {
 
   try {
     await connectToDatabase();
+
     const categories = await Category.find()
       .sort({
         createdAt: 1,
@@ -33,12 +34,11 @@ export const POST = async (req: NextRequest) => {
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return;
 
+  const data = await req.json();
+  const parsed = CategorySchema.parse({
+    name: data.name,
+  });
   try {
-    const data = await req.json();
-    const parsed = CategorySchema.parse({
-      name: data.name,
-    });
-
     await connectToDatabase();
 
     const category = new Category({

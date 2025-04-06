@@ -1,30 +1,28 @@
+import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import mongoose from "mongoose";
 
-import { connectToDatabase } from "@/lib/db";
 import { requireRole } from "@/lib/auth/requireRole";
-import { UserRole } from "@/types/roles";
+import { connectToDatabase } from "@/lib/db";
 import { Category } from "@/models/forums/Category";
+import { UserRole } from "@/types/roles";
 
 export const PUT = async (
   req: NextRequest,
   context: { params: Promise<{ categoryId: string }> }
 ) => {
-  const params = await context.params;
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
+  const { categoryId } = await context.params;
+  const { searchParams } = new URL(req.url);
+  const restore = searchParams.get("restore") === "true";
+  const { name } = await req.json();
+  z.string().min(1).parse(name);
 
   try {
-    const { searchParams } = new URL(req.url);
-    const restore = searchParams.get("restore") === "true";
-
-    const { name } = await req.json();
-    z.string().min(1).parse(name);
-
     await connectToDatabase();
 
-    const category = await Category.findOne({ _id: params.categoryId });
+    const category = await Category.findOne({ _id: categoryId });
     if (!category) {
       return NextResponse.json(
         { error: "Category not found" },
@@ -62,15 +60,15 @@ export const DELETE = async (
   req: NextRequest,
   context: { params: Promise<{ categoryId: string }> }
 ) => {
-  const params = await context.params;
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
+  const { categoryId } = await context.params;
 
   try {
     await connectToDatabase();
 
     const category = await Category.findOne({
-      _id: params.categoryId,
+      _id: categoryId,
       isDeleted: false,
     });
     if (!category) {

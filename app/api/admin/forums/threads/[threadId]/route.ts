@@ -7,24 +7,24 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const PUT = async (
   req: NextRequest,
-  { params }: { params: { threadId: string } }
+  context: { params: Promise<{ threadId: string }> }
 ) => {
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
+  const { threadId } = await context.params;
+  const { searchParams } = new URL(req.url);
+  const restore = searchParams.get("restore") === "true";
+
+  const data = await req.json();
+  const parsed = ThreadSchema.pick({
+    title: true,
+    content: true,
+  }).parse(data);
 
   try {
-    const { searchParams } = new URL(req.url);
-    const restore = searchParams.get("restore") === "true";
-
-    const data = await req.json();
-    const parsed = ThreadSchema.pick({
-      title: true,
-      content: true,
-    }).parse(data);
-
     await connectToDatabase();
 
-    const thread = await Thread.findById(params.threadId);
+    const thread = await Thread.findById(threadId);
     if (!thread) {
       return NextResponse.json({ error: "Thread not found" }, { status: 404 });
     }
@@ -52,15 +52,16 @@ export const PUT = async (
 
 export const DELETE = async (
   _req: NextRequest,
-  { params }: { params: { threadId: string } }
+  context: { params: Promise<{ threadId: string }> }
 ) => {
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
+  const { threadId } = await context.params;
 
   try {
     await connectToDatabase();
 
-    const thread = await Thread.findById(params.threadId);
+    const thread = await Thread.findById(threadId);
     if (!thread || thread.isDeleted) {
       return NextResponse.json({ error: "Thread not found" }, { status: 404 });
     }

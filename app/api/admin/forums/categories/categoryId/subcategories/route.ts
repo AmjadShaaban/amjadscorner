@@ -13,10 +13,10 @@ export const GET = async (
 ) => {
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
+  const { categoryId } = await context.params;
 
   try {
     await connectToDatabase();
-    const { categoryId } = await context.params;
 
     const subcategories = await Subcategory.find({
       category: categoryId,
@@ -38,15 +38,14 @@ export const POST = async (
 ) => {
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
+  const { categoryId } = await context.params;
+  const data = await req.json();
+  const parsed = SubcategorySchema.parse({
+    name: data.name,
+    categoryId,
+  });
 
   try {
-    const { categoryId } = await context.params;
-    const data = await req.json();
-    const parsed = SubcategorySchema.parse({
-      name: data.name,
-      categoryId,
-    });
-
     await connectToDatabase();
 
     const subcategory = new Subcategory({

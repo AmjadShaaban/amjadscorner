@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 export const GET = async () => {
   try {
     await connectToDatabase();
+
     const categories = await Category.find({ isDeleted: false }).sort({
       createdAt: 1,
     });

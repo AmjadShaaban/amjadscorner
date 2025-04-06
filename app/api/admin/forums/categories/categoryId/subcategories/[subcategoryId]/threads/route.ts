@@ -6,16 +6,18 @@ import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (
-  _req: NextRequest,
-  { params }: { params: { subcategoryId: string } }
+  req: NextRequest,
+  context: { params: Promise<{ subcategoryId: string }> }
 ) => {
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
+  const { subcategoryId } = await context.params;
 
   try {
     await connectToDatabase();
+
     const threads = await Thread.find({
-      subcategory: params.subcategoryId,
+      subcategory: subcategoryId,
     })
       .sort({ createdAt: -1 })
       .populate("createdBy", "firstName lastName")
@@ -33,20 +35,20 @@ export const GET = async (
 
 export const POST = async (
   req: NextRequest,
-  { params }: { params: { subcategoryId: string } }
+  context: { params: Promise<{ subcategoryId: string }> }
 ) => {
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
+  const { subcategoryId } = await context.params;
+  const data = await req.json();
+  const parsed = ThreadSchema.parse(data);
 
   try {
-    const data = await req.json();
-    const parsed = ThreadSchema.parse(data);
-
     await connectToDatabase();
 
     const thread = new Thread({
       ...parsed,
-      subcategory: new mongoose.Types.ObjectId(params.subcategoryId),
+      subcategory: new mongoose.Types.ObjectId(subcategoryId),
       createdBy: new mongoose.Types.ObjectId(user.id),
     });
 

@@ -4,16 +4,16 @@ import { User, UserSchema } from "@/models/auth/User";
 import bcrypt from "bcryptjs";
 
 export const POST = async (req: NextRequest) => {
-  try {
-    const data = await req.json();
-    const parsed = UserSchema.safeParse(data);
-    if (!parsed.success) {
-      return NextResponse.json(
-        { error: parsed.error.errors[0].message },
-        { status: 400 }
-      );
-    }
+  const data = await req.json();
+  const parsed = UserSchema.safeParse(data);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: parsed.error.errors[0].message },
+      { status: 400 }
+    );
+  }
 
+  try {
     await connectToDatabase();
     const userData = parsed.data;
 

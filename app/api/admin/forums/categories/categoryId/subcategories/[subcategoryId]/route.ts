@@ -11,22 +11,20 @@ export const PUT = async (
   req: NextRequest,
   context: { params: Promise<{ categoryId: string; subcategoryId: string }> }
 ) => {
-  const params = await context.params;
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
+  const { categoryId, subcategoryId } = await context.params;
+  const { searchParams } = new URL(req.url);
+  const restore = searchParams.get("restore") === "true";
+  const { name } = await req.json();
+  z.string().min(1).parse(name);
 
   try {
-    const { searchParams } = new URL(req.url);
-    const restore = searchParams.get("restore") === "true";
-
-    const { name } = await req.json();
-    z.string().min(1).parse(name);
-
     await connectToDatabase();
 
     const subcategory = await Subcategory.findOne({
-      _id: params.subcategoryId,
-      category: params.categoryId,
+      _id: subcategoryId,
+      category: categoryId,
     });
 
     if (!subcategory) {
@@ -66,16 +64,16 @@ export const DELETE = async (
   req: NextRequest,
   context: { params: Promise<{ categoryId: string; subcategoryId: string }> }
 ) => {
-  const params = await context.params;
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
+  const { categoryId, subcategoryId } = await context.params;
 
   try {
     await connectToDatabase();
 
     const subcategory = await Subcategory.findOne({
-      _id: params.subcategoryId,
-      category: params.categoryId,
+      _id: subcategoryId,
+      category: categoryId,
       isDeleted: false,
     });
 
