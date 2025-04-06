@@ -9,7 +9,7 @@ import { Subcategory } from "@/models/forums/Subcategory";
 
 export const PUT = async (
   req: NextRequest,
-  context: { params: Promise<{ id: string; subId: string }> }
+  context: { params: Promise<{ categoryId: string; subcategoryId: string }> }
 ) => {
   const params = await context.params;
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
@@ -25,8 +25,8 @@ export const PUT = async (
     await connectToDatabase();
 
     const subcategory = await Subcategory.findOne({
-      _id: params.subId,
-      category: params.id,
+      _id: params.subcategoryId,
+      category: params.categoryId,
     });
 
     if (!subcategory) {
@@ -64,7 +64,7 @@ export const PUT = async (
 
 export const DELETE = async (
   req: NextRequest,
-  context: { params: Promise<{ id: string; subId: string }> }
+  context: { params: Promise<{ categoryId: string; subcategoryId: string }> }
 ) => {
   const params = await context.params;
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
@@ -74,8 +74,8 @@ export const DELETE = async (
     await connectToDatabase();
 
     const subcategory = await Subcategory.findOne({
-      _id: params.subId,
-      category: params.id,
+      _id: params.subcategoryId,
+      category: params.categoryId,
       isDeleted: false,
     });
 

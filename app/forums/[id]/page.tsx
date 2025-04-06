@@ -8,7 +8,7 @@ import { sanitizeHTML } from "@/lib/sanitize";
 import QuillEditor from "@/components/QuillEditor";
 import Link from "next/link";
 
-const PostPage = ({
+const ThreadPage = ({
   params: paramsPromise,
 }: {
   params: Promise<{ id: string }>;
@@ -138,7 +138,7 @@ const PostPage = ({
             type="submit"
             className="w-full p-2 bg-blue-500 text-white rounded"
           >
-            Post Reply
+            Reply
           </button>
           {error && <p className="text-red-500 mt-2">{error}</p>}
         </form>
@@ -155,4 +155,4 @@ const PostPage = ({
   );
 };
 
-export default PostPage;
+export default ThreadPage;

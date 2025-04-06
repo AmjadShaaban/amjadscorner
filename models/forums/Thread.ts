@@ -2,13 +2,13 @@ import { applyDefaultToJSONTransform } from "@/lib/mongoose/toJSONTransform";
 import mongoose, { Schema, Document, Model } from "mongoose";
 import { z } from "zod";
 
-const PostSchema = z.object({
+const ThreadSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
   content: z.string().min(1, { message: "Content is required" }),
   subcategory: z.string().min(1, { message: "Subcategory ID is required" }),
 });
 
-type IPost = {
+type IThread = {
   title: string;
   content: string;
   subcategory: mongoose.Types.ObjectId;
@@ -18,9 +18,11 @@ type IPost = {
   deletedBy?: mongoose.Types.ObjectId;
   isDeleted: boolean;
   deletedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 } & Document;
 
-const postSchema: Schema<IPost> = new Schema(
+const threadSchema: Schema<IThread> = new Schema(
   {
     title: { type: String, required: true },
     content: { type: String, required: true },
@@ -43,9 +45,9 @@ const postSchema: Schema<IPost> = new Schema(
   }
 );
 
-applyDefaultToJSONTransform(postSchema);
+applyDefaultToJSONTransform(threadSchema);
 
-const Post: Model<IPost> =
-  mongoose.models.Post || mongoose.model<IPost>("Post", postSchema);
+const Thread: Model<IThread> =
+  mongoose.models.Thread || mongoose.model<IThread>("Thread", threadSchema);
 
-export { Post, PostSchema };
+export { Thread, ThreadSchema };

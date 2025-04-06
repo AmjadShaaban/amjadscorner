@@ -1,0 +1,62 @@
+import { requireRole } from "@/lib/auth/requireRole";
+import { connectToDatabase } from "@/lib/db";
+import { Thread, ThreadSchema } from "@/models/forums/Thread";
+import { UserRole } from "@/types/roles";
+import mongoose from "mongoose";
+import { NextRequest, NextResponse } from "next/server";
+
+export const GET = async (
+  _req: NextRequest,
+  { params }: { params: { subcategoryId: string } }
+) => {
+  const user = await requireRole([UserRole.ADMIN], { returnJson: true });
+  if (user instanceof NextResponse) return user;
+
+  try {
+    await connectToDatabase();
+    const threads = await Thread.find({
+      subcategory: params.subcategoryId,
+    })
+      .sort({ createdAt: -1 })
+      .populate("createdBy", "firstName lastName")
+      .populate("updatedBy", "firstName lastName");
+
+    return NextResponse.json(threads);
+  } catch (error) {
+    console.error("Error fetching threads:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+};
+
+export const POST = async (
+  req: NextRequest,
+  { params }: { params: { subcategoryId: string } }
+) => {
+  const user = await requireRole([UserRole.ADMIN], { returnJson: true });
+  if (user instanceof NextResponse) return user;
+
+  try {
+    const data = await req.json();
+    const parsed = ThreadSchema.parse(data);
+
+    await connectToDatabase();
+
+    const thread = new Thread({
+      ...parsed,
+      subcategory: new mongoose.Types.ObjectId(params.subcategoryId),
+      createdBy: new mongoose.Types.ObjectId(user.id),
+    });
+
+    await thread.save();
+    return NextResponse.json(thread.toJSON(), { status: 201 });
+  } catch (error) {
+    console.error("Error creating thread:", error);
+    return NextResponse.json(
+      { error: "Failed to create thread" },
+      { status: 500 }
+    );
+  }
+};

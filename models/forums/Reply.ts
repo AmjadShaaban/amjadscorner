@@ -4,12 +4,12 @@ import { z } from "zod";
 
 const ReplySchema = z.object({
   content: z.string().min(1, { message: "Reply content is required" }),
-  post: z.string().min(1, { message: "Post ID is required" }),
+  thread: z.string().min(1, { message: "Thread ID is required" }),
 });
 
 type IReply = {
   content: string;
-  post: mongoose.Types.ObjectId;
+  thread: mongoose.Types.ObjectId;
   author: mongoose.Types.ObjectId;
   createdBy: mongoose.Types.ObjectId;
   updatedBy?: mongoose.Types.ObjectId;
@@ -23,7 +23,7 @@ type IReply = {
 const replySchema: Schema<IReply> = new Schema(
   {
     content: { type: String, required: true },
-    post: { type: Schema.Types.ObjectId, ref: "Post", required: true },
+    thread: { type: Schema.Types.ObjectId, ref: "Thread", required: true },
     author: { type: Schema.Types.ObjectId, ref: "User", required: true },
 
     isDeleted: { type: Boolean, default: false },

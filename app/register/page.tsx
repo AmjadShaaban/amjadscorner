@@ -11,7 +11,7 @@ const RegisterPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await axios.post("/api/register", { firstName, lastName, email, password });
-    // window.location.href = "/login";
+    window.location.href = "/login";
   };
 
   return (

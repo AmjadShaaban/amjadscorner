@@ -99,15 +99,18 @@ export default function ForumsStructureTree({
 
   return (
     <section>
-      <h2 className="text-xl text-white font-semibold mb-4">Forum Structure</h2>
+      <h2 className="text-xl text-white font-semibold">Forum Structure</h2>
 
       {loading ? (
         <p className="text-gray-400">Loading...</p>
       ) : categories.length === 0 ? (
         <p className="text-gray-400">No categories yet.</p>
       ) : (
-        categories.map((cat) => (
-          <div key={cat.id} className="mb-6">
+        categories.map((cat, idx) => (
+          <div
+            key={cat.id}
+            className={`${idx < categories.length - 1 && "mb-6"}`}
+          >
             {/* Category Header */}
             {editingCategoryId === cat.id ? (
               <div className="flex gap-2 items-center mb-1">
@@ -133,21 +136,26 @@ export default function ForumsStructureTree({
               <div className="flex justify-between items-center mb-1">
                 <h3
                   className={`text-lg font-semibold ${
-                    cat.isDeleted ? "line-through text-red-300" : "text-white"
+                    cat.isDeleted ? " text-red-600" : "text-white"
                   }`}
                 >
                   📁 {cat.name}
-                  {cat.createdAt && (
+                  {cat.isDeleted && (
                     <span className="ml-2 text-xs text-gray-400">
-                      Created: {new Date(cat.createdAt).toLocaleString()}
-                      {cat.createdBy && (
-                        <> by {cat.createdBy.name || cat.createdBy.email}</>
-                      )}
+                      Deleted: {new Date(cat.deletedAt).toLocaleString()}
+                      {cat.deletedBy && <> by {cat.deletedBy.firstName}</>}
                     </span>
                   )}
-                  {cat.updatedAt && (
+                  {!cat.isDeleted && cat.createdAt && (
+                    <span className="ml-2 text-xs text-gray-400">
+                      Created: {new Date(cat.createdAt).toLocaleString()}
+                      {cat.createdBy && <> by {cat.createdBy.firstName}</>}
+                    </span>
+                  )}
+                  {!cat.isDeleted && cat.updatedAt !== cat.createdAt && (
                     <span className="ml-2 text-xs text-gray-400">
                       Updated: {new Date(cat.updatedAt).toLocaleString()}
+                      {cat.updatedBy && <> by {cat.updatedBy.firstName}</>}
                     </span>
                   )}
                 </h3>
@@ -190,9 +198,7 @@ export default function ForumsStructureTree({
                   <li
                     key={sub.id}
                     className={`flex justify-between items-center text-sm ${
-                      sub.isDeleted
-                        ? "line-through text-red-300"
-                        : "text-gray-300"
+                      sub.isDeleted ? "text-red-600" : "text-gray-300"
                     }`}
                   >
                     {editingSubId === sub.id ? (
@@ -219,18 +225,34 @@ export default function ForumsStructureTree({
                       <div className="flex justify-between items-center w-full">
                         <span>
                           ↳ {sub.name}
-                          {sub.createdAt && (
+                          {sub.isDeleted && (
+                            <span className="ml-2 text-xs text-gray-400">
+                              Deleted:{" "}
+                              {new Date(sub.deletedAt).toLocaleString()}
+                              {sub.deletedBy && (
+                                <> by {sub.deletedBy.firstName}</>
+                              )}
+                            </span>
+                          )}
+                          {!sub.isDeleted && sub.createdAt && (
                             <span className="ml-2 text-xs text-gray-400">
                               Created:{" "}
                               {new Date(sub.createdAt).toLocaleString()}
+                              {sub.createdBy && (
+                                <> by {sub.createdBy.firstName}</>
+                              )}
                             </span>
                           )}
-                          {sub.updatedAt && (
-                            <span className="ml-2 text-xs text-gray-400">
-                              Updated:{" "}
-                              {new Date(sub.updatedAt).toLocaleString()}
-                            </span>
-                          )}
+                          {!sub.isDeleted &&
+                            sub.updatedAt !== sub.createdAt && (
+                              <span className="ml-2 text-xs text-gray-400">
+                                Updated:{" "}
+                                {new Date(sub.updatedAt).toLocaleString()}
+                                {sub.updatedBy && (
+                                  <> by {sub.updatedBy.firstName}</>
+                                )}
+                              </span>
+                            )}
                         </span>
                         <div className="flex gap-2">
                           {!sub.isDeleted ? (

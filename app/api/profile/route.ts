@@ -4,7 +4,7 @@
 // import bcrypt from "bcryptjs";
 // import { auth } from "@/lib/auth/auth";
 
-// export async function PUT(req: NextRequest) {
+// export const PUT(req: NextRequest) {
 //   const session = await auth();
 //   if (!session)
 //     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -27,6 +27,6 @@
 // }
 import { NextResponse } from "next/server";
 // TODO Finish me
-export async function GET() {
+export const GET = async () => {
   return NextResponse.json("IM A PLACEHOLDER");
-}
+};

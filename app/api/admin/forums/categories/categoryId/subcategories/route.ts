@@ -9,14 +9,14 @@ import { Subcategory, SubcategorySchema } from "@/models/forums/Subcategory";
 
 export const GET = async (
   req: NextRequest,
-  context: { params: Promise<{ id: string }> }
+  context: { params: Promise<{ categoryId: string }> }
 ) => {
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
 
   try {
     await connectToDatabase();
-    const { id: categoryId } = await context.params;
+    const { categoryId } = await context.params;
 
     const subcategories = await Subcategory.find({
       category: categoryId,
@@ -34,13 +34,13 @@ export const GET = async (
 
 export const POST = async (
   req: NextRequest,
-  context: { params: Promise<{ id: string }> }
+  context: { params: Promise<{ categoryId: string }> }
 ) => {
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
 
   try {
-    const { id: categoryId } = await context.params;
+    const { categoryId } = await context.params;
     const data = await req.json();
     const parsed = SubcategorySchema.parse({
       name: data.name,

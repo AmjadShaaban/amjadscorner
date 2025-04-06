@@ -20,7 +20,7 @@ type IUser = {
   isDeleted: boolean;
   deletedAt?: Date;
   deletedBy?: mongoose.Types.ObjectId;
-  createdBy: mongoose.Types.ObjectId;
+  createdBy?: mongoose.Types.ObjectId;
   updatedBy?: mongoose.Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
@@ -41,14 +41,20 @@ const userSchema = new Schema<IUser>(
     isDeleted: { type: Boolean, default: false },
     deletedAt: { type: Date, default: null },
     deletedBy: { type: Schema.Types.ObjectId, ref: "User", default: null },
-
-    createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    createdBy: { type: Schema.Types.ObjectId, ref: "User", default: null },
     updatedBy: { type: Schema.Types.ObjectId, ref: "User", default: null },
   },
   { timestamps: true }
 );
 
-applyDefaultToJSONTransform(userSchema, { remove: ["password"] });
+userSchema.virtual("name").get(function () {
+  return [this.firstName, this.lastName].filter(Boolean).join(" ");
+});
+
+applyDefaultToJSONTransform(userSchema, {
+  isUserModel: true,
+  remove: ["password"],
+});
 
 const User: Model<IUser> =
   mongoose.models.User || mongoose.model<IUser>("User", userSchema);

@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 // TODO Finish me
-export async function GET() {
+export const GET = async () => {
   return NextResponse.json("IM A PLACEHOLDER");
-}
+};
 
 // import { NextRequest, NextResponse } from "next/server";
 // import { auth } from "@/lib/auth/auth";
@@ -10,7 +10,7 @@ export async function GET() {
 // import { Reply, ReplySchema } from "@/models/forums/Reply";
 // import { z } from "zod";
 
-// export async function GET(req: NextRequest) {
+// export const GET(req: NextRequest) {
 //   try {
 //     const { searchParams } = new URL(req.url);
 //     const postId = searchParams.get("postId");
@@ -37,7 +37,7 @@ export async function GET() {
 //   }
 // }
 
-// export async function POST(req: NextRequest) {
+// export const POST(req: NextRequest) {
 //   const session = await auth();
 //   if (!session?.user.id)
 //     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

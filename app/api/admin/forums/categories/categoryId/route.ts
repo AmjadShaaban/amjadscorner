@@ -9,7 +9,7 @@ import { Category } from "@/models/forums/Category";
 
 export const PUT = async (
   req: NextRequest,
-  context: { params: Promise<{ id: string }> }
+  context: { params: Promise<{ categoryId: string }> }
 ) => {
   const params = await context.params;
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
@@ -24,7 +24,7 @@ export const PUT = async (
 
     await connectToDatabase();
 
-    const category = await Category.findOne({ _id: params.id });
+    const category = await Category.findOne({ _id: params.categoryId });
     if (!category) {
       return NextResponse.json(
         { error: "Category not found" },
@@ -60,7 +60,7 @@ export const PUT = async (
 
 export const DELETE = async (
   req: NextRequest,
-  context: { params: Promise<{ id: string }> }
+  context: { params: Promise<{ categoryId: string }> }
 ) => {
   const params = await context.params;
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
@@ -70,7 +70,7 @@ export const DELETE = async (
     await connectToDatabase();
 
     const category = await Category.findOne({
-      _id: params.id,
+      _id: params.categoryId,
       isDeleted: false,
     });
     if (!category) {

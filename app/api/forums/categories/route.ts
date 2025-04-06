@@ -2,7 +2,7 @@ import { connectToDatabase } from "@/lib/db";
 import { Category } from "@/models/forums/Category";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export const GET = async () => {
   try {
     await connectToDatabase();
     const categories = await Category.find({ isDeleted: false }).sort({
@@ -16,4 +16,4 @@ export async function GET() {
       { status: 500 }
     );
   }
-}
+};

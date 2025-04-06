@@ -9,7 +9,7 @@
 // // Hardcoded admin email (replace with your email or a role-based system)
 // const ADMIN_EMAIL = "admin@test.com";
 
-// export async function GET(req: NextRequest) {
+// export const GET(req: NextRequest) {
 //   try {
 //     await connectToDatabase();
 //     const categories = await ShopCategory.find().exec();
@@ -23,7 +23,7 @@
 //   }
 // }
 
-// export async function POST(req: NextRequest) {
+// export const POST(req: NextRequest) {
 //   const session = await auth();
 //   if (!session?.user.id || session.user.email !== ADMIN_EMAIL) {
 //     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -57,7 +57,7 @@
 //   }
 // }
 
-// export async function PUT(req: NextRequest) {
+// export const PUT(req: NextRequest) {
 //   const session = await auth();
 //   if (!session?.user.id || session.user.email !== ADMIN_EMAIL) {
 //     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -107,7 +107,7 @@
 //   }
 // }
 
-// export async function DELETE(req: NextRequest) {
+// export const DELETE(req: NextRequest) {
 //   const session = await auth();
 //   if (!session?.user.id || session.user.email !== ADMIN_EMAIL) {
 //     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -163,6 +163,6 @@
 // }
 import { NextResponse } from "next/server";
 // TODO Finish me
-export async function GET() {
+export const GET = async () => {
   return NextResponse.json("IM A PLACEHOLDER");
-}
+};

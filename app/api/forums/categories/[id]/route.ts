@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
 // TODO Finish me
-export async function GET() {
+export const GET = async () => {
   return NextResponse.json("IM A PLACEHOLDER");
-}
+};

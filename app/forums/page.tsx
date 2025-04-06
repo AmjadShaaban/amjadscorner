@@ -57,7 +57,7 @@ const ForumsPage = () => {
                         {subcategory.name}
                       </h3>
                       <p className="text-gray-400 text-sm">
-                        Click to view posts
+                        Click to view threads
                       </p>
                     </div>
                   </Link>

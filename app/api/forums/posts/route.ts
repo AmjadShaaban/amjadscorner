@@ -1,15 +1,15 @@
 import { NextResponse } from "next/server";
 // TODO Finish me
-export async function GET() {
+export const GET = async () => {
   return NextResponse.json("IM A PLACEHOLDER");
-}
+};
 // import { NextRequest, NextResponse } from "next/server";
 // import { auth } from "@/lib/auth/auth";
 // import { connectToDatabase } from "@/lib/db";
 // import { Post, PostSchema } from "@/models/forums/Post";
 // import { z } from "zod";
 
-// export async function GET(req: NextRequest) {
+// export const GET(req: NextRequest) {
 //   try {
 //     const { searchParams } = new URL(req.url);
 //     const subcategoryId = searchParams.get("subcategoryId");
@@ -29,7 +29,7 @@ export async function GET() {
 //   }
 // }
 
-// export async function POST(req: NextRequest) {
+// export const POST(req: NextRequest) {
 //   const session = await auth();
 //   if (!session?.user.id)
 //     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

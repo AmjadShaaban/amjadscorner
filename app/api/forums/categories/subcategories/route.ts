@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 // TODO Finish me
-export async function GET() {
+export const GET = async () => {
   return NextResponse.json("IM A PLACEHOLDER");
-}
+};
 
 // import { NextRequest, NextResponse } from "next/server";
 // import { auth } from "@/lib/auth/auth";
@@ -13,7 +13,7 @@ export async function GET() {
 // // Hardcoded admin email (replace with your email or a role-based system)
 // const ADMIN_EMAIL = "admin@test.com";
 
-// export async function GET(req: NextRequest) {
+// export const GET(req: NextRequest) {
 //   try {
 //     await connectToDatabase();
 //     const subcategories = await Subcategory.find().sort({ createdAt: 1 });
@@ -27,7 +27,7 @@ export async function GET() {
 //   }
 // }
 
-// export async function POST(req: NextRequest) {
+// export const POST(req: NextRequest) {
 //   const session = await auth();
 //   if (!session?.user.id || session.user.email !== ADMIN_EMAIL) {
 //     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

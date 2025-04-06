@@ -11,7 +11,11 @@ export const GET = async (req: NextRequest) => {
   try {
     await connectToDatabase();
 
-    const subcategories = await Subcategory.find().sort({ createdAt: 1 });
+    const subcategories = await Subcategory.find()
+      .sort({ createdAt: 1 })
+      .populate("createdBy", "firstName _id")
+      .populate("updatedBy", "firstName _id")
+      .populate("deletedBy", "firstName _id");
 
     return NextResponse.json(subcategories);
   } catch (error) {

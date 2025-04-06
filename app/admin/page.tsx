@@ -15,7 +15,7 @@ const AdminDashboardPage = () => {
                 Manage Forums
               </h2>
               <p className="text-gray-300 mt-2">
-                Administer forum categories, subcategories, and posts.
+                Administer forum categories, subcategories, and threads.
               </p>
             </div>
           </Link>

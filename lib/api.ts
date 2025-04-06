@@ -1,9 +1,9 @@
-export const createPost = async (data: {
+export const createThread = async (data: {
   title: string;
   content: string;
   subcategoryId: number;
 }) => {
-  const response = await fetch("/api/forums/posts", {
+  const response = await fetch("/api/forums/threads", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -12,7 +12,7 @@ export const createPost = async (data: {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to create post");
+    throw new Error("Failed to create thread");
   }
 
   return response.json();

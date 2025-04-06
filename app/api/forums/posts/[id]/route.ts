@@ -2,7 +2,7 @@
 // import { connectToDatabase } from '@/lib/db';
 // import { Post } from '@/models/forums/Post';
 
-// export async function GET(
+// export const GET(
 //   req: NextRequest,
 //   {params}: { params: Promise<{ id: string }> }
 // ) {
@@ -19,6 +19,6 @@
 // }
 import { NextResponse } from "next/server";
 // TODO Finish me
-export async function GET() {
+export const GET = async () => {
   return NextResponse.json("IM A PLACEHOLDER");
-}
+};
