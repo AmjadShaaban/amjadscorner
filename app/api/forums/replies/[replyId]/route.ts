@@ -7,10 +7,10 @@ import { auth } from "@/lib/auth/auth";
 import { Reply, ReplySchema } from "@/models/forums/Reply";
 import { UserRole } from "@/types/roles";
 
-export async function PUT(
+export const PUT = async (
   req: NextRequest,
   context: { params: Promise<{ replyId: string }> }
-) {
+) => {
   const session = await auth();
   if (!session?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -73,20 +73,21 @@ export async function PUT(
       { status: 500 }
     );
   }
-}
+};
 
-export async function DELETE(
+export const DELETE = async (
   _req: NextRequest,
-  context: { params: { replyId: string } }
-) {
+  context: { params: Promise<{ replyId: string }> }
+) => {
   const session = await auth();
   if (!session?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+  const { replyId } = await context.params;
 
   try {
     await connectToDatabase();
-    const reply = await Reply.findById(context.params.replyId);
+    const reply = await Reply.findById(replyId);
 
     if (!reply || reply.isDeleted) {
       return NextResponse.json({ error: "Reply not found" }, { status: 404 });
@@ -112,4 +113,4 @@ export async function DELETE(
       { status: 500 }
     );
   }
-}
+};

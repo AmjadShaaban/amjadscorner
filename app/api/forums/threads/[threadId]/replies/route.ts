@@ -38,11 +38,11 @@ export const POST = async (
   req: NextRequest,
   context: { params: Promise<{ threadId: string }> }
 ) => {
-  const { threadId } = await context.params;
   const session = await auth();
   if (!session?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+  const { threadId } = await context.params;
 
   try {
     await connectToDatabase();

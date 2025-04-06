@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
+import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
-import { connectToDatabase } from "@/lib/db";
 import { auth } from "@/lib/auth/auth";
+import { connectToDatabase } from "@/lib/db";
 import { Thread, ThreadSchema } from "@/models/forums/Thread";
 import { UserRole } from "@/types/roles";
 
@@ -11,8 +11,9 @@ export const GET = async (
   _req: NextRequest,
   context: { params: Promise<{ threadId: string }> }
 ) => {
+  const { threadId } = await context.params;
+
   try {
-    const { threadId } = await context.params;
     await connectToDatabase();
 
     const thread = await Thread.findById(threadId)
@@ -38,11 +39,11 @@ export const PUT = async (
   req: NextRequest,
   context: { params: Promise<{ threadId: string }> }
 ) => {
-  const { threadId } = await context.params;
   const session = await auth();
   if (!session?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+  const { threadId } = await context.params;
 
   try {
     await connectToDatabase();

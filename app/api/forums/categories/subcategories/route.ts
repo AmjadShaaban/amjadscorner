@@ -7,6 +7,7 @@ export const GET = async (
   context: { params: Promise<{ categoryId: string }> }
 ) => {
   const { categoryId } = await context.params;
+
   try {
     await connectToDatabase();
     const subcategories = await Subcategory.find({
