@@ -5,15 +5,15 @@ import { NextResponse } from "next/server";
 export const GET = async () => {
   try {
     await connectToDatabase();
-
     const categories = await Category.find({ isDeleted: false }).sort({
       createdAt: 1,
     });
+
     return NextResponse.json(categories);
   } catch (error) {
     console.error("Error fetching categories:", error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: "Failed to load categories" },
       { status: 500 }
     );
   }

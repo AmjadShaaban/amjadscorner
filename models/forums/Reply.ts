@@ -5,10 +5,19 @@ import { z } from "zod";
 const ReplySchema = z.object({
   content: z.string().min(1, { message: "Reply content is required" }),
   thread: z.string().min(1, { message: "Thread ID is required" }),
+  quotedReply: z.string().optional(),
+  quotedThread: z.string().optional(),
 });
 
 type IReply = {
   content: string;
+  quotedReply?: mongoose.Types.ObjectId;
+  quotedThread?: mongoose.Types.ObjectId;
+  edits?: {
+    content: string;
+    editedAt: Date;
+    editedBy: mongoose.Types.ObjectId;
+  }[];
   thread: mongoose.Types.ObjectId;
   author: mongoose.Types.ObjectId;
   createdBy: mongoose.Types.ObjectId;

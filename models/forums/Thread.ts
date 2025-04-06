@@ -11,6 +11,11 @@ const ThreadSchema = z.object({
 type IThread = {
   title: string;
   content: string;
+  edits?: {
+    content: string;
+    editedAt: Date;
+    editedBy: mongoose.Types.ObjectId;
+  }[];
   subcategory: mongoose.Types.ObjectId;
   author: mongoose.Types.ObjectId;
   createdBy: mongoose.Types.ObjectId;
