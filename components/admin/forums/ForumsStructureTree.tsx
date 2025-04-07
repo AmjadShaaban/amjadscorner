@@ -4,7 +4,7 @@ import {
   useDeleteSubcategory,
   useEditCategory,
   useEditSubcategory,
-} from "@/lib/queries/admin/forums";
+} from "@/lib/hooks/admin/forums";
 import { Check, Pencil, Trash, Undo2, X } from "lucide-react";
 import { useState } from "react";
 

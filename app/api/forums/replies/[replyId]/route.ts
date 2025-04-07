@@ -9,13 +9,13 @@ import { UserRole } from "@/types/roles";
 
 export const PUT = async (
   req: NextRequest,
-  context: { params: Promise<{ replyId: string }> }
+  { params }: { params: Promise<{ replyId: string }> }
 ) => {
   const session = await auth();
   if (!session?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const { replyId } = await context.params;
+  const { replyId } = await params;
 
   try {
     await connectToDatabase();
@@ -77,13 +77,13 @@ export const PUT = async (
 
 export const DELETE = async (
   _req: NextRequest,
-  context: { params: Promise<{ replyId: string }> }
+  { params }: { params: Promise<{ replyId: string }> }
 ) => {
   const session = await auth();
   if (!session?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const { replyId } = await context.params;
+  const { replyId } = await params;
 
   try {
     await connectToDatabase();

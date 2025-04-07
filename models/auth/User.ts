@@ -47,9 +47,9 @@ const userSchema = new Schema<IUser>(
   { timestamps: true }
 );
 
-userSchema.virtual("name").get(function () {
-  return [this.firstName, this.lastName].filter(Boolean).join(" ");
-});
+// userSchema.virtual("name").get(function () {
+//   return [this.firstName, this.lastName].filter(Boolean).join(" ");
+// });
 
 applyDefaultToJSONTransform(userSchema, {
   isUserModel: true,

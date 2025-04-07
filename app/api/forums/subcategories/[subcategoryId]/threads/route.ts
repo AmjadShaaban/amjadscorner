@@ -1,65 +1,67 @@
-import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
-
-import { auth } from "@/lib/auth/auth";
 import { connectToDatabase } from "@/lib/db";
 import { Thread, ThreadSchema } from "@/models/forums/Thread";
+import { auth } from "@/lib/auth/auth";
+import mongoose from "mongoose";
+import { z } from "zod";
 
 export const GET = async (
-  _req: NextRequest,
-  { params }: { params: Promise<{ categoryId: string; subcategoryId: string }> }
+  req: NextRequest,
+  { params }: { params: Promise<{ subcategoryId: string }> }
 ) => {
-  const { categoryId, subcategoryId } = await params;
-
   try {
+    const { subcategoryId } = await params;
     await connectToDatabase();
 
     const threads = await Thread.find({
-      category: categoryId,
       subcategory: subcategoryId,
       isDeleted: false,
     })
-      .populate("createdBy", "firstName lastName id")
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .populate("author", "id firstName lastName");
 
     return NextResponse.json(threads);
   } catch (error) {
     console.error("Error fetching threads:", error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: "Failed to load threads" },
       { status: 500 }
     );
   }
 };
 
+const CreateThreadSchema = ThreadSchema.pick({
+  title: true,
+  content: true,
+});
+
 export const POST = async (
   req: NextRequest,
-  { params }: { params: Promise<{ categoryId: string; subcategoryId: string }> }
+  { params }: { params: Promise<{ subcategoryId: string }> }
 ) => {
   const session = await auth();
-  if (!session?.user) {
+  if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const { categoryId, subcategoryId } = await params;
+  const { subcategoryId } = await params;
 
   try {
+    const { title, content } = await req.json();
+    CreateThreadSchema.parse({ title, content });
+
     await connectToDatabase();
-    const data = await req.json();
 
-    // Validate thread content
-    const parsed = ThreadSchema.parse(data);
-
-    const thread = new Thread({
-      ...parsed,
-      category: new mongoose.Types.ObjectId(categoryId),
+    const newThread = new Thread({
+      title,
+      content,
       subcategory: new mongoose.Types.ObjectId(subcategoryId),
+      author: new mongoose.Types.ObjectId(session.user.id),
       createdBy: new mongoose.Types.ObjectId(session.user.id),
     });
 
-    await thread.save();
+    await newThread.save();
 
-    return NextResponse.json(thread, { status: 201 });
+    return NextResponse.json(newThread, { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -68,7 +70,7 @@ export const POST = async (
       );
     }
 
-    console.error("Thread creation error:", error);
+    console.error("Error creating thread:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

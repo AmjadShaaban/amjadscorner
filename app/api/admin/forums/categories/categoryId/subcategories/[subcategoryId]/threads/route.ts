@@ -7,11 +7,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (
   req: NextRequest,
-  context: { params: Promise<{ subcategoryId: string }> }
+  { params }: { params: Promise<{ subcategoryId: string }> }
 ) => {
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
-  const { subcategoryId } = await context.params;
+  const { subcategoryId } = await params;
 
   try {
     await connectToDatabase();
@@ -35,11 +35,11 @@ export const GET = async (
 
 export const POST = async (
   req: NextRequest,
-  context: { params: Promise<{ subcategoryId: string }> }
+  { params }: { params: Promise<{ subcategoryId: string }> }
 ) => {
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
-  const { subcategoryId } = await context.params;
+  const { subcategoryId } = await params;
   const data = await req.json();
   const parsed = ThreadSchema.parse(data);
 

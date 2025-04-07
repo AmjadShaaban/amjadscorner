@@ -1,17 +1,17 @@
-import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
+import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
-import { connectToDatabase } from "@/lib/db";
 import { auth } from "@/lib/auth/auth";
+import { connectToDatabase } from "@/lib/db";
 import { Reply, ReplySchema } from "@/models/forums/Reply";
 import { Thread } from "@/models/forums/Thread";
 
 export const GET = async (
   _req: NextRequest,
-  context: { params: Promise<{ threadId: string }> }
+  { params }: { params: Promise<{ threadId: string }> }
 ) => {
-  const { threadId } = await context.params;
+  const { threadId } = await params;
   try {
     await connectToDatabase();
 
@@ -19,7 +19,7 @@ export const GET = async (
       thread: threadId,
       isDeleted: false,
     })
-      .populate("createdBy", "name id")
+      .populate("createdBy", "firstName lastName id")
       .populate("quotedReply", "content createdBy")
       .populate("quotedThread", "title content createdBy")
       .sort({ createdAt: 1 });
@@ -36,13 +36,13 @@ export const GET = async (
 
 export const POST = async (
   req: NextRequest,
-  context: { params: Promise<{ threadId: string }> }
+  { params }: { params: Promise<{ threadId: string }> }
 ) => {
   const session = await auth();
   if (!session?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const { threadId } = await context.params;
+  const { threadId } = await params;
 
   try {
     await connectToDatabase();
@@ -54,11 +54,14 @@ export const POST = async (
 
     const data = await req.json();
 
-    const parsed = ReplySchema.parse(data);
-
+    const parsed = ReplySchema.parse({
+      ...data,
+      thread: threadId,
+    });
     const reply = new Reply({
-      thread: thread._id,
+      thread: threadId,
       content: parsed.content,
+      author: new mongoose.Types.ObjectId(session.user.id),
       quotedReply: parsed.quotedReply
         ? new mongoose.Types.ObjectId(parsed.quotedReply)
         : undefined,

@@ -9,17 +9,16 @@ import { UserRole } from "@/types/roles";
 
 export const GET = async (
   _req: NextRequest,
-  context: { params: Promise<{ threadId: string }> }
+  { params }: { params: Promise<{ threadId: string }> }
 ) => {
-  const { threadId } = await context.params;
+  const { threadId } = await params;
 
   try {
     await connectToDatabase();
 
     const thread = await Thread.findById(threadId)
-      .populate("createdBy", "name id")
-      .populate("updatedBy", "name id")
-      .lean();
+      .populate("createdBy", "firstName lastName id")
+      .populate("updatedBy", "firstName lastName id");
 
     if (!thread || thread.isDeleted) {
       return NextResponse.json({ error: "Thread not found" }, { status: 404 });
@@ -37,13 +36,13 @@ export const GET = async (
 
 export const PUT = async (
   req: NextRequest,
-  context: { params: Promise<{ threadId: string }> }
+  { params }: { params: Promise<{ threadId: string }> }
 ) => {
   const session = await auth();
   if (!session?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const { threadId } = await context.params;
+  const { threadId } = await params;
 
   try {
     await connectToDatabase();

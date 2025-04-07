@@ -3,7 +3,7 @@ import CreateCategoryForm from "@/components/admin/forums/CreateCategoryForm";
 import CreateSubcategoryForm from "@/components/admin/forums/CreateSubcategoryForm";
 import ForumsStructureTree from "@/components/admin/forums/ForumsStructureTree";
 import RoleGuard from "@/components/auth/RoleGuard";
-import { useCategories, useSubcategories } from "@/lib/queries/admin/forums";
+import { useCategories, useSubcategories } from "@/lib/hooks/admin/forums";
 import { UserRole } from "@/types/roles";
 
 const ForumsAdminPage = () => {

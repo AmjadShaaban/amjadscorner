@@ -42,7 +42,6 @@ const QuillEditor = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const toolbarRef = useRef<HTMLDivElement>(null);
   const [isMounted, setIsMounted] = useState(false);
-  const [isInitialized, setIsInitialized] = useState(false);
   const [isQuillReady, setIsQuillReady] = useState(false);
 
   useEffect(() => {
@@ -79,7 +78,7 @@ const QuillEditor = ({
     };
   }, []);
 
-  const initializeEditor = () => {
+  const initializeEditor = useCallback(() => {
     if (!quillConstructor || !containerRef.current || !toolbarRef.current)
       return;
 
@@ -115,14 +114,13 @@ const QuillEditor = ({
     });
 
     quillRef.current = editor;
-    setIsInitialized(true);
-  };
+  }, [handleImageUpload, onChange, placeholder, readOnly]);
 
   useEffect(() => {
     const shouldInit =
       isMounted &&
       isQuillReady &&
-      !isInitialized &&
+      !quillRef.current &&
       containerRef.current &&
       toolbarRef.current;
 
@@ -135,9 +133,8 @@ const QuillEditor = ({
         quillRef.current.off("text-change");
         quillRef.current = null;
       }
-      setIsInitialized(false);
     };
-  }, [isMounted, isQuillReady, isInitialized, initializeEditor]);
+  }, [isMounted, isQuillReady, initializeEditor]);
 
   useEffect(() => {
     if (quillRef.current) {

@@ -8,7 +8,7 @@ import { Schema } from "mongoose";
  */
 export function applyDefaultToJSONTransform(
   schema: Schema,
-  options?: { remove?: string[]; isUserModel?: boolean }
+  options: { remove?: string[]; isUserModel?: boolean } = {}
 ) {
   schema.set("toJSON", {
     virtuals: true,

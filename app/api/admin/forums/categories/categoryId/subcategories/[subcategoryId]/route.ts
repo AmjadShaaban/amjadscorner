@@ -9,11 +9,11 @@ import { Subcategory } from "@/models/forums/Subcategory";
 
 export const PUT = async (
   req: NextRequest,
-  context: { params: Promise<{ categoryId: string; subcategoryId: string }> }
+  { params }: { params: Promise<{ categoryId: string; subcategoryId: string }> }
 ) => {
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
-  const { categoryId, subcategoryId } = await context.params;
+  const { categoryId, subcategoryId } = await params;
   const { searchParams } = new URL(req.url);
   const restore = searchParams.get("restore") === "true";
   const { name } = await req.json();
@@ -62,11 +62,11 @@ export const PUT = async (
 
 export const DELETE = async (
   req: NextRequest,
-  context: { params: Promise<{ categoryId: string; subcategoryId: string }> }
+  { params }: { params: Promise<{ categoryId: string; subcategoryId: string }> }
 ) => {
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
-  const { categoryId, subcategoryId } = await context.params;
+  const { categoryId, subcategoryId } = await params;
 
   try {
     await connectToDatabase();

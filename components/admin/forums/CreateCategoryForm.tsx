@@ -1,4 +1,4 @@
-import { useCreateCategory } from "@/lib/queries/admin/forums";
+import { useCreateCategory } from "@/lib/hooks/admin/forums";
 import { useState } from "react";
 
 const CreateCategoryForm = () => {

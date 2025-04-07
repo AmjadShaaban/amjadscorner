@@ -7,11 +7,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const PUT = async (
   req: NextRequest,
-  context: { params: Promise<{ threadId: string }> }
+  { params }: { params: Promise<{ threadId: string }> }
 ) => {
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
-  const { threadId } = await context.params;
+  const { threadId } = await params;
   const { searchParams } = new URL(req.url);
   const restore = searchParams.get("restore") === "true";
 
@@ -52,11 +52,11 @@ export const PUT = async (
 
 export const DELETE = async (
   _req: NextRequest,
-  context: { params: Promise<{ threadId: string }> }
+  { params }: { params: Promise<{ threadId: string }> }
 ) => {
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
-  const { threadId } = await context.params;
+  const { threadId } = await params;
 
   try {
     await connectToDatabase();

@@ -1,4 +1,4 @@
-import { useCreateSubcategory } from "@/lib/queries/admin/forums";
+import { useCreateSubcategory } from "@/lib/hooks/admin/forums";
 import { useState } from "react";
 
 type CreateSubcategoryFormProps = {

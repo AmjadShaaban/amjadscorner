@@ -1,73 +1,40 @@
 "use client";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { useCategoryTree } from "@/lib/hooks/app/forums";
 import Link from "next/link";
 
-const fetchCategories = async () =>
-  (await axios.get("/api/forums/categories")).data;
-
-const fetchSubcategories = async () =>
-  (await axios.get("/api/forums/subcategories")).data;
-
-const ForumsPage = () => {
-  const {
-    data: categories = [],
-    isLoading: loadingCategories,
-    error: errorCategories,
-  } = useQuery({ queryKey: ["categories"], queryFn: fetchCategories });
-
-  const {
-    data: subcategories = [],
-    isLoading: loadingSubs,
-    error: errorSubs,
-  } = useQuery({ queryKey: ["subcategories"], queryFn: fetchSubcategories });
-
-  if (loadingCategories || loadingSubs)
-    return <p className="text-gray-400">Loading forums...</p>;
-
-  if (errorCategories || errorSubs)
-    return (
-      <p className="text-red-500">
-        Failed to load forum data. Try again later.
-      </p>
-    );
+export default function ForumsPage() {
+  const { data: categories, isLoading, error } = useCategoryTree();
 
   return (
-    <div className="max-w-3xl mx-auto mt-8">
-      <h1 className="text-3xl font-bold mb-6 text-white">Forums</h1>
+    <div className="max-w-4xl mx-auto mt-10 px-4">
+      <h1 className="text-3xl font-bold text-white mb-6">Forums</h1>
 
-      {categories.length === 0 ? (
-        <p className="text-gray-400">No categories yet. Check back later!</p>
-      ) : (
-        categories.map((category) => (
-          <div key={category._id} className="mb-6">
-            <h2 className="text-xl font-semibold text-white mb-2">
-              {category.name}
-            </h2>
-            <div className="space-y-4">
-              {subcategories
-                .filter((sub) => sub.category === category._id)
-                .map((subcategory) => (
+      {isLoading && <p className="text-gray-300">Loading...</p>}
+      {error && <p className="text-red-400">Failed to load forums</p>}
+
+      {categories?.map((cat) => (
+        <div key={cat.id} className="mb-6">
+          <h2 className="text-xl font-semibold text-white mb-2">
+            📁 {cat.name}
+          </h2>
+          {cat.subcategories.length === 0 ? (
+            <p className="ml-4 text-gray-400">No subcategories yet.</p>
+          ) : (
+            <ul className="ml-4 space-y-1">
+              {cat.subcategories.map((sub) => (
+                <li key={sub.id}>
                   <Link
-                    key={subcategory._id}
-                    href={`/forums/subcategory/${subcategory._id}`}
+                    href={`/forums/subcategories/${sub.id}`}
+                    className="text-blue-400 hover:underline"
                   >
-                    <div className="p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition">
-                      <h3 className="text-lg font-semibold text-white">
-                        {subcategory.name}
-                      </h3>
-                      <p className="text-gray-400 text-sm">
-                        Click to view threads
-                      </p>
-                    </div>
+                    ↳ {sub.name}
                   </Link>
-                ))}
-            </div>
-          </div>
-        ))
-      )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ))}
     </div>
   );
-};
-
-export default ForumsPage;
+}

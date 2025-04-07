@@ -9,11 +9,11 @@ import { UserRole } from "@/types/roles";
 
 export const PUT = async (
   req: NextRequest,
-  context: { params: Promise<{ categoryId: string }> }
+  { params }: { params: Promise<{ categoryId: string }> }
 ) => {
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
-  const { categoryId } = await context.params;
+  const { categoryId } = await params;
   const { searchParams } = new URL(req.url);
   const restore = searchParams.get("restore") === "true";
   const { name } = await req.json();
@@ -58,11 +58,11 @@ export const PUT = async (
 
 export const DELETE = async (
   req: NextRequest,
-  context: { params: Promise<{ categoryId: string }> }
+  { params }: { params: Promise<{ categoryId: string }> }
 ) => {
   const user = await requireRole([UserRole.ADMIN], { returnJson: true });
   if (user instanceof NextResponse) return user;
-  const { categoryId } = await context.params;
+  const { categoryId } = await params;
 
   try {
     await connectToDatabase();
