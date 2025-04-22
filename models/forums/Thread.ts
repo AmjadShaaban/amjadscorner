@@ -1,12 +1,6 @@
+import { withAuditAndSoftDelete } from "@/lib/mongoose/baseSchema";
 import { applyDefaultToJSONTransform } from "@/lib/mongoose/toJSONTransform";
-import mongoose, { Schema, Document, Model } from "mongoose";
-import { z } from "zod";
-
-const ThreadSchema = z.object({
-  title: z.string().min(1, { message: "Title is required" }),
-  content: z.string().min(1, { message: "Content is required" }),
-  subcategory: z.string().min(1, { message: "Subcategory ID is required" }),
-});
+import mongoose, { Document, Model, Schema } from "mongoose";
 
 type IThread = {
   title: string;
@@ -37,13 +31,7 @@ const threadSchema: Schema<IThread> = new Schema(
       required: true,
     },
     author: { type: Schema.Types.ObjectId, ref: "User", required: true },
-
-    isDeleted: { type: Boolean, default: false },
-    deletedAt: { type: Date, default: null },
-    deletedBy: { type: Schema.Types.ObjectId, ref: "User", default: null },
-
-    createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    updatedBy: { type: Schema.Types.ObjectId, ref: "User", default: null },
+    ...withAuditAndSoftDelete,
   },
   {
     timestamps: true,
@@ -55,4 +43,4 @@ applyDefaultToJSONTransform(threadSchema);
 const Thread: Model<IThread> =
   mongoose.models.Thread || mongoose.model<IThread>("Thread", threadSchema);
 
-export { Thread, ThreadSchema };
+export { Thread };

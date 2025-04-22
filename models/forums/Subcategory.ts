@@ -1,12 +1,6 @@
+import { withAuditAndSoftDelete } from "@/lib/mongoose/baseSchema";
 import { applyDefaultToJSONTransform } from "@/lib/mongoose/toJSONTransform";
-import mongoose, { Schema, Document, Model, Types } from "mongoose";
-import { z } from "zod";
-
-// Zod schema for API validation
-const SubcategorySchema = z.object({
-  name: z.string().min(1, { message: "Subcategory name is required" }),
-  categoryId: z.string().min(1, { message: "Category ID is required" }),
-});
+import mongoose, { Document, Model, Schema, Types } from "mongoose";
 
 type ISubcategory = {
   name: string;
@@ -29,13 +23,7 @@ const subcategorySchema = new Schema<ISubcategory>(
       required: true,
       index: true,
     },
-
-    createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    updatedBy: { type: Schema.Types.ObjectId, ref: "User", default: null },
-    deletedBy: { type: Schema.Types.ObjectId, ref: "User", default: null },
-
-    deletedAt: { type: Date, default: null },
-    isDeleted: { type: Boolean, default: false },
+    ...withAuditAndSoftDelete,
   },
   { timestamps: true }
 );
@@ -46,4 +34,4 @@ const Subcategory: Model<ISubcategory> =
   mongoose.models.Subcategory ||
   mongoose.model<ISubcategory>("Subcategory", subcategorySchema);
 
-export { Subcategory, SubcategorySchema };
+export { Subcategory };

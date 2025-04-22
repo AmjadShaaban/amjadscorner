@@ -1,13 +1,6 @@
+import { withAuditAndSoftDelete } from "@/lib/mongoose/baseSchema";
 import { applyDefaultToJSONTransform } from "@/lib/mongoose/toJSONTransform";
-import mongoose, { Schema, Document, Model } from "mongoose";
-import { z } from "zod";
-
-const ReplySchema = z.object({
-  content: z.string().min(1, { message: "Reply content is required" }),
-  thread: z.string().min(1, { message: "Thread ID is required" }),
-  quotedReply: z.string().optional(),
-  quotedThread: z.string().optional(),
-});
+import mongoose, { Document, Model, Schema } from "mongoose";
 
 type IReply = {
   content: string;
@@ -43,11 +36,7 @@ const replySchema: Schema<IReply> = new Schema(
         editedBy: { type: Schema.Types.ObjectId, ref: "User" },
       },
     ],
-    createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    updatedBy: { type: Schema.Types.ObjectId, ref: "User", default: null },
-    deletedBy: { type: Schema.Types.ObjectId, ref: "User", default: null },
-    isDeleted: { type: Boolean, default: false },
-    deletedAt: { type: Date, default: null },
+    ...withAuditAndSoftDelete,
   },
   {
     timestamps: true,
@@ -59,4 +48,4 @@ applyDefaultToJSONTransform(replySchema);
 const Reply: Model<IReply> =
   mongoose.models.Reply || mongoose.model<IReply>("Reply", replySchema);
 
-export { Reply, ReplySchema };
+export { Reply };

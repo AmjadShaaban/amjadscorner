@@ -2,22 +2,20 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 import { z } from "zod";
 import { UserRole } from "@/types/roles";
 import { applyDefaultToJSONTransform } from "@/lib/mongoose/toJSONTransform";
-
-const UserSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8),
-  role: z.nativeEnum(UserRole).default(UserRole.USER),
-  firstName: z.string().optional(),
-  lastName: z.string().optional(),
-});
+import { withAuditAndSoftDelete } from "@/lib/mongoose/baseSchema";
 
 type IUser = {
   email: string;
   password: string;
+  handle: string;
+  _handle: string;
   role: UserRole;
   firstName?: string;
   lastName?: string;
+  verifiedEmail: boolean;
   isDeleted: boolean;
+  banned: boolean;
+  reasonBanned?: string;
   deletedAt?: Date;
   deletedBy?: mongoose.Types.ObjectId;
   createdBy?: mongoose.Types.ObjectId;
@@ -28,7 +26,24 @@ type IUser = {
 
 const userSchema = new Schema<IUser>(
   {
-    email: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true, index: true },
+    handle: {
+      type: String,
+      required: true,
+      trim: true,
+      match: [
+        /^[a-zA-Z0-9_]+$/,
+        "Handle can only contain letters, numbers, and underscores.",
+      ],
+    },
+    _handle: {
+      type: String,
+      required: true,
+      unique: true,
+      index: true,
+      lowercase: true,
+      select: false,
+    },
     password: { type: String, required: true },
     role: {
       type: String,
@@ -37,26 +52,27 @@ const userSchema = new Schema<IUser>(
     },
     firstName: { type: String },
     lastName: { type: String },
-
-    isDeleted: { type: Boolean, default: false },
-    deletedAt: { type: Date, default: null },
-    deletedBy: { type: Schema.Types.ObjectId, ref: "User", default: null },
-    createdBy: { type: Schema.Types.ObjectId, ref: "User", default: null },
-    updatedBy: { type: Schema.Types.ObjectId, ref: "User", default: null },
+    verifiedEmail: { type: Boolean, default: false },
+    banned: { type: Boolean, default: false },
+    reasonBanned: { type: String, default: null },
+    ...withAuditAndSoftDelete,
   },
   { timestamps: true }
 );
 
-// userSchema.virtual("name").get(function () {
-//   return [this.firstName, this.lastName].filter(Boolean).join(" ");
-// });
+userSchema.pre("save", function (next) {
+  if (this.isModified("handle")) {
+    this._handle = this.handle.toLowerCase();
+  }
+  next();
+});
 
 applyDefaultToJSONTransform(userSchema, {
   isUserModel: true,
-  remove: ["password"],
+  remove: ["password", "_handle", "reasonBanned", "banned", "isDeleted"],
 });
 
 const User: Model<IUser> =
   mongoose.models.User || mongoose.model<IUser>("User", userSchema);
 
-export { User, UserSchema };
+export { User };
