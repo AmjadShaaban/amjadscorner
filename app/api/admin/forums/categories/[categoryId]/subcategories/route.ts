@@ -18,13 +18,15 @@ export const GET = async (
   try {
     await connectToDatabase();
 
-    const subcategories = await Subcategory.find({
-      category: categoryId,
-    }).sort({ createdAt: 1 });
+    const subcategories = await Subcategory.find({ category: categoryId })
+      .sort({ createdAt: 1 })
+      .populate("createdBy", "firstName _id")
+      .populate("updatedBy", "firstName _id")
+      .populate("deletedBy", "firstName _id");
 
     return NextResponse.json(subcategories);
   } catch (error) {
-    console.error("Subcategory fetch error:", error);
+    console.error("Error fetching subcategories:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

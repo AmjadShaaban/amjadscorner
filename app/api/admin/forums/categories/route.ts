@@ -1,6 +1,8 @@
 import { requireRole } from "@/lib/auth/requireRole";
 import { connectToDatabase } from "@/lib/db";
-import { Category, CategorySchema } from "@/models/forums/Category";
+import { CategorySchema } from "@/lib/validators/forums/category";
+import { Category } from "@/models/forums/Category";
+import { Subcategory } from "@/models/forums/Subcategory";
 import { UserRole } from "@/types/roles";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -18,9 +20,31 @@ export const GET = async () => {
       })
       .populate("createdBy", "firstName _id")
       .populate("updatedBy", "firstName _id")
-      .populate("deletedBy", "firstName _id");
+      .populate("deletedBy", "firstName _id")
+      .lean();
 
-    return NextResponse.json(categories);
+    const subcategories = await Subcategory.find()
+      .sort({
+        createdAt: 1,
+      })
+      .populate("createdBy", "firstName _id")
+      .populate("updatedBy", "firstName _id")
+      .populate("deletedBy", "firstName _id")
+      .lean();
+
+    const grouped = subcategories.reduce((acc, sub) => {
+      const key = sub.category.toString();
+      if (!acc[key]) acc[key] = [];
+      acc[key].push(sub);
+      return acc;
+    }, {} as Record<string, typeof subcategories>);
+
+    const categoriesWithSubs = categories.map((cat) => ({
+      ...cat,
+      subcategories: grouped[cat._id.toString()] || [],
+    }));
+
+    return NextResponse.json(categoriesWithSubs);
   } catch (error) {
     console.error("Error fetching categories:", error);
     return NextResponse.json(
