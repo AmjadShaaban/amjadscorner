@@ -1,8 +1,7 @@
-import mongoose, { Schema, Document, Model } from "mongoose";
-import { z } from "zod";
-import { UserRole } from "@/types/roles";
-import { applyDefaultToJSONTransform } from "@/lib/mongoose/toJSONTransform";
 import { withAuditAndSoftDelete } from "@/lib/mongoose/baseSchema";
+import { applyDefaultToJSONTransform } from "@/lib/mongoose/toJSONTransform";
+import { UserRole } from "@/types/roles";
+import mongoose, { Document, Model, Schema } from "mongoose";
 
 type IUser = {
   email: string;
