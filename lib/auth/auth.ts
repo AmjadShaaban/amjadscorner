@@ -3,10 +3,11 @@ import Credentials from "next-auth/providers/credentials";
 // TODO multiple auth strategies
 // import GitHub from "next-auth/providers/github"
 // import Google from "next-auth/providers/google"
-import { User, UserSchema } from "@/models/auth/User";
 import { connectToDatabase } from "@/lib/db";
-import bcrypt from "bcryptjs";
+import { User } from "@/models/auth/User";
 import { UserRole } from "@/types/roles";
+import bcrypt from "bcryptjs";
+import { UserSchema } from "../validators/auth/user";
 export const { auth, handlers, signIn, signOut } = NextAuth({
   providers: [
     Credentials({
