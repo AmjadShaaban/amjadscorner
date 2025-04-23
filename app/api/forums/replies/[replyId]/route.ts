@@ -1,10 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
+import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
-import { connectToDatabase } from "@/lib/db";
 import { auth } from "@/lib/auth/auth";
-import { Reply, ReplySchema } from "@/models/forums/Reply";
+import { connectToDatabase } from "@/lib/db";
+import { ReplySchema } from "@/lib/validators/forums/reply";
+import { Reply } from "@/models/forums/Reply";
 import { UserRole } from "@/types/roles";
 
 export const PUT = async (

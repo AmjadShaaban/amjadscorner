@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth/auth";
 import { connectToDatabase } from "@/lib/db";
-import { Todo, TodoSchema } from "@/models/todo/Todo";
+import { TodoSchema } from "@/lib/validators/todo/todo";
+import { Todo } from "@/models/todo/Todo";
+import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 export const GET = async (req: NextRequest) => {

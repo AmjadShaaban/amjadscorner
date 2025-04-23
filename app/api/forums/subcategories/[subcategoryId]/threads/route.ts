@@ -1,8 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
-import { connectToDatabase } from "@/lib/db";
-import { Thread, ThreadSchema } from "@/models/forums/Thread";
 import { auth } from "@/lib/auth/auth";
+import { connectToDatabase } from "@/lib/db";
+import { ThreadSchema } from "@/lib/validators/forums/thread";
+import { Thread } from "@/models/forums/Thread";
 import mongoose from "mongoose";
+import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 export const GET = async (

@@ -7,12 +7,10 @@ export const GET = async () => {
   try {
     await connectToDatabase();
 
-    // Get all non-deleted categories
     const categories = await Category.find({ isDeleted: false }).sort({
       createdAt: 1,
     });
 
-    // Get all non-deleted subcategories
     const subcategories = await Subcategory.find({ isDeleted: false }).sort({
       createdAt: 1,
     });

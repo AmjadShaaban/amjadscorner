@@ -4,7 +4,8 @@ import { z } from "zod";
 
 import { auth } from "@/lib/auth/auth";
 import { connectToDatabase } from "@/lib/db";
-import { Thread, ThreadSchema } from "@/models/forums/Thread";
+import { ThreadSchema } from "@/lib/validators/forums/thread";
+import { Thread } from "@/models/forums/Thread";
 import { UserRole } from "@/types/roles";
 
 export const GET = async (

@@ -1,11 +1,12 @@
+import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import mongoose from "mongoose";
 
-import { connectToDatabase } from "@/lib/db";
 import { requireRole } from "@/lib/auth/requireRole";
+import { connectToDatabase } from "@/lib/db";
+import { SubcategorySchema } from "@/lib/validators/forums/subcategory";
+import { Subcategory } from "@/models/forums/Subcategory";
 import { UserRole } from "@/types/roles";
-import { Subcategory, SubcategorySchema } from "@/models/forums/Subcategory";
 
 export const GET = async (
   req: NextRequest,

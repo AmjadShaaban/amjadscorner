@@ -1,6 +1,7 @@
 import { requireRole } from "@/lib/auth/requireRole";
 import { connectToDatabase } from "@/lib/db";
-import { Thread, ThreadSchema } from "@/models/forums/Thread";
+import { ThreadSchema } from "@/lib/validators/forums/thread";
+import { Thread } from "@/models/forums/Thread";
 import { UserRole } from "@/types/roles";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";

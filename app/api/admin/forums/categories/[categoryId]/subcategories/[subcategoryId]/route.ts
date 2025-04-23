@@ -1,11 +1,11 @@
+import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import mongoose from "mongoose";
 
-import { connectToDatabase } from "@/lib/db";
 import { requireRole } from "@/lib/auth/requireRole";
-import { UserRole } from "@/types/roles";
+import { connectToDatabase } from "@/lib/db";
 import { Subcategory } from "@/models/forums/Subcategory";
+import { UserRole } from "@/types/roles";
 
 export const PUT = async (
   req: NextRequest,

@@ -20,8 +20,7 @@ export const GET = async () => {
       })
       .populate("createdBy", "firstName _id")
       .populate("updatedBy", "firstName _id")
-      .populate("deletedBy", "firstName _id")
-      .lean();
+      .populate("deletedBy", "firstName _id");
 
     const subcategories = await Subcategory.find()
       .sort({
@@ -29,8 +28,7 @@ export const GET = async () => {
       })
       .populate("createdBy", "firstName _id")
       .populate("updatedBy", "firstName _id")
-      .populate("deletedBy", "firstName _id")
-      .lean();
+      .populate("deletedBy", "firstName _id");
 
     const grouped = subcategories.reduce((acc, sub) => {
       const key = sub.category.toString();

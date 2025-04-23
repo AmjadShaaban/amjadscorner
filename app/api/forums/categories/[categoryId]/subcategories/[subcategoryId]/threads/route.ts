@@ -4,7 +4,8 @@ import { z } from "zod";
 
 import { auth } from "@/lib/auth/auth";
 import { connectToDatabase } from "@/lib/db";
-import { Thread, ThreadSchema } from "@/models/forums/Thread";
+import { ThreadSchema } from "@/lib/validators/forums/thread";
+import { Thread } from "@/models/forums/Thread";
 
 export const GET = async (
   _req: NextRequest,
@@ -47,7 +48,6 @@ export const POST = async (
     await connectToDatabase();
     const data = await req.json();
 
-    // Validate thread content
     const parsed = ThreadSchema.parse(data);
 
     const thread = new Thread({
