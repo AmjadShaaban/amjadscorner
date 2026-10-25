@@ -19,11 +19,13 @@ Calendly-style appointment booking.
 - Confirmation and cancellation/reschedule via emailed links (Resend free tier); `.ics` calendar attachments.
 - Dogfooded: the homepage's "book a call with me" uses it.
 
-### 3. Collab Board — `/board`
-Multiplayer kanban.
-- Boards → columns → cards; drag and drop with optimistic updates.
-- Live cursors, presence avatars, realtime card sync (Liveblocks free tier).
-- Guest boards auto-expire; signed-in users keep theirs.
+### 3. Board — `/board`
+Kanban for individuals and small teams (no realtime in v2; see Decisions).
+- Boards → columns → cards. Cards ordered by fractional-index keys, so a move writes one row; the server computes keys under a per-board advisory lock.
+- Drag and drop with mouse, touch and keyboard (Space/arrows), with screen-reader announcements.
+- Optimistic UI with rollback, "Saving… / All changes saved" status, ⌘Z to undo moves, Undo toast for deletes (soft delete).
+- Sharing via invite links (editor/viewer), members and link management for the owner; collaborators' changes appear on tab focus.
+- Card edits use optimistic concurrency (version number): a stale save is rejected and shows the other person's version.
 
 ### 4. Expense Tracker — `/expenses`
 Track spending, optionally from a receipt photo.
@@ -39,7 +41,7 @@ Track spending, optionally from a receipt photo.
 | UI | Tailwind CSS + shadcn/ui, Motion for animation |
 | DB | Postgres — Docker locally, Neon (free tier) in production; Drizzle ORM |
 | Auth | Better Auth — GitHub/Google OAuth + anonymous guest sessions |
-| Realtime | Liveblocks (free tier) for presence/cursors; Postgres is source of truth for board data |
+| Drag and drop | dnd-kit (core + sortable) |
 | OCR | Tesseract.js, client-side only |
 | File storage | Vercel Blob (free tier) for receipt images |
 | Email | Resend (free tier) |
@@ -49,7 +51,7 @@ Track spending, optionally from a receipt photo.
 
 ## Local development
 - `npm run db:up` runs Postgres (`pgvector/pgvector` image — fine as plain Postgres; pgvector is enabled but currently unused).
-- External keys needed locally: Liveblocks (free). Blob and Resend can be stubbed in dev.
+- No external keys are needed locally. Blob, Resend and OAuth are optional and stubbed when unset.
 - Neon is only needed when we first deploy to Vercel.
 
 ## Audience
@@ -70,10 +72,11 @@ The site serves three goals at once, so each app is built to product quality, no
 2. ✅ App shell: shadcn/ui, layout/nav, theme toggle, CI. (Vercel preview pending env vars.)
 3. ✅ Scheduler. Remaining: reschedule in one step (today it's cancel + rebook), guest data cleanup, homepage book-a-call.
 4. ✅ Expense Tracker. Remaining: currency other than USD, cleanup of orphaned receipt files when guests expire.
-5. Collab Board (adds realtime).
+5. ✅ Board. Remaining: drag to reorder columns (menu-based today), card due dates/labels.
 6. Portfolio homepage, "How it's built" panels, cut over `main` and the domain.
 
 ## Decisions
 - No paid AI APIs (cost). Client-side models are allowed where they add real value.
 - Docs Q&A dropped; replaced by the Scheduler (chosen over a todo app as more distinctive and business-relevant).
-- Realtime: Liveblocks (chosen over self-hosted Yjs/PartyKit for speed to ship).
+- Board ships without realtime in v2: Vercel can't hold WebSockets, and a SaaS (Liveblocks) would be the weak point of the demo. A later version can add live sync on Cloudflare Durable Objects without changing the data model.
+- Known gap: the header hides app links below the `sm` breakpoint; add a mobile nav in the polish phase.

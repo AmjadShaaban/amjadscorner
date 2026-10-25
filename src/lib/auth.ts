@@ -2,6 +2,7 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
 import { anonymous } from "better-auth/plugins";
+import { moveBoardData } from "@/app/(apps)/board/_lib/guest-migration";
 import { moveExpenseData } from "@/app/(apps)/expenses/_lib/guest-migration";
 import { moveSchedulerData } from "@/app/(apps)/schedule/_lib/guest-migration";
 import { db } from "@/db";
@@ -35,6 +36,7 @@ export const auth = betterAuth({
       onLinkAccount: async ({ anonymousUser, newUser }) => {
         await moveSchedulerData(anonymousUser.user.id, newUser.user.id);
         await moveExpenseData(anonymousUser.user.id, newUser.user.id);
+        await moveBoardData(anonymousUser.user.id, newUser.user.id);
       },
     }),
     nextCookies(), // must stay last

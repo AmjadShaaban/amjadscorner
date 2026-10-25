@@ -41,6 +41,7 @@ Portfolio of four product-quality apps that must run at zero cost (free tiers on
 - Scheduler: host UI under `/schedule`, public booking pages under `/meet/[handle]` (short links). Both use code from `src/app/(apps)/schedule/_lib`. Only `_actions/` files are `"use server"`; shared server logic (emails, cancellation) lives in `_lib/` so it isn't exposed as an endpoint.
 - Emails go through `src/lib/email.ts`; without `RESEND_API_KEY` they're logged to the server console.
 - Files go through `src/lib/storage.ts` (private Vercel Blob, or `.data/uploads` locally). Never serve storage URLs directly; stream through a route that checks ownership (see `expenses/receipts/[id]`). Identify uploads with `sniffImage`, not the client's MIME type.
+- Board: order with `byPosition()` (COLLATE "C") and compute keys with `positionBetween()` server-side inside `lockBoard()`; never trust a client-sent key. Access is checked by `requireAccess(boardId, minRole)` in every action. Pure client state helpers live in `_lib/board-state.ts` (tested).
 - Expenses: OCR is Tesseract.js in the browser (`receipt-image.ts`, model loaded from the jsDelivr CDN on first scan); `receipt-parser.ts` turns its text into fields and is unit-tested. Charts are hand-built HTML/CSS following the dataviz skill; colors are the `--viz-*` tokens in `globals.css`.
 
 ## Workflow

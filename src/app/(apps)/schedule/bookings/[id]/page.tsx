@@ -12,7 +12,7 @@ import { schedulerBooking, schedulerEventType, schedulerProfile } from "@/db/sch
 import { getSession } from "@/lib/session";
 import { CancelBookingButton } from "../../_components/cancel-booking-button";
 import { formatRange } from "../../_lib/format";
-import { tokenMatches } from "../../_lib/tokens";
+import { tokenMatches } from "@/lib/tokens";
 
 // The URL carries the invitee's manage token; don't leak it to other sites via Referer.
 export const metadata: Metadata = { title: "Your booking", referrer: "no-referrer", robots: { index: false } };

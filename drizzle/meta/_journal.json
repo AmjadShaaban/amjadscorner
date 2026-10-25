@@ -36,6 +36,13 @@
       "when": 1792942649888,
       "tag": "0004_expenses",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1792949391182,
+      "tag": "0005_board",
+      "breakpoints": true
     }
   ]
 }

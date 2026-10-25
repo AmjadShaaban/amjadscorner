@@ -7,7 +7,7 @@ import { schedulerBooking, schedulerEventType, schedulerProfile } from "@/db/sch
 import { getSlots } from "../_lib/data";
 import { cancelBookingAndNotify, sendConfirmationEmails } from "../_lib/notify";
 import { bookingSchema, invalid, type FormState } from "../_lib/schemas";
-import { newManageToken, tokenMatches } from "../_lib/tokens";
+import { newSecretToken, tokenMatches } from "@/lib/tokens";
 
 // Per host, an email address can hold at most this many upcoming bookings (spam guard).
 const MAX_UPCOMING_PER_INVITEE = 3;
@@ -55,7 +55,7 @@ export async function createBooking(_prev: FormState, formData: FormData): Promi
   }
 
   const end = new Date(start.getTime() + eventType.durationMinutes * 60_000);
-  const { token, hash } = newManageToken();
+  const { token, hash } = newSecretToken();
   let bookingId: string;
   try {
     // The exclusion constraint is the real guard against double booking: two requests

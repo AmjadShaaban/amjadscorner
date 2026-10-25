@@ -1,7 +1,7 @@
 import "server-only";
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
 
-export function newManageToken() {
+export function newSecretToken() {
   const token = randomBytes(32).toString("base64url");
   return { token, hash: hashToken(token) };
 }
