@@ -48,7 +48,8 @@ test("add, edit and delete an expense by hand", async ({ page }) => {
   await expect(page.getByRole("link", { name: merchant })).toHaveCount(0);
 
   // Next keeps the earlier "Add expense" page mounted; it must not show the old draft.
-  await page.getByRole("link", { name: "Add expense" }).click();
+  // With no expenses left the empty state adds a second "Add expense"; use the header one.
+  await page.getByRole("link", { name: "Add expense" }).first().click();
   await expect(page.getByRole("textbox", { name: "Merchant" })).toHaveValue("");
 });
 
