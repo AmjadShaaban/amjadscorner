@@ -1,13 +1,13 @@
 # Amjad's Corner v2
 
-Portfolio of four AI-native apps. Full spec: `docs/spec.md` — read it before starting any feature.
+Portfolio of four product-quality apps that must run at zero cost (free tiers only, no paid AI APIs). Full spec: `docs/spec.md` — read it before starting any feature.
 
 ## Conventions
 - TypeScript strict; no `any`. Zod schemas are the single source of truth for shapes (forms, server actions, AI tools).
 - Prefer Server Components and Server Actions; add route handlers only for streaming, webhooks, or external callers.
 - DB access only through Drizzle in `src/db/`; schema in `src/db/schema/`, one file per app.
 - Each app lives under `src/app/(apps)/<app>/` with its own `_components/`, `_actions/`, `_lib/`.
-- Every AI call goes through `src/lib/ai/` (rate limit, usage logging, budget check). Never call a provider SDK directly from a feature.
+- Never add a dependency or service that charges per request. Heavy work (e.g. OCR) runs client-side.
 - UI: shadcn/ui components in `src/components/ui/`; don't hand-roll primitives that shadcn provides.
 - Guest users are real (anonymous) users — never branch on "logged in" for data ownership, only for upgrade prompts.
 
