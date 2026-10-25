@@ -20,6 +20,10 @@ Portfolio of four product-quality apps that must run at zero cost (free tiers on
 - Reading the current time in a Server Component: `await connection()` first, then `new Date()` (lint rejects `Date.now()` in render).
 - Never render browser-dependent values (time zone, `Intl.supportedValuesOf`, locale formatting) during SSR; use `useBrowserTimeZone()` (`null` on the server) to defer them, or hydration fails.
 - React 19 resets uncontrolled form fields after a form action completes; use `defaultValue` from server data for edit forms.
+- **Visited pages stay mounted but hidden** (React `<Activity>`, see `docs/01-app/02-guides/preserving-ui-state.md`). Consequences:
+  - Never use static DOM `id`s (useId isn't safe either): label controls with `FormField` (`src/components/form-field.tsx`), which nests the control inside its `<label>`.
+  - "Create" forms must reset when hidden (see `ExpenseForm`'s `useLayoutEffect` cleanup); key edit forms by `updatedAt` so they remount with fresh data.
+  - In Playwright, query with `getByRole` (visible only); `getByLabel`/`locator` can hit a hidden page's element.
 
 ## Auth & DB
 - Better Auth (`src/lib/auth.ts`) with the anonymous plugin for guests. Its tables are hand-written in `src/db/schema/auth.ts` (the Better Auth CLI is stale); when adding an auth plugin, add its fields there and generate a migration.
@@ -31,11 +35,13 @@ Portfolio of four product-quality apps that must run at zero cost (free tiers on
 - `npm run db:up` — start local Postgres + pgvector (Docker)
 - `npm run dev` / `npm run build`
 - `npm run lint && npm run typecheck && npm test`
-- `npm run build && npm run test:e2e` — Playwright against the production build (starts `next start` itself)
+- `npm run build && npm run test:e2e` — Playwright against the production build on port 3100 (starts `next start` itself, so a dev server on :3000 is unaffected)
 
 ## App layout notes
 - Scheduler: host UI under `/schedule`, public booking pages under `/meet/[handle]` (short links). Both use code from `src/app/(apps)/schedule/_lib`. Only `_actions/` files are `"use server"`; shared server logic (emails, cancellation) lives in `_lib/` so it isn't exposed as an endpoint.
 - Emails go through `src/lib/email.ts`; without `RESEND_API_KEY` they're logged to the server console.
+- Files go through `src/lib/storage.ts` (private Vercel Blob, or `.data/uploads` locally). Never serve storage URLs directly; stream through a route that checks ownership (see `expenses/receipts/[id]`). Identify uploads with `sniffImage`, not the client's MIME type.
+- Expenses: OCR is Tesseract.js in the browser (`receipt-image.ts`, model loaded from the jsDelivr CDN on first scan); `receipt-parser.ts` turns its text into fields and is unit-tested. Charts are hand-built HTML/CSS following the dataviz skill; colors are the `--viz-*` tokens in `globals.css`.
 
 ## Workflow
 - Build in vertical slices; each slice ships with tests (Vitest for logic, Playwright for the happy path).

@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { createBooking } from "../_actions/booking";
 import type { FormState } from "../_lib/schemas";
-import { Field, nativeSelectClass } from "./field";
+import { FormField, nativeSelectClass } from "@/components/form-field";
 import { useBrowserTimeZone, zoneOptions } from "./use-time-zone";
 
 type Props = { eventTypeId: string; slots: string[] };
@@ -67,15 +67,15 @@ function BookingWidgetInner({ eventTypeId, slots, initialTimeZone }: Props & { i
         <input type="hidden" name="eventTypeId" value={eventTypeId} />
         <input type="hidden" name="start" value={slot} />
         <input type="hidden" name="timeZone" value={timeZone} />
-        <Field id="name" label="Name" errors={state.fieldErrors?.name}>
-          <Input id="name" name="name" required maxLength={100} autoComplete="name" />
-        </Field>
-        <Field id="email" label="Email" errors={state.fieldErrors?.email}>
-          <Input id="email" name="email" type="email" required maxLength={200} autoComplete="email" />
-        </Field>
-        <Field id="notes" label="Anything to share beforehand?" errors={state.fieldErrors?.notes}>
-          <Textarea id="notes" name="notes" rows={3} maxLength={1000} />
-        </Field>
+        <FormField label="Name" error={state.fieldErrors?.name?.[0]}>
+          <Input name="name" required maxLength={100} autoComplete="name" />
+        </FormField>
+        <FormField label="Email" error={state.fieldErrors?.email?.[0]}>
+          <Input name="email" type="email" required maxLength={200} autoComplete="email" />
+        </FormField>
+        <FormField label="Anything to share beforehand?" error={state.fieldErrors?.notes?.[0]}>
+          <Textarea name="notes" rows={3} maxLength={1000} />
+        </FormField>
         {state.message && !state.ok && <p className="text-sm text-destructive">{state.message}</p>}
         <div>
           <Button type="submit" disabled={pending}>

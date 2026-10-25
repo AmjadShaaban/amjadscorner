@@ -29,6 +29,13 @@
       "when": 1792941383613,
       "tag": "0003_scheduler_no_overlap",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792942649888,
+      "tag": "0004_expenses",
+      "breakpoints": true
     }
   ]
 }

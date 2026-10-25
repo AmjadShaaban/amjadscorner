@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { saveProfile } from "../_actions/host";
 import type { FormState } from "../_lib/schemas";
-import { Field, nativeSelectClass } from "./field";
+import { FormField, nativeSelectClass } from "@/components/form-field";
 import { useBrowserTimeZone, zoneOptions } from "./use-time-zone";
 import { useFormToast } from "./use-form-toast";
 
@@ -20,20 +20,18 @@ export function ProfileForm({ profile }: Props) {
 
   return (
     <form action={action} className="grid gap-4 sm:grid-cols-2">
-      <Field id="displayName" label="Your name" errors={state.fieldErrors?.displayName}>
-        <Input id="displayName" name="displayName" defaultValue={profile?.displayName} required maxLength={60} />
-      </Field>
-      <Field
-        id="handle"
-        label="Booking link"
+      <FormField label="Your name" error={state.fieldErrors?.displayName?.[0]}>
+        <Input name="displayName" defaultValue={profile?.displayName} required maxLength={60} />
+      </FormField>
+      <FormField label="Booking link"
         hint="amjadscorner.us/meet/your-handle"
-        errors={state.fieldErrors?.handle}
+        error={state.fieldErrors?.handle?.[0]}
       >
-        <Input id="handle" name="handle" defaultValue={profile?.handle} required pattern="[a-zA-Z0-9\-]{3,40}" />
-      </Field>
-      <Field id="timeZone" label="Time zone" errors={state.fieldErrors?.timeZone}>
+        <Input name="handle" defaultValue={profile?.handle} required pattern="[a-zA-Z0-9\-]{3,40}" />
+      </FormField>
+      <FormField label="Time zone" error={state.fieldErrors?.timeZone?.[0]}>
         {browserTz ? (
-          <select id="timeZone" name="timeZone" defaultValue={timeZone} className={nativeSelectClass}>
+          <select name="timeZone" defaultValue={timeZone} className={nativeSelectClass}>
             {zoneOptions(timeZone).map((z) => (
               <option key={z} value={z}>
                 {z.replaceAll("_", " ")}
@@ -41,11 +39,11 @@ export function ProfileForm({ profile }: Props) {
             ))}
           </select>
         ) : (
-          <select id="timeZone" disabled className={nativeSelectClass}>
+          <select disabled className={nativeSelectClass}>
             <option>{profile ? timeZone.replaceAll("_", " ") : "Detecting…"}</option>
           </select>
         )}
-      </Field>
+      </FormField>
       <div className="flex items-end">
         <Button type="submit" disabled={pending}>
           {pending ? "Saving…" : profile ? "Save profile" : "Create my booking page"}

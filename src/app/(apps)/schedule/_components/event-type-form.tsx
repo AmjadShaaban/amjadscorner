@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createEventType } from "../_actions/host";
 import type { FormState } from "../_lib/schemas";
-import { Field, nativeSelectClass } from "./field";
+import { FormField, nativeSelectClass } from "@/components/form-field";
 import { useFormToast } from "./use-form-toast";
 
 const durations = [15, 30, 45, 60, 90, 120];
@@ -29,54 +29,54 @@ export function EventTypeForm() {
 
   return (
     <form ref={formRef} action={action} className="grid gap-4 sm:grid-cols-2">
-      <Field id="title" label="Title" errors={errors.title}>
-        <Input id="title" name="title" placeholder="Intro call" required maxLength={80} />
-      </Field>
-      <Field id="slug" label="URL" hint="Lowercase letters, numbers and dashes" errors={errors.slug}>
-        <Input id="slug" name="slug" placeholder="intro-call" required />
-      </Field>
-      <Field id="durationMinutes" label="Duration" errors={errors.durationMinutes}>
-        <select id="durationMinutes" name="durationMinutes" defaultValue={30} className={nativeSelectClass}>
+      <FormField label="Title" error={errors.title?.[0]}>
+        <Input name="title" placeholder="Intro call" required maxLength={80} />
+      </FormField>
+      <FormField label="URL" hint="Lowercase letters, numbers and dashes" error={errors.slug?.[0]}>
+        <Input name="slug" placeholder="intro-call" required />
+      </FormField>
+      <FormField label="Duration" error={errors.durationMinutes?.[0]}>
+        <select name="durationMinutes" defaultValue={30} className={nativeSelectClass}>
           {durations.map((d) => (
             <option key={d} value={d}>
               {d} minutes
             </option>
           ))}
         </select>
-      </Field>
-      <Field id="bufferMinutes" label="Buffer after" errors={errors.bufferMinutes}>
-        <select id="bufferMinutes" name="bufferMinutes" defaultValue={0} className={nativeSelectClass}>
+      </FormField>
+      <FormField label="Buffer after" error={errors.bufferMinutes?.[0]}>
+        <select name="bufferMinutes" defaultValue={0} className={nativeSelectClass}>
           {[0, 5, 10, 15, 30].map((d) => (
             <option key={d} value={d}>
               {d ? `${d} minutes` : "None"}
             </option>
           ))}
         </select>
-      </Field>
-      <Field id="minNoticeMinutes" label="Minimum notice" errors={errors.minNoticeMinutes}>
-        <select id="minNoticeMinutes" name="minNoticeMinutes" defaultValue={240} className={nativeSelectClass}>
+      </FormField>
+      <FormField label="Minimum notice" error={errors.minNoticeMinutes?.[0]}>
+        <select name="minNoticeMinutes" defaultValue={240} className={nativeSelectClass}>
           {notice.map((n) => (
             <option key={n.value} value={n.value}>
               {n.label}
             </option>
           ))}
         </select>
-      </Field>
-      <Field id="maxDaysAhead" label="Bookable up to" errors={errors.maxDaysAhead}>
-        <select id="maxDaysAhead" name="maxDaysAhead" defaultValue={30} className={nativeSelectClass}>
+      </FormField>
+      <FormField label="Bookable up to" error={errors.maxDaysAhead?.[0]}>
+        <select name="maxDaysAhead" defaultValue={30} className={nativeSelectClass}>
           {[7, 14, 30, 60].map((d) => (
             <option key={d} value={d}>
               {d} days ahead
             </option>
           ))}
         </select>
-      </Field>
-      <Field id="location" label="Location" hint="A video link, phone number or address" errors={errors.location}>
-        <Input id="location" name="location" placeholder="Google Meet" maxLength={200} />
-      </Field>
-      <Field id="description" label="Description" errors={errors.description}>
-        <Textarea id="description" name="description" rows={2} maxLength={500} />
-      </Field>
+      </FormField>
+      <FormField label="Location" hint="A video link, phone number or address" error={errors.location?.[0]}>
+        <Input name="location" placeholder="Google Meet" maxLength={200} />
+      </FormField>
+      <FormField label="Description" error={errors.description?.[0]}>
+        <Textarea name="description" rows={2} maxLength={500} />
+      </FormField>
       <div className="sm:col-span-2">
         <Button type="submit" disabled={pending}>
           {pending ? "Creating…" : "Create event type"}

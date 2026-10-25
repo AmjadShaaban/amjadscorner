@@ -14,6 +14,7 @@ export const envSchema = z.object({
   GOOGLE_CLIENT_ID: optional,
   GOOGLE_CLIENT_SECRET: optional,
   RESEND_API_KEY: optional,
+  BLOB_READ_WRITE_TOKEN: optional,
   EMAIL_FROM: optional.transform((v) => v ?? "Amjad's Corner <onboarding@resend.dev>"),
 });
 

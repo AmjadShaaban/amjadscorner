@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { addDateOverride, removeDateOverride } from "../_actions/host";
 import type { FormState } from "../_lib/schemas";
-import { Field } from "./field";
+import { FormField } from "@/components/form-field";
 import { useFormToast } from "./use-form-toast";
 
 export function DateOverrideForm({ minDate }: { minDate: string }) {
@@ -17,9 +17,9 @@ export function DateOverrideForm({ minDate }: { minDate: string }) {
   return (
     <form action={action} className="flex flex-wrap items-end gap-3">
       <input type="hidden" name="kind" value={kind} />
-      <Field id="override-date" label="Date" errors={state.fieldErrors?.date}>
-        <Input id="override-date" type="date" name="date" min={minDate} required className="w-40" />
-      </Field>
+      <FormField label="Date" error={state.fieldErrors?.date?.[0]}>
+        <Input type="date" name="date" min={minDate} required className="w-40" />
+      </FormField>
       <div className="flex gap-1 rounded-lg border p-0.5" role="radiogroup" aria-label="Override type">
         {(["unavailable", "hours"] as const).map((k) => (
           <Button
@@ -37,12 +37,12 @@ export function DateOverrideForm({ minDate }: { minDate: string }) {
       </div>
       {kind === "hours" && (
         <>
-          <Field id="override-start" label="From" errors={state.fieldErrors?.start}>
-            <Input id="override-start" type="time" name="start" step={900} defaultValue="09:00" className="w-32" />
-          </Field>
-          <Field id="override-end" label="To" errors={state.fieldErrors?.end}>
-            <Input id="override-end" type="time" name="end" step={900} defaultValue="12:00" className="w-32" />
-          </Field>
+          <FormField label="From" error={state.fieldErrors?.start?.[0]}>
+            <Input type="time" name="start" step={900} defaultValue="09:00" className="w-32" />
+          </FormField>
+          <FormField label="To" error={state.fieldErrors?.end?.[0]}>
+            <Input type="time" name="end" step={900} defaultValue="12:00" className="w-32" />
+          </FormField>
         </>
       )}
       <Button type="submit" disabled={pending}>
