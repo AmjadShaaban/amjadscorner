@@ -1,7 +1,7 @@
 import "server-only";
-import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, readdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { del, get, put } from "@vercel/blob";
+import { del, get, list, put } from "@vercel/blob";
 import { env } from "@/lib/env";
 
 // Private file storage. Uses Vercel Blob (private access) when BLOB_READ_WRITE_TOKEN is
@@ -52,6 +52,30 @@ export async function deleteFile(key: string) {
     return;
   }
   await rm(localPath(key), { force: true });
+}
+
+/** Every stored file under `prefix`, with its upload time (for orphan sweeps). */
+export async function listFiles(prefix: string): Promise<{ key: string; uploadedAt: Date }[]> {
+  if (blobEnabled()) {
+    const files: { key: string; uploadedAt: Date }[] = [];
+    let cursor: string | undefined;
+    do {
+      const page = await list({ prefix, cursor, limit: 1000 });
+      files.push(...page.blobs.map((b) => ({ key: b.pathname, uploadedAt: b.uploadedAt })));
+      cursor = page.hasMore ? page.cursor : undefined;
+    } while (cursor);
+    return files;
+  }
+  const root = localPath(prefix.replace(/\/$/, "") || ".");
+  const entries = await readdir(root, { recursive: true, withFileTypes: true }).catch(() => []);
+  return Promise.all(
+    entries
+      .filter((e) => e.isFile())
+      .map(async (e) => {
+        const full = path.join(e.parentPath, e.name);
+        return { key: path.relative(LOCAL_ROOT, full).split(path.sep).join("/"), uploadedAt: (await stat(full)).mtime };
+      }),
+  );
 }
 
 function contentTypeFor(key: string) {

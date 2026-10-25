@@ -61,7 +61,7 @@ The site serves three goals at once, so each app is built to product quality, no
 - **Founder track**: any app can grow into a product. Keep each app's boundaries clean (own schema, own routes) so it can later be spun out, and track basic usage to see which one gets traction.
 
 ## Cross-cutting requirements
-- **Guest mode everywhere**: anonymous session on first visit, upgradeable to a real account without losing data.
+- **Guest mode everywhere**: anonymous session on first visit, upgradeable to a real account without losing data. Guests whose sessions have expired are deleted daily with their data and files; boards shared with real users pass to one of them.
 - **Zero running cost**: stay inside free tiers; anything heavy (OCR) runs in the browser. Abuse limits on writes (Better Auth rate limiting for auth; per-user caps on boards/expenses/uploads).
 - **Usage tracking**: lightweight first-party event table (app opened, item created) with a small admin page.
 - **Accessibility & perf**: keyboard navigable, Lighthouse ≥ 90, dark/light theme.
@@ -73,7 +73,7 @@ The site serves three goals at once, so each app is built to product quality, no
 3. ✅ Scheduler. Remaining: reschedule in one step (today it's cancel + rebook), guest data cleanup, homepage book-a-call.
 4. ✅ Expense Tracker. Remaining: currency other than USD, cleanup of orphaned receipt files when guests expire.
 5. ✅ Board. Remaining: drag to reorder columns (menu-based today), card due dates/labels.
-6. Portfolio homepage ✅, "How it's built" pages ✅, ⌘K palette ✅, mobile nav ✅. Remaining: owner's bio/links (TODOs in `src/content/profile.ts`), guest data cleanup, deploy and cut over `main` and the domain.
+6. Portfolio homepage ✅, "How it's built" pages ✅, ⌘K palette ✅, mobile nav ✅. Guest cleanup ✅ (daily cron). Remaining: owner's bio/links (TODOs in `src/content/profile.ts`), deploy and cut over `main` and the domain.
 
 ## Decisions
 - No paid AI APIs (cost). Client-side models are allowed where they add real value.

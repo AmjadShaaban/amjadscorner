@@ -17,6 +17,6 @@ export default defineConfig({
     command: `npx next start -p ${PORT}`,
     url: baseURL,
     reuseExistingServer: false,
-    env: { BETTER_AUTH_URL: baseURL },
+    env: { BETTER_AUTH_URL: baseURL, CRON_SECRET: "e2e-cron-secret" },
   },
 });
