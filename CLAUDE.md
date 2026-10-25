@@ -8,7 +8,8 @@ Portfolio of four product-quality apps that must run at zero cost (free tiers on
 - DB access only through Drizzle in `src/db/`; schema in `src/db/schema/`, one file per app.
 - Each app lives under `src/app/(apps)/<app>/` with its own `_components/`, `_actions/`, `_lib/`.
 - Never add a dependency or service that charges per request. Heavy work (e.g. OCR) runs client-side.
-- UI: shadcn/ui components in `src/components/ui/`; don't hand-roll primitives that shadcn provides.
+- UI: shadcn/ui components in `src/components/ui/` (add with `npx shadcn@latest add <name>`); don't hand-roll primitives that shadcn provides. The preset is `base-nova`, built on **Base UI, not Radix**: compose with the `render` prop (`<DropdownMenuTrigger render={<Button />}>`), not `asChild`. Read the generated component before using it.
+- Site chrome lives in `src/components/shell/`; the app list for nav and the homepage is `src/components/shell/nav.ts`.
 - Guest users are real (anonymous) users — never branch on "logged in" for data ownership, only for upgrade prompts.
 
 ## Next.js 16 gotchas
