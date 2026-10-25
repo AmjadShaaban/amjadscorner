@@ -17,6 +17,7 @@ Portfolio of four product-quality apps that must run at zero cost (free tiers on
 - `cacheComponents` is on. Anything reading `headers()`/`cookies()` (including `getSession()` in `src/lib/session.ts`) must render inside a `<Suspense>` boundary, and never be awaited at the top of a layout. Guide: `docs/01-app/02-guides/authentication-with-cache-components.md`.
 - `npm run typecheck` runs `next typegen` first (for globals like `LayoutProps`).
 - Client hooks that read the URL (`usePathname`, `useSearchParams`) are dynamic on param routes and also need `<Suspense>` (see `NavLinks` and its static fallback).
+- `notFound()` after streaming starts can't change the status (stays 200, Next adds `noindex`). The root layout streams, so pages effectively always do this; that's accepted. Use a Proxy only if a real 404 status is ever required.
 - Reading the current time in a Server Component: `await connection()` first, then `new Date()` (lint rejects `Date.now()` in render).
 - Never render browser-dependent values (time zone, `Intl.supportedValuesOf`, locale formatting) during SSR; use `useBrowserTimeZone()` (`null` on the server) to defer them, or hydration fails.
 - React 19 resets uncontrolled form fields after a form action completes; use `defaultValue` from server data for edit forms.
@@ -42,6 +43,7 @@ Portfolio of four product-quality apps that must run at zero cost (free tiers on
 - Emails go through `src/lib/email.ts`; without `RESEND_API_KEY` they're logged to the server console.
 - Files go through `src/lib/storage.ts` (private Vercel Blob, or `.data/uploads` locally). Never serve storage URLs directly; stream through a route that checks ownership (see `expenses/receipts/[id]`). Identify uploads with `sniffImage`, not the client's MIME type.
 - Board: order with `byPosition()` (COLLATE "C") and compute keys with `positionBetween()` server-side inside `lockBoard()`; never trust a client-sent key. Access is checked by `requireAccess(boardId, minRole)` in every action. Pure client state helpers live in `_lib/board-state.ts` (tested).
+- Homepage and "How it's built" content: `src/content/profile.ts` (personal details, has TODOs for the owner) and `src/content/apps.ts` (every claim must match the code). Showcase images come from `npm run screenshots` (after `npm run build`) into `src/content/screens/` and are imported statically for hashed URLs.
 - Expenses: OCR is Tesseract.js in the browser (`receipt-image.ts`, model loaded from the jsDelivr CDN on first scan); `receipt-parser.ts` turns its text into fields and is unit-tested. Charts are hand-built HTML/CSS following the dataviz skill; colors are the `--viz-*` tokens in `globals.css`.
 
 ## Workflow

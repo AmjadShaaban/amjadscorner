@@ -130,14 +130,18 @@ export function BoardView({ boardId, columns, canEdit }: { boardId: string; colu
   // The default sortable keyboard handling only moves within one list. Left/Right jump to
   // the neighbouring column instead (as in dnd-kit's multi-container example).
   const keyboardCoordinates = useCallback<KeyboardCoordinateGetter>((event, args) => {
-    const { active, droppableRects, collisionRect } = args.context;
+    const { active, droppableRects, droppableContainers, collisionRect } = args.context;
     if ((event.code === "ArrowLeft" || event.code === "ArrowRight") && active && collisionRect) {
       event.preventDefault();
       const columns = viewRef.current;
       const current = locate(columns, String(active.id));
       const i = columns.findIndex((c) => c.id === current?.columnId);
       const target = columns[i + (event.code === "ArrowRight" ? 1 : -1)];
-      const rect = target && droppableRects.get(target.id);
+      // dnd-kit measures droppables asynchronously after pickup; if an arrow key comes
+      // first, measure the target column directly instead of ignoring the key.
+      const rect =
+        target &&
+        (droppableRects.get(target.id) ?? droppableContainers.get(target.id)?.node.current?.getBoundingClientRect());
       if (!rect) return undefined;
       return { x: rect.left + (rect.width - collisionRect.width) / 2, y: rect.top };
     }

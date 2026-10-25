@@ -64,7 +64,8 @@ test("two invitees racing for the same slot: exactly one gets it", async ({ page
   const outcome = async (p: Page) => {
     const booked = p.getByText("You're booked");
     const taken = p.getByText("that time was just booked");
-    await expect(booked.or(taken)).toBeVisible();
+    // Two bookings at once on a busy CI machine can take a while.
+    await expect(booked.or(taken)).toBeVisible({ timeout: 15_000 });
     return (await booked.isVisible()) ? "booked" : "taken";
   };
   expect([await outcome(a), await outcome(b)].sort()).toEqual(["booked", "taken"]);

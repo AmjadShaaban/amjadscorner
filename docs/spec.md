@@ -7,7 +7,7 @@ A portfolio that proves capability by shipping real, product-quality apps on one
 ### 1. Portfolio — `/` (homepage)
 An interactive portfolio rather than a static bio.
 - Project showcase with live previews of the other apps and their "How it's built" write-ups.
-- Content (bio, resume, projects) authored as MDX in `content/`.
+- Content as typed TS modules in `src/content/` (simpler than MDX; write-ups are structured sections).
 - Three paths by visitor intent: "Hiring" (resume, skills, code samples), "Need something built" (book a call via the Scheduler), "Just exploring" (jump into the apps).
 - Command palette (⌘K) for navigation.
 
@@ -73,10 +73,9 @@ The site serves three goals at once, so each app is built to product quality, no
 3. ✅ Scheduler. Remaining: reschedule in one step (today it's cancel + rebook), guest data cleanup, homepage book-a-call.
 4. ✅ Expense Tracker. Remaining: currency other than USD, cleanup of orphaned receipt files when guests expire.
 5. ✅ Board. Remaining: drag to reorder columns (menu-based today), card due dates/labels.
-6. Portfolio homepage, "How it's built" panels, cut over `main` and the domain.
+6. Portfolio homepage ✅, "How it's built" pages ✅, ⌘K palette ✅, mobile nav ✅. Remaining: owner's bio/links (TODOs in `src/content/profile.ts`), guest data cleanup, deploy and cut over `main` and the domain.
 
 ## Decisions
 - No paid AI APIs (cost). Client-side models are allowed where they add real value.
 - Docs Q&A dropped; replaced by the Scheduler (chosen over a todo app as more distinctive and business-relevant).
 - Board ships without realtime in v2: Vercel can't hold WebSockets, and a SaaS (Liveblocks) would be the weak point of the demo. A later version can add live sync on Cloudflare Durable Objects without changing the data model.
-- Known gap: the header hides app links below the `sm` breakpoint; add a mobile nav in the polish phase.

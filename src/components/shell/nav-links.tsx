@@ -13,7 +13,7 @@ export function NavLinks() {
 /** Also the Suspense fallback: the same links with no active state. */
 export function NavLinkList({ pathname }: { pathname?: string }) {
   return (
-    <nav className="hidden items-center gap-1 sm:flex">
+    <nav aria-label="Apps" className="order-last -mx-3 flex w-full items-center gap-1 overflow-x-auto sm:order-none sm:mx-0 sm:w-auto">
       {apps.map((app) => {
         const active = pathname?.startsWith(app.href) ?? false;
         return (

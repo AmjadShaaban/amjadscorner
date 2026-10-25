@@ -13,7 +13,8 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "screenshots": "node scripts/screenshots.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
@@ -23,6 +24,7 @@
     "@vercel/blob": "^2.8.2",
     "better-auth": "^1.7.12",
     "class-variance-authority": "^0.7.1",
+    "cmdk": "^1.1.1",
     "cn": "^0.5.0",
     "drizzle-orm": "^0.45.4",
     "lucide-react": "^1.61.0",
