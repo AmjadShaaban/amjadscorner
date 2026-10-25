@@ -5,13 +5,17 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { apps } from "./nav";
 
+/** Highlights the current app. usePathname is dynamic on param routes, so render inside <Suspense>. */
 export function NavLinks() {
-  const pathname = usePathname();
+  return <NavLinkList pathname={usePathname()} />;
+}
 
+/** Also the Suspense fallback: the same links with no active state. */
+export function NavLinkList({ pathname }: { pathname?: string }) {
   return (
     <nav className="hidden items-center gap-1 sm:flex">
       {apps.map((app) => {
-        const active = pathname.startsWith(app.href);
+        const active = pathname?.startsWith(app.href) ?? false;
         return (
           <Link
             key={app.href}

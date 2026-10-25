@@ -16,15 +16,26 @@ Portfolio of four product-quality apps that must run at zero cost (free tiers on
 - See `AGENTS.md`: this Next version differs from training data. Check `node_modules/next/dist/docs/` before using an unfamiliar API.
 - `cacheComponents` is on. Anything reading `headers()`/`cookies()` (including `getSession()` in `src/lib/session.ts`) must render inside a `<Suspense>` boundary, and never be awaited at the top of a layout. Guide: `docs/01-app/02-guides/authentication-with-cache-components.md`.
 - `npm run typecheck` runs `next typegen` first (for globals like `LayoutProps`).
+- Client hooks that read the URL (`usePathname`, `useSearchParams`) are dynamic on param routes and also need `<Suspense>` (see `NavLinks` and its static fallback).
+- Reading the current time in a Server Component: `await connection()` first, then `new Date()` (lint rejects `Date.now()` in render).
+- Never render browser-dependent values (time zone, `Intl.supportedValuesOf`, locale formatting) during SSR; use `useBrowserTimeZone()` (`null` on the server) to defer them, or hydration fails.
+- React 19 resets uncontrolled form fields after a form action completes; use `defaultValue` from server data for edit forms.
 
 ## Auth & DB
 - Better Auth (`src/lib/auth.ts`) with the anonymous plugin for guests. Its tables are hand-written in `src/db/schema/auth.ts` (the Better Auth CLI is stale); when adding an auth plugin, add its fields there and generate a migration.
+- `getSession()` rebuilds the Cookie header from `cookies()` so a Server Action that just created a guest (`getOrCreateUser()`) sees the new session in its own re-render. Don't call `auth.api.getSession` directly.
+- Constraints Drizzle can't express (e.g. the scheduler's exclusion constraint) go in a custom migration: `npx drizzle-kit generate --custom --name=<name>`.
 - Schema change: edit `src/db/schema/*`, then `npm run db:generate && npm run db:migrate`. Commit the generated SQL in `drizzle/`.
 
 ## Commands
 - `npm run db:up` — start local Postgres + pgvector (Docker)
 - `npm run dev` / `npm run build`
 - `npm run lint && npm run typecheck && npm test`
+- `npm run build && npm run test:e2e` — Playwright against the production build (starts `next start` itself)
+
+## App layout notes
+- Scheduler: host UI under `/schedule`, public booking pages under `/meet/[handle]` (short links). Both use code from `src/app/(apps)/schedule/_lib`. Only `_actions/` files are `"use server"`; shared server logic (emails, cancellation) lives in `_lib/` so it isn't exposed as an endpoint.
+- Emails go through `src/lib/email.ts`; without `RESEND_API_KEY` they're logged to the server console.
 
 ## Workflow
 - Build in vertical slices; each slice ships with tests (Vitest for logic, Playwright for the happy path).

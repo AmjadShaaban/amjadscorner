@@ -2,6 +2,7 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
 import { anonymous } from "better-auth/plugins";
+import { moveSchedulerData } from "@/app/(apps)/schedule/_lib/guest-migration";
 import { db } from "@/db";
 import * as schema from "@/db/schema";
 import { env } from "@/lib/env";
@@ -29,8 +30,10 @@ export const auth = betterAuth({
   },
   plugins: [
     anonymous({
-      // TODO: move guest-owned app data to the real user once app tables exist.
-      onLinkAccount: async () => {},
+      // Each app moves its guest-owned rows to the real account here.
+      onLinkAccount: async ({ anonymousUser, newUser }) => {
+        await moveSchedulerData(anonymousUser.user.id, newUser.user.id);
+      },
     }),
     nextCookies(), // must stay last
   ],

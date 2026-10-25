@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { AccountMenu } from "./account-menu";
-import { NavLinks } from "./nav-links";
+import { NavLinkList, NavLinks } from "./nav-links";
 import { ThemeToggle } from "./theme-toggle";
 
 export function SiteHeader() {
@@ -11,7 +11,9 @@ export function SiteHeader() {
         <Link href="/" className="font-semibold tracking-tight">
           Amjad&apos;s Corner
         </Link>
-        <NavLinks />
+        <Suspense fallback={<NavLinkList />}>
+          <NavLinks />
+        </Suspense>
         <div className="ml-auto flex items-center gap-1">
           <ThemeToggle />
           <Suspense fallback={<div className="size-8" />}>

@@ -67,8 +67,8 @@ The site serves three goals at once, so each app is built to product quality, no
 
 ## Build order
 1. ✅ Scaffold: Next.js, Drizzle + local Postgres (Docker), Better Auth (guest + OAuth).
-2. App shell: shadcn/ui, layout/nav, theme toggle, CI, Vercel preview.
-3. Scheduler (also unlocks the homepage's book-a-call).
+2. ✅ App shell: shadcn/ui, layout/nav, theme toggle, CI. (Vercel preview pending env vars.)
+3. ✅ Scheduler. Remaining: reschedule in one step (today it's cancel + rebook), guest data cleanup, homepage book-a-call.
 4. Expense Tracker (adds Blob uploads, client-side OCR, charts).
 5. Collab Board (adds realtime).
 6. Portfolio homepage, "How it's built" panels, cut over `main` and the domain.

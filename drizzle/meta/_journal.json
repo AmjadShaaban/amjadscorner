@@ -15,6 +15,20 @@
       "when": 1792937736651,
       "tag": "0001_auth",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792941382234,
+      "tag": "0002_scheduler",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1792941383613,
+      "tag": "0003_scheduler_no_overlap",
+      "breakpoints": true
     }
   ]
 }

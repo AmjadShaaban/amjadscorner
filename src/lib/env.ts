@@ -13,6 +13,8 @@ export const envSchema = z.object({
   GITHUB_CLIENT_SECRET: optional,
   GOOGLE_CLIENT_ID: optional,
   GOOGLE_CLIENT_SECRET: optional,
+  RESEND_API_KEY: optional,
+  EMAIL_FROM: optional.transform((v) => v ?? "Amjad's Corner <onboarding@resend.dev>"),
 });
 
 export type Env = z.infer<typeof envSchema>;
