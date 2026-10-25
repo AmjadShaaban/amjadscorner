@@ -18,13 +18,21 @@ const paths = [
     href: "#work",
     cta: "See the work",
   },
-  {
-    icon: CalendarClockIcon,
-    title: "Need something built?",
-    body: `Book a call through the scheduler I built.`,
-    href: `/meet/${profile.bookingHandle}`,
-    cta: "Book a call",
-  },
+  profile.company.url
+    ? {
+        icon: CalendarClockIcon,
+        title: "Need something built?",
+        body: `Start a project with ${profile.company.name}.`,
+        href: profile.company.url,
+        cta: `Visit ${profile.company.name.replace(/ LLC$/, "")}`,
+      }
+    : {
+        icon: CalendarClockIcon,
+        title: "Need something built?",
+        body: "Book a call through the scheduler I built.",
+        href: `/meet/${profile.bookingHandle}`,
+        cta: "Book a call",
+      },
   {
     icon: CompassIcon,
     title: "Just exploring?",
@@ -153,7 +161,15 @@ export default function Home() {
           Hiring, a project, or an idea worth building? Pick a time that works for you.
         </p>
         <div className="flex flex-wrap justify-center gap-2">
-          <Link href={`/meet/${profile.bookingHandle}`} className={buttonVariants({ size: "lg" })}>
+          {profile.company.url && (
+            <a href={profile.company.url} className={buttonVariants({ size: "lg" })} rel="noopener" target="_blank">
+              Work with {profile.company.name}
+            </a>
+          )}
+          <Link
+            href={`/meet/${profile.bookingHandle}`}
+            className={buttonVariants({ size: "lg", variant: profile.company.url ? "outline" : "default" })}
+          >
             <CalendarClockIcon /> Book a call
           </Link>
           <a href={profile.links.github} className={buttonVariants({ variant: "outline", size: "lg" })} rel="noopener noreferrer" target="_blank">

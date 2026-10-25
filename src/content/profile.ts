@@ -12,6 +12,12 @@ export const profile = {
   // Handle of your Scheduler profile; "Book a call" links to /meet/<handle>.
   // TODO: create this profile at /schedule (signed in), then keep the handle in sync here.
   bookingHandle: "amjad",
+  // Project inquiries go to the LLC. TODO: set url once its site is live; until then
+  // "Need something built?" falls back to booking a call.
+  company: {
+    name: "Valiance Development LLC",
+    url: "",
+  },
   links: {
     github: "https://github.com/AmjadShaaban",
     // TODO: add or remove.
