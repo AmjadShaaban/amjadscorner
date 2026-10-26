@@ -5,8 +5,7 @@ import type { AppSlug } from "@/components/shell/nav";
 
 export const repo = {
   url: "https://github.com/AmjadShaaban/amjadscorner",
-  // Switch to "main" when v2 replaces v1.
-  branch: "v2",
+  branch: "main",
 };
 
 export const sourceUrl = (path: string) => `${repo.url}/tree/${repo.branch}/${path}`;
