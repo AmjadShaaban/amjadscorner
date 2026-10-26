@@ -2,8 +2,9 @@ import { expect, test, type Browser, type Page } from "@playwright/test";
 
 const slotButton = /^\d{1,2}:\d{2}\s?(AM|PM)$/;
 
-async function setUpHost(page: Page) {
-  const handle = `e2e-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+const newHandle = () => `e2e-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+
+async function setUpHost(page: Page, handle = newHandle()) {
   await page.goto("/schedule");
   await page.getByLabel("Your name").fill("E2E Host");
   await page.getByLabel("Booking link").fill(handle);
@@ -47,6 +48,24 @@ test("a guest host publishes a page, an invitee books it and then cancels", asyn
 
   await page.reload();
   await expect(page.getByText("No bookings yet")).toBeVisible();
+});
+
+// Public pages read the profile per request: a handle visited before it existed must
+// show up once the host creates it.
+test("public booking pages show a profile created after a visit", async ({ page }) => {
+  const handle = newHandle();
+  for (const path of [`/meet/${handle}`, `/meet/${handle}/intro`]) {
+    await page.goto(path);
+    await expect(page.getByRole("heading", { name: "404" })).toBeVisible();
+  }
+
+  await setUpHost(page, handle);
+
+  await page.goto(`/meet/${handle}`);
+  await expect(page.getByRole("heading", { name: "E2E Host" })).toBeVisible();
+  await page.getByRole("link", { name: /Intro call/ }).click();
+  await expect(page.getByRole("heading", { name: "Intro call" })).toBeVisible();
+  await expect(page.getByRole("button", { name: slotButton }).first()).toBeVisible();
 });
 
 test("two invitees racing for the same slot: exactly one gets it", async ({ page, browser }) => {
