@@ -19,6 +19,7 @@ Portfolio of four product-quality apps that must run at zero cost (free tiers on
 - Client hooks that read the URL (`usePathname`, `useSearchParams`) are dynamic on param routes and also need `<Suspense>` (see `NavLinks` and its static fallback).
 - `notFound()` after streaming starts can't change the status (stays 200, Next adds `noindex`). The root layout streams, so pages effectively always do this; that's accepted. Use a Proxy only if a real 404 status is ever required.
 - Reading the current time in a Server Component: `await connection()` first, then `new Date()` (lint rejects `Date.now()` in render).
+- `partialPrefetching` is on: the prefetched App Shell may read cookies/headers but not the clock, so code that checks time after reading them (Better Auth session expiry) needs `await connection()` first. `getSession()` does this.
 - Never render browser-dependent values (time zone, `Intl.supportedValuesOf`, locale formatting) during SSR; use `useBrowserTimeZone()` (`null` on the server) to defer them, or hydration fails.
 - React 19 resets uncontrolled form fields after a form action completes; use `defaultValue` from server data for edit forms.
 - **Visited pages stay mounted but hidden** (React `<Activity>`, see `docs/01-app/02-guides/preserving-ui-state.md`). Consequences:

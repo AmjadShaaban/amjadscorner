@@ -1,10 +1,14 @@
 import "server-only";
 import { cookies, headers } from "next/headers";
+import { connection } from "next/server";
 import { auth } from "@/lib/auth";
 
 // Data Access Layer entry point for the current session. Reads request headers,
 // so callers must render behind a <Suspense> boundary (cacheComponents is on).
 export async function getSession() {
+  // Better Auth checks expiry against the current time. Partial prefetching lets the
+  // App Shell read cookies, but not the clock, so keep session reads at request time.
+  await connection();
   // Rebuild the Cookie header from cookies(), which also reflects cookies set earlier in
   // this request. Without this, the re-render that follows a Server Action that just
   // created a guest session would still see the visitor as signed out.
