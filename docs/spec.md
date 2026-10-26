@@ -52,7 +52,7 @@ Track spending, optionally from a receipt photo.
 ## Local development
 - `npm run db:up` runs Postgres (`pgvector/pgvector` image — fine as plain Postgres; pgvector is enabled but currently unused).
 - No external keys are needed locally. Blob, Resend and OAuth are optional and stubbed when unset.
-- Neon project `little-salad-23052577`, branch `production`, linked via `neon.ts` + `.neon` (gitignored).
+- Neon project `little-salad-23052577`, branch `production`, linked via `neon.ts` + `.neon` (gitignored). Vercel functions run in `cle1` (Cleveland) to sit next to the database (us-east-2).
 
 ## Audience
 The site serves three goals at once, so each app is built to product quality, not demo quality:
