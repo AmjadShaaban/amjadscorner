@@ -21,6 +21,16 @@ test("each app on the homepage links to the app and its write-up", async ({ page
   }
 });
 
+test("project inquiries point to Valiance Development", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("link", { name: /Need something built/ })).toHaveAttribute("href", "https://www.valiancedev.com/");
+  await expect(page.getByRole("link", { name: "Work with Valiance Development LLC" })).toHaveAttribute(
+    "href",
+    "https://www.valiancedev.com/",
+  );
+  await expect(page.getByText(/Hiring/)).toHaveCount(0);
+});
+
 test("the command palette opens with the keyboard and navigates", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();

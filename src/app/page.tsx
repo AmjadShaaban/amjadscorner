@@ -1,4 +1,4 @@
-import { ArrowRightIcon, BriefcaseIcon, CalendarClockIcon, CompassIcon } from "lucide-react";
+import { ArrowRightIcon, Building2Icon, CalendarClockIcon, CodeIcon, CompassIcon } from "lucide-react";
 import Link from "next/link";
 import { AppScreenshot } from "@/components/content/app-screenshot";
 import { howItsBuiltHref } from "@/components/shell/nav";
@@ -12,17 +12,17 @@ const firstName = profile.name.split(" ")[0];
 
 const paths = [
   {
-    icon: BriefcaseIcon,
-    title: "Hiring?",
-    body: "See how I build: three apps, the decisions behind them, and the tests.",
+    icon: CodeIcon,
+    title: "Curious how I work?",
+    body: "Three apps, the decisions behind them, and the tests.",
     href: "#work",
     cta: "See the work",
   },
   profile.company.url
     ? {
-        icon: CalendarClockIcon,
+        icon: Building2Icon,
         title: "Need something built?",
-        body: `Start a project with ${profile.company.name}.`,
+        body: `I take on projects through my company, ${profile.company.name}.`,
         href: profile.company.url,
         cta: `Visit ${profile.company.name.replace(/ LLC$/, "")}`,
       }
@@ -58,6 +58,7 @@ export default function Home() {
             <li key={p.title}>
               <Link
                 href={p.href}
+                {...(p.href.startsWith("http") && { target: "_blank", rel: "noopener" })}
                 className="group flex h-full flex-col gap-2 rounded-xl border p-5 transition-colors hover:bg-muted/60 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
               >
                 <p.icon className="size-5 text-muted-foreground" aria-hidden />
@@ -158,7 +159,9 @@ export default function Home() {
           Let&apos;s talk
         </h2>
         <p className="mx-auto max-w-xl text-muted-foreground">
-          Hiring, a project, or an idea worth building? Pick a time that works for you.
+          {profile.company.url
+            ? `Have a project or an idea worth building? Start with ${profile.company.name}, or book a call with me directly.`
+            : "Have a project or an idea worth building? Pick a time that works for you."}
         </p>
         <div className="flex flex-wrap justify-center gap-2">
           {profile.company.url && (

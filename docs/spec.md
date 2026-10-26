@@ -8,7 +8,7 @@ A portfolio that proves capability by shipping real, product-quality apps on one
 An interactive portfolio rather than a static bio.
 - Project showcase with live previews of the other apps and their "How it's built" write-ups.
 - Content as typed TS modules in `src/content/` (simpler than MDX; write-ups are structured sections).
-- Three paths by visitor intent: "Hiring" (resume, skills, code samples), "Need something built" (book a call via the Scheduler), "Just exploring" (jump into the apps).
+- Three paths by visitor intent: "Curious how I work?" (the apps, write-ups and tests), "Need something built?" (Valiance Development LLC at valiancedev.com; falls back to booking a call via the Scheduler), "Just exploring?" (jump into the apps). No "hiring" framing: the portfolio shows the person, and client work goes through the LLC.
 - Command palette (⌘K) for navigation.
 
 ### 2. Scheduler — `/schedule`
