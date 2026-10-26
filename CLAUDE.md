@@ -33,6 +33,8 @@ Portfolio of four product-quality apps that must run at zero cost (free tiers on
 - `getSession()` rebuilds the Cookie header from `cookies()` so a Server Action that just created a guest (`getOrCreateUser()`) sees the new session in its own re-render. Don't call `auth.api.getSession` directly.
 - Constraints Drizzle can't express (e.g. the scheduler's exclusion constraint) go in a custom migration: `npx drizzle-kit generate --custom --name=<name>`.
 - Schema change: edit `src/db/schema/*`, then `npm run db:generate && npm run db:migrate`. Commit the generated SQL in `drizzle/`.
+- Driver is node-postgres (`pg`) with `attachDatabasePool` (Vercel's recommendation for Fluid compute; postgres-js isn't supported by it).
+- Production DB is Neon (`neon.ts`, project linked in gitignored `.neon`). The app uses the **pooled** URL (`-pooler` host); migrations need the **direct** one: `DATABASE_URL="<direct url>" npm run db:migrate` (dotenv won't override it). Use `sslmode=verify-full` to avoid pg's SSL-mode warning. Never point tests at production; test against a throwaway branch (`neon branches create --expires-at …`).
 
 ## Cleanup
 - `src/lib/cleanup.ts` runs daily via Vercel Cron (`vercel.json` → `/api/cron/cleanup`, Bearer `CRON_SECRET`). It deletes guests with no live session (+1 day grace); cascades remove their rows. Apps add hooks for what cascades can't do (`expenses/_lib/cleanup.ts` deletes receipt files by recorded path, never by prefix; `board/_lib/cleanup.ts` hands shared boards to a real member). New apps that store files or shared data must add a hook here.

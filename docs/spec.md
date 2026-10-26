@@ -39,7 +39,7 @@ Track spending, optionally from a receipt photo.
 |---|---|
 | Framework | Next.js 16 (App Router, Cache Components), React 19, TypeScript strict |
 | UI | Tailwind CSS + shadcn/ui, Motion for animation |
-| DB | Postgres — Docker locally, Neon (free tier) in production; Drizzle ORM |
+| DB | Postgres — Docker locally, Neon (free tier, us-east-2) in production; Drizzle ORM on node-postgres (`pg`) with `attachDatabasePool` for Vercel Fluid compute |
 | Auth | Better Auth — GitHub/Google OAuth + anonymous guest sessions |
 | Drag and drop | dnd-kit (core + sortable) |
 | OCR | Tesseract.js, client-side only |
@@ -52,7 +52,7 @@ Track spending, optionally from a receipt photo.
 ## Local development
 - `npm run db:up` runs Postgres (`pgvector/pgvector` image — fine as plain Postgres; pgvector is enabled but currently unused).
 - No external keys are needed locally. Blob, Resend and OAuth are optional and stubbed when unset.
-- Neon is only needed when we first deploy to Vercel.
+- Neon project `little-salad-23052577`, branch `production`, linked via `neon.ts` + `.neon` (gitignored).
 
 ## Audience
 The site serves three goals at once, so each app is built to product quality, not demo quality:
