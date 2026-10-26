@@ -2,6 +2,7 @@ import { ArrowLeftIcon, ExternalLinkIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { AppScreenshot } from "@/components/content/app-screenshot";
 import { RichText } from "@/components/content/rich-text";
 import { buttonVariants } from "@/components/ui/button";
@@ -18,12 +19,25 @@ export async function generateMetadata({ params }: PageProps<"/how/[slug]">): Pr
   return app ? { title: `How ${app.name} is built`, description: app.how.intro } : {};
 }
 
-export default async function HowItsBuiltPage({ params }: PageProps<"/how/[slug]">) {
+// The App Shell is shared by every /how link, so the slug is read behind Suspense.
+// Links to these pages use prefetch={true}, which fetches the prerendered write-up
+// ahead of the click.
+export default function HowItsBuiltPage(props: PageProps<"/how/[slug]">) {
+  return (
+    <main className="mx-auto grid w-full max-w-3xl gap-10 px-4 py-12">
+      <Suspense fallback={<div className="h-96 animate-pulse rounded-xl bg-muted" />}>
+        <WriteUp {...props} />
+      </Suspense>
+    </main>
+  );
+}
+
+async function WriteUp({ params }: PageProps<"/how/[slug]">) {
   const app = find((await params).slug);
   if (!app) notFound();
 
   return (
-    <main className="mx-auto grid w-full max-w-3xl gap-10 px-4 py-12">
+    <>
       <header className="grid gap-4">
         <Link href="/#work" className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeftIcon className="size-4" /> All work
@@ -75,6 +89,6 @@ export default async function HowItsBuiltPage({ params }: PageProps<"/how/[slug]
           ))}
         </ul>
       </section>
-    </main>
+    </>
   );
 }

@@ -110,7 +110,7 @@ export default function Home() {
                 <Link href={app.href} className={buttonVariants()}>
                   Open {app.name}
                 </Link>
-                <Link href={howItsBuiltHref(app.slug)} className={buttonVariants({ variant: "outline" })}>
+                <Link href={howItsBuiltHref(app.slug)} prefetch className={buttonVariants({ variant: "outline" })}>
                   How it&apos;s built
                 </Link>
               </div>
